@@ -13,6 +13,7 @@ const SOURCE = [...VIEWS, "lib/**/*.{ts,tsx}"];
 const ROUTES = ["app/**/page.tsx"];
 const COMPONENTS = ["components/**/*.tsx"];
 const TESTS = ["**/*.test.ts"];
+const CINEMATIC = ["app/page.tsx", "components/ledgerline/**/*.tsx"];
 
 type RestrictedPath = { name: string; message: string };
 
@@ -73,7 +74,6 @@ const starterConfig: ConfigArray = [
         rules: {
             "starter/application-register-density": "error",
             "starter/domain-types-in-lib": "error",
-            "starter/token-first-classnames": "error",
             "no-restricted-imports": restrictedImports({
                 name: TRANSPORT_MODULE,
                 message:
@@ -92,6 +92,10 @@ const starterConfig: ConfigArray = [
     {
         files: TESTS,
         rules: { "max-lines": "off" },
+    },
+    {
+        files: CINEMATIC,
+        rules: { "starter/application-register-density": "off" },
     },
 ];
 

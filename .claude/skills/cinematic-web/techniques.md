@@ -105,7 +105,7 @@ The scene table assigns one device per scene. At least four families per page, n
 
 A cinematic page usually needs a dark ground the starter's light tokens do not have. Add a theme class in `styles/tokens.css` that redefines the `--colors-*` values (plus `--colors-flow*` or whatever the hero reads) and put it on `<html>` in the layout. The `@theme` mapping resolves on that same element, so every house utility (`bg-background`, `text-text`, `Button` tones) follows without a parallel set of classes. Scoped to a deeper element, the `--color-*` mappings would also have to be redeclared there. The canvas reads its colours from the same tokens with `getComputedStyle`.
 
-Display and scene sizes are `clamp()` tokens consumed by named classes (`.stage-display`, `.stage-scene`), never `md:` prefixes: `starter/token-first-classnames` rejects breakpoint prefixes in any string literal, not only in `className`.
+Display and scene sizes are `clamp()` tokens, used as `text-(--stage-display)` or through a named class when several elements share them. Layout and breakpoints are Tailwind utilities in the JSX; CSS is for what utilities cannot express: keyframes, sticky tracks, state selectors and the stage itself.
 
 ## Lint in this repo
 

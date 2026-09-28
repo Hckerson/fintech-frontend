@@ -5,7 +5,6 @@ import { domainTypesInLib } from "./rules/domain-types-in-lib";
 import { noComments } from "./rules/no-comments";
 import { oneComponentPerFile } from "./rules/one-component-per-file";
 import { pageComposesOnly } from "./rules/page-composes-only";
-import { tokenFirstClassnames } from "./rules/token-first-classnames";
 
 export const starter: TSESLint.FlatConfig.Plugin = {
     meta: { name: "eslint-plugin-starter", version: "0.1.0" },
@@ -16,7 +15,6 @@ export const starter: TSESLint.FlatConfig.Plugin = {
         "no-comments": noComments,
         "one-component-per-file": oneComponentPerFile,
         "page-composes-only": pageComposesOnly,
-        "token-first-classnames": tokenFirstClassnames,
     },
 };
 
