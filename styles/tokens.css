@@ -237,3 +237,53 @@
     --icon-sizes-md: 24px;
     --icon-bg-mix: 12%;
 }
+
+.theme-ledgerline {
+    --fonts-display: var(--nf-ledger-body), system-ui, -apple-system, "Segoe UI", sans-serif;
+    --fonts-body: var(--nf-ledger-body), system-ui, -apple-system, "Segoe UI", sans-serif;
+    --fonts-mono: var(--nf-mono), ui-monospace, monospace;
+
+    --colors-background: #07090d;
+    --colors-background-alt: #0b0e14;
+    --colors-background-muted: #11151d;
+    --colors-primary: #0b0e14;
+    --colors-primary-dark: #07090d;
+    --colors-primary-light: #161b25;
+
+    --colors-text: #eef1f5;
+    --colors-text-secondary: #b3bac5;
+    --colors-text-muted: #7b8391;
+    --colors-text-inverse: #07090d;
+
+    --colors-accent: #d9bf8c;
+    --colors-accent-dark: #b99c63;
+    --colors-accent-light: rgba(217, 191, 140, 0.12);
+
+    --colors-success: #6fcf9f;
+    --colors-success-light: rgba(111, 207, 159, 0.12);
+    --colors-error: #f08a7e;
+    --colors-error-light: rgba(240, 138, 126, 0.12);
+    --colors-warning: #e8b86a;
+    --colors-warning-light: rgba(232, 184, 106, 0.12);
+
+    --colors-border: rgba(255, 255, 255, 0.08);
+    --colors-border-light: rgba(255, 255, 255, 0.05);
+    --colors-border-dark: rgba(255, 255, 255, 0.16);
+    --colors-overlay: rgba(0, 0, 0, 0.6);
+
+    --colors-line: #e6cf9f;
+    --ledger-glow: rgba(217, 191, 140, 0.16);
+    --ledger-card-top: #1d232d;
+    --ledger-card-bottom: #0b0e13;
+    --ledger-sheen: rgba(255, 255, 255, 0.1);
+
+    --ledger-shell: 76rem;
+    --ledger-gutter: clamp(1.25rem, 4vw, 2.5rem);
+    --ledger-section: clamp(5rem, 10vw, 8rem);
+    --ledger-display: clamp(2.75rem, 6.4vw, 5.75rem);
+    --ledger-title: clamp(2rem, 3.8vw, 3.25rem);
+    --ledger-figure: clamp(2rem, 3.6vw, 3rem);
+    --ledger-nav: 4rem;
+    --ledger-ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --ledger-frame-shadow: 0 40px 120px -40px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.06);
+}

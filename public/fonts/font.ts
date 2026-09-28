@@ -1,4 +1,9 @@
-import { Fraunces, Libre_Franklin, JetBrains_Mono } from "next/font/google";
+import {
+    Fraunces,
+    Libre_Franklin,
+    JetBrains_Mono,
+    Inter_Tight,
+} from "next/font/google";
 
 const display = Fraunces({
     subsets: ["latin"],
@@ -22,4 +27,11 @@ const mono = JetBrains_Mono({
     fallback: ["ui-monospace", "monospace"],
 });
 
-export { display, sans, mono };
+const ledgerBody = Inter_Tight({
+    subsets: ["latin"],
+    variable: "--nf-ledger-body",
+    display: "swap",
+    fallback: ["system-ui", "Segoe UI", "sans-serif"],
+});
+
+export { display, sans, mono, ledgerBody };

@@ -1,0 +1,152 @@
+@layer components {
+.theme-ledgerline {
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--ledger-nav);
+}
+
+.ledger-shell {
+    width: min(100% - 2 * var(--ledger-gutter), var(--ledger-shell));
+    margin-inline: auto;
+}
+
+.ledger-section {
+    padding-block: var(--ledger-section);
+}
+
+.ledger-display {
+    font-size: var(--ledger-display);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.045em;
+}
+
+.ledger-title {
+    font-size: var(--ledger-title);
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+}
+
+.ledger-figure {
+    font-size: var(--ledger-figure);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.035em;
+    font-variant-numeric: tabular-nums;
+}
+
+.ledger-nav-bar {
+    height: var(--ledger-nav);
+}
+
+.word-mask {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    padding-bottom: 0.1em;
+    margin-bottom: -0.1em;
+}
+
+.word {
+    display: inline-block;
+}
+
+.hero-glow {
+    position: absolute;
+    inset-inline: 0;
+    top: 30%;
+    height: 80%;
+    background: radial-gradient(55% 50% at 50% 45%, var(--ledger-glow), transparent 72%);
+    pointer-events: none;
+}
+
+.product-stage {
+    perspective: 1800px;
+}
+
+.product-frame {
+    position: relative;
+    transform-origin: 50% 0%;
+    box-shadow: var(--ledger-frame-shadow);
+}
+
+.product-frame::before {
+    content: "";
+    position: absolute;
+    inset-inline: 12%;
+    top: -1px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--colors-line), transparent);
+    opacity: 0.6;
+}
+
+.frame-panel {
+    padding: 1rem;
+    background: var(--colors-background);
+    border: 1px solid var(--colors-border);
+    border-radius: var(--radii-lg);
+}
+
+.surface-card {
+    background: var(--colors-background-alt);
+    border: 1px solid var(--colors-border);
+    border-radius: var(--radii-xl);
+}
+
+.signature-line {
+    fill: none;
+    stroke: var(--colors-line);
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 6px var(--ledger-glow));
+}
+
+.signature-area {
+    fill: var(--ledger-glow);
+}
+
+.metal-card {
+    position: relative;
+    aspect-ratio: 1.586;
+    overflow: hidden;
+    background: linear-gradient(145deg, var(--ledger-card-top), var(--ledger-card-bottom));
+    box-shadow: var(--ledger-frame-shadow);
+}
+
+.metal-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, transparent 35%, var(--ledger-sheen) 50%, transparent 65%);
+    transform: translateX(-60%);
+    transition: transform 1.2s var(--ledger-ease);
+}
+
+.metal-card:hover::after {
+    transform: translateX(60%);
+}
+
+.live-dot {
+    animation: ledger-pulse 2.4s var(--timing-functions-in-out) infinite;
+}
+
+@keyframes ledger-pulse {
+    50% {
+        opacity: 0.35;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .theme-ledgerline {
+        scroll-behavior: auto;
+    }
+
+    .live-dot {
+        animation: none;
+    }
+
+    .metal-card::after {
+        transition: none;
+    }
+}
+}
