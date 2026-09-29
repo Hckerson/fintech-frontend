@@ -32,7 +32,7 @@ export default function ApprovalCard() {
                     className={
                         approved
                             ? "inline-flex h-11 items-center gap-2 rounded-full border border-border-dark px-5 text-sm text-text-secondary transition-colors hover:text-text"
-                            : "group inline-flex h-11 items-center gap-2 rounded-full bg-accent px-5 text-sm font-medium text-text-inverse transition-colors hover:bg-text"
+                            : "group sheen inline-flex h-11 items-center gap-2 rounded-full bg-accent px-5 text-sm font-medium text-text-inverse transition-colors hover:bg-text"
                     }
                 >
                     {approved ? PAYMENTS_COPY.reset : PAYMENTS_COPY.approve}

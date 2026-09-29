@@ -1,9 +1,17 @@
-import clsx from "clsx";
-import { Activity, Catalog, Locked, Password, Security, UserMultiple, type CarbonIconType } from "@carbon/icons-react";
+import {
+    Activity,
+    Catalog,
+    Locked,
+    Password,
+    Security,
+    UserMultiple,
+    type CarbonIconType,
+} from "@carbon/icons-react";
 import SectionHeading from "@/components/ledgerline/section-heading";
-import MotionWrapper from "@/components/wrappers/motion-wrapper";
-import { SECURITY_CONTROLS, SECURITY_COPY } from "@/lib/data/ledgerline/closing";
-import { REVEAL } from "@/lib/ledgerline/constants";
+import {
+    SECURITY_CONTROLS,
+    SECURITY_COPY,
+} from "@/lib/data/ledgerline/closing";
 import type { SecurityIcon } from "@/lib/types";
 
 const TITLE_ID = "security-title";
@@ -17,31 +25,62 @@ const ICONS: Record<SecurityIcon, CarbonIconType> = {
     monitoring: Activity,
 };
 
+const [FEATURED, ...REST] = SECURITY_CONTROLS;
+const FeaturedIcon = ICONS[FEATURED.icon];
+
 export default function SecuritySection() {
     return (
-        <section id="security" aria-labelledby={TITLE_ID} className="ledger-section border-y border-border bg-background-alt">
+        <section
+            id="security"
+            aria-labelledby={TITLE_ID}
+            className="ledger-section"
+        >
             <div className="ledger-shell flex flex-col gap-14">
-                <SectionHeading id={TITLE_ID} eyebrow={SECURITY_COPY.eyebrow} title={SECURITY_COPY.title} lead={SECURITY_COPY.lead} />
-                <div className="grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
-                    {SECURITY_CONTROLS.map((control, index) => {
-                        const Icon = ICONS[control.icon];
-                        const featured = index === 0;
-                        return (
-                            <MotionWrapper
-                                key={control.id}
-                                yOffset={REVEAL.offset}
-                                duration={REVEAL.seconds}
-                                delay={index * REVEAL.stagger}
-                                className={clsx("flex flex-col gap-4 p-8", featured ? "bg-accent-light" : "bg-background-alt")}
-                            >
-                                <Icon aria-hidden className={clsx("size-6", featured ? "text-accent" : "text-text-secondary")} />
-                                <h3 className="text-lg font-medium text-text">{control.title}</h3>
-                                <p className="text-sm text-text-secondary">{control.detail}</p>
-                            </MotionWrapper>
-                        );
-                    })}
+                <SectionHeading
+                    id={TITLE_ID}
+                    eyebrow={SECURITY_COPY.eyebrow}
+                    title={SECURITY_COPY.title}
+                    lead={SECURITY_COPY.lead}
+                />
+                <div className="grid gap-10 lg:grid-cols-5 lg:gap-16">
+                    <div className="surface-card product-frame flex flex-col gap-6 p-8 lg:col-span-2 lg:p-10">
+                        <FeaturedIcon
+                            aria-hidden
+                            className="text-accent size-8"
+                        />
+                        <h3 className="text-text mt-auto text-2xl font-medium tracking-tight">
+                            {FEATURED.title}
+                        </h3>
+                        <p className="text-text-secondary">{FEATURED.detail}</p>
+                    </div>
+                    <ul className="flex flex-col lg:col-span-3">
+                        {REST.map((control) => {
+                            const Icon = ICONS[control.icon];
+                            return (
+                                <li
+                                    key={control.id}
+                                    className="border-border flex gap-5 border-t py-5 first:border-t-0 first:pt-0"
+                                >
+                                    <Icon
+                                        aria-hidden
+                                        className="text-text-muted mt-0.5 size-5 shrink-0"
+                                    />
+                                    <div className="grid flex-1 gap-1 sm:grid-cols-5 sm:gap-6">
+                                        <h3 className="text-text font-medium sm:col-span-2">
+                                            {control.title}
+                                        </h3>
+                                        <p className="text-text-secondary text-sm sm:col-span-3">
+                                            {control.detail}
+                                        </p>
+                                    </div>
+                                </li>
+                            );
+                        })}
+                    </ul>
                 </div>
-                <p className="font-mono text-xs text-text-muted">{SECURITY_COPY.note}</p>
+                <p className="text-text-muted font-mono text-xs">
+                    {SECURITY_COPY.note}
+                </p>
             </div>
         </section>
     );

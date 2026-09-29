@@ -31,7 +31,7 @@ export default function LedgerButton({ href, tone = "solid", size = "lg", classN
             href={href}
             onClick={onClick}
             className={clsx(
-                "group inline-flex items-center justify-center gap-2 rounded-full font-medium transition-colors duration-300",
+                "group sheen inline-flex items-center justify-center gap-2 rounded-full font-medium transition-colors duration-300",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent",
                 tones[tone],
                 sizes[size],

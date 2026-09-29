@@ -2,10 +2,10 @@
 import clsx from "clsx";
 import { motion } from "motion/react";
 import { ArrowUpRight } from "@carbon/icons-react";
-import { CASH_SERIES, DASHBOARD } from "@/lib/data/ledgerline/dashboard";
+import { CASH_AXIS, CASH_SERIES, DASHBOARD } from "@/lib/data/ledgerline/dashboard";
 import { areaPath, lastPoint, linePath } from "@/lib/ledgerline/chart";
 import { formatMoney } from "@/lib/ledgerline/money";
-import { CHART, HERO_CUES, LINE_DRAW_SECONDS, REVEAL_EASE } from "@/lib/ledgerline/constants";
+import { CHART, CHART_GRIDLINES, HERO_CUES, LINE_DRAW_SECONDS, REVEAL_EASE } from "@/lib/ledgerline/constants";
 
 const LINE = linePath(CASH_SERIES, CHART);
 const AREA = areaPath(CASH_SERIES, CHART);
@@ -41,6 +41,17 @@ export default function FrameCash() {
                 </div>
             </div>
             <svg viewBox={`0 0 ${CHART.width} ${CHART.height}`} className="h-auto w-full" aria-hidden>
+                {CHART_GRIDLINES.map((share) => (
+                    <line
+                        key={share}
+                        x1={0}
+                        x2={CHART.width}
+                        y1={CHART.height * share}
+                        y2={CHART.height * share}
+                        className="stroke-border"
+                        vectorEffect="non-scaling-stroke"
+                    />
+                ))}
                 <motion.path
                     d={AREA}
                     className="signature-area"
@@ -66,6 +77,11 @@ export default function FrameCash() {
                     transition={{ delay: HERO_CUES.chart + LINE_DRAW_SECONDS, ease: REVEAL_EASE }}
                 />
             </svg>
+            <div aria-hidden className="flex justify-between font-mono text-caption text-text-muted">
+                {CASH_AXIS.map((label) => (
+                    <span key={label}>{label}</span>
+                ))}
+            </div>
         </div>
     );
 }

@@ -11,7 +11,7 @@ const SPENT_SHARE = CARDS_COPY.spentMinor / CARDS_COPY.limitMinor;
 export default function MetalCard() {
     return (
         <div className="flex flex-col gap-6">
-            <div className="metal-card mx-auto w-full max-w-md rounded-2xl p-7 text-text">
+            <div className="metal-card sheen mx-auto w-full max-w-md rounded-2xl p-7 text-text">
                 <div className="relative flex h-full flex-col justify-between">
                     <div className="flex items-start justify-between">
                         <span className="text-lg font-semibold tracking-tight">{LEDGER_BRAND.name}</span>

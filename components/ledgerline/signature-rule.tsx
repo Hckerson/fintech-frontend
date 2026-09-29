@@ -3,7 +3,11 @@ import clsx from "clsx";
 import { motion } from "motion/react";
 import { CASH_SERIES } from "@/lib/data/ledgerline/dashboard";
 import { linePath } from "@/lib/ledgerline/chart";
-import { LINE_DRAW_SECONDS, REVEAL_EASE, RULE_CHART } from "@/lib/ledgerline/constants";
+import {
+    LINE_DRAW_SECONDS,
+    REVEAL_EASE,
+    RULE_CHART,
+} from "@/lib/ledgerline/constants";
 
 interface Props {
     className?: string;
@@ -11,13 +15,13 @@ interface Props {
 
 const PATH = linePath(CASH_SERIES, RULE_CHART);
 
-export default function SignatureRule({ className }: Props) {
+export default function SignatureRule({ className = "h-10" }: Props) {
     return (
         <svg
             viewBox={`0 0 ${RULE_CHART.width} ${RULE_CHART.height}`}
             preserveAspectRatio="none"
             aria-hidden
-            className={clsx("h-10 w-full", className)}
+            className={clsx("w-full", className)}
         >
             <motion.path
                 d={PATH}

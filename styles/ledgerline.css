@@ -1,7 +1,7 @@
 @layer components {
 .theme-ledgerline {
     scroll-behavior: smooth;
-    scroll-padding-top: var(--ledger-nav);
+    scroll-padding-top: var(--ledger-header);
 }
 
 .ledger-shell {
@@ -34,6 +34,20 @@
     line-height: 1;
     letter-spacing: -0.035em;
     font-variant-numeric: tabular-nums;
+}
+
+.ledger-pill {
+    position: fixed;
+    top: var(--ledger-pill-offset);
+    left: 50%;
+    translate: -50% 0;
+    width: min(100% - 2 * var(--ledger-gutter), var(--ledger-pill-width));
+}
+
+.leader {
+    flex: 1;
+    min-width: 1.5rem;
+    border-bottom: 1px dotted var(--colors-border-dark);
 }
 
 .ledger-nav-bar {
@@ -113,17 +127,23 @@
     box-shadow: var(--ledger-frame-shadow);
 }
 
-.metal-card::after {
+.sheen {
+    position: relative;
+    overflow: hidden;
+}
+
+.sheen::after {
     content: "";
     position: absolute;
     inset: 0;
+    pointer-events: none;
     background: linear-gradient(115deg, transparent 35%, var(--ledger-sheen) 50%, transparent 65%);
-    transform: translateX(-60%);
-    transition: transform 1.2s var(--ledger-ease);
+    transform: translateX(-100%);
 }
 
-.metal-card:hover::after {
-    transform: translateX(60%);
+.sheen:hover::after {
+    transform: translateX(100%);
+    transition: transform var(--ledger-sheen-duration) var(--ledger-ease);
 }
 
 .live-dot {
@@ -145,8 +165,8 @@
         animation: none;
     }
 
-    .metal-card::after {
-        transition: none;
+    .sheen::after {
+        display: none;
     }
 }
 }

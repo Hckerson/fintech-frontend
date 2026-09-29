@@ -276,14 +276,18 @@
     --ledger-card-top: #1d232d;
     --ledger-card-bottom: #0b0e13;
     --ledger-sheen: rgba(255, 255, 255, 0.1);
+    --ledger-sheen-duration: 1.2s;
 
-    --ledger-shell: 76rem;
+    --ledger-shell: 88rem;
     --ledger-gutter: clamp(1.25rem, 4vw, 2.5rem);
     --ledger-section: clamp(5rem, 10vw, 8rem);
     --ledger-display: clamp(2.75rem, 6.4vw, 5.75rem);
     --ledger-title: clamp(2rem, 3.8vw, 3.25rem);
     --ledger-figure: clamp(2rem, 3.6vw, 3rem);
-    --ledger-nav: 4rem;
+    --ledger-nav: 3.5rem;
+    --ledger-pill-offset: 1rem;
+    --ledger-pill-width: 64rem;
+    --ledger-header: calc(var(--ledger-nav) + 2 * var(--ledger-pill-offset));
     --ledger-ease: cubic-bezier(0.16, 1, 0.3, 1);
     --ledger-frame-shadow: 0 40px 120px -40px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.06);
 }

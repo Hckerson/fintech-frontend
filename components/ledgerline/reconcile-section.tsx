@@ -1,6 +1,9 @@
 import SectionHeading from "@/components/ledgerline/section-heading";
 import MatchedRow from "@/components/ledgerline/matched-row";
-import { MATCHED_ENTRIES, RECONCILE_COPY } from "@/lib/data/ledgerline/features";
+import {
+    MATCHED_ENTRIES,
+    RECONCILE_COPY,
+} from "@/lib/data/ledgerline/reconcile";
 
 const TITLE_ID = "reconcile-title";
 
@@ -16,15 +19,21 @@ export default function ReconcileSection() {
                     className="lg:sticky lg:top-28 lg:col-span-2"
                 />
                 <div className="surface-card overflow-hidden lg:col-span-3">
-                    <div className="flex items-center justify-between border-b border-border px-6 py-4 text-sm">
-                        <span className="font-medium text-text">
+                    <div className="border-border flex items-center justify-between border-b px-6 py-4 text-sm">
+                        <span className="text-text font-medium">
                             {MATCHED_ENTRIES.length} {RECONCILE_COPY.progress}
                         </span>
-                        <span className="font-mono text-xs text-text-muted">{RECONCILE_COPY.note}</span>
+                        <span className="text-text-muted font-mono text-xs">
+                            {RECONCILE_COPY.note}
+                        </span>
                     </div>
                     <ul>
                         {MATCHED_ENTRIES.map((entry, index) => (
-                            <MatchedRow key={entry.id} entry={entry} index={index} />
+                            <MatchedRow
+                                key={entry.id}
+                                entry={entry}
+                                index={index}
+                            />
                         ))}
                     </ul>
                 </div>

@@ -8,6 +8,12 @@ export const LOGIN_ROUTE = `${AUTH_ROUTE_PREFIX}/login`;
 
 export const HOME_ROUTE = "/";
 
+export const HELP_ROUTE = "/help";
+
+export const HELP_QUERY_PARAM = "q";
+
+export const helpArticleRoute = (slug: string) => `${HELP_ROUTE}/${slug}`;
+
 export const PROTECTED_ROUTE_PREFIXES = ["/dashboard"];
 
 export const API_BASE_URL =

@@ -75,7 +75,8 @@ export interface MatchedEntry {
     amountMinor: number;
 }
 
-export type SecurityIcon = "approvals" | "roles" | "audit" | "keys" | "funds" | "monitoring";
+export type SecurityIcon =
+    "approvals" | "roles" | "audit" | "keys" | "funds" | "monitoring";
 
 export interface SecurityControl {
     id: string;
@@ -106,7 +107,8 @@ export interface FooterColumn {
     links: readonly NavLink[];
 }
 
-export type DashboardIcon = "home" | "accounts" | "payments" | "cards" | "treasury" | "reports";
+export type DashboardIcon =
+    "home" | "accounts" | "payments" | "cards" | "treasury" | "reports";
 
 export interface DashboardNavItem {
     id: DashboardIcon;

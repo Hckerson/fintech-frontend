@@ -20,9 +20,17 @@ export const LINE_DRAW_SECONDS = 2.2;
 
 export const FORECAST_DELAY = 1.3;
 
-export const POINTER_SPRING = { stiffness: 60, damping: 20, mass: 0.8 } as const;
+export const POINTER_SPRING = {
+    stiffness: 60,
+    damping: 20,
+    mass: 0.8,
+} as const;
 
-export const SCROLL_SPRING = { stiffness: 80, damping: 26, restDelta: 0.0005 } as const;
+export const SCROLL_SPRING = {
+    stiffness: 80,
+    damping: 26,
+    restDelta: 0.0005,
+} as const;
 
 export const HERO_CUES = {
     badge: 0.1,
@@ -45,9 +53,20 @@ export const FRAME_MOTION = {
     enterSeconds: 1.3,
 } as const;
 
+export const HERO_RECEDE = {
+    range: [0.5, 1],
+    lift: -56,
+    fade: 0.15,
+    glow: [0.35, 1],
+} as const;
+
+export const NAV_SOLID_AFTER = 24;
+
 export const LOGO_PATH = "M2 17 C6 17 7 9 11 9 S16 14 22 5";
 
 export const CHART = { width: 640, height: 220, pad: 8 } as const;
+
+export const CHART_GRIDLINES = [0.25, 0.5, 0.75] as const;
 
 export const RULE_CHART = { width: 1200, height: 40, pad: 4 } as const;
 
