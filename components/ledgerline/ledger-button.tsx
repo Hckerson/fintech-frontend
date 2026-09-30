@@ -25,18 +25,32 @@ const sizes: Record<Size, string> = {
     lg: "h-12 px-6 text-base",
 };
 
-export default function LedgerButton({ href, tone = "solid", size = "lg", className, onClick, children }: Props) {
+export const ledgerButtonClass = (
+    tone: Tone = "solid",
+    size: Size = "lg",
+    className?: string,
+) =>
+    clsx(
+        "group sheen inline-flex items-center justify-center gap-2 rounded-full font-medium transition-colors duration-300",
+        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent",
+        tones[tone],
+        sizes[size],
+        className,
+    );
+
+export default function LedgerButton({
+    href,
+    tone,
+    size,
+    className,
+    onClick,
+    children,
+}: Props) {
     return (
         <Link
             href={href}
             onClick={onClick}
-            className={clsx(
-                "group sheen inline-flex items-center justify-center gap-2 rounded-full font-medium transition-colors duration-300",
-                "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent",
-                tones[tone],
-                sizes[size],
-                className,
-            )}
+            className={ledgerButtonClass(tone, size, className)}
         >
             {children}
         </Link>
