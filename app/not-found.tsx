@@ -12,10 +12,8 @@ export default function NotFound() {
     return (
         <>
             <LedgerNav />
-            <main className="pt-(--ledger-header)">
-                <div className="ledger-shell ledger-section flex min-h-[70svh] flex-col justify-center">
-                    <NotFoundPanel />
-                </div>
+            <main className="status-page">
+                <NotFoundPanel />
             </main>
             <LedgerFooter />
         </>

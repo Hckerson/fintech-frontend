@@ -4,5 +4,6 @@ export const NOT_FOUND_COPY = {
     lead: "The address may be old, mistyped, or no longer shared with you.",
     home: "Back to home",
     help: "Visit the help center",
+    tag: "No entry at",
     metaTitle: "Page not found · Ledgerline",
 } as const;
