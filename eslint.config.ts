@@ -19,6 +19,8 @@ const CINEMATIC = [
     "components/help/**/*.tsx",
     "app/not-found.tsx",
     "components/status/**/*.tsx",
+    "app/(auth)/**/*.tsx",
+    "components/auth/**/*.tsx",
 ];
 
 type RestrictedPath = { name: string; message: string };

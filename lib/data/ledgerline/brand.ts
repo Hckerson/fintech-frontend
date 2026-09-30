@@ -1,11 +1,12 @@
 import type { Figure, NavLink } from "@/lib/types";
+import { LOGIN_ROUTE, REGISTER_ROUTE } from "@/lib/constants";
 
 export const LEDGER_BRAND = {
     name: "Ledgerline",
     home: "/",
-    open: { label: "Open an account", href: "/#contact" },
+    open: { label: "Open an account", href: REGISTER_ROUTE },
     demo: { label: "Book a demo", href: "/#contact" },
-    signIn: { label: "Sign in", href: "/#contact" },
+    signIn: { label: "Sign in", href: LOGIN_ROUTE },
     menu: {
         open: "Open menu",
         close: "Close menu",

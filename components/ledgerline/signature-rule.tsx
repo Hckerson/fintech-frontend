@@ -11,11 +11,14 @@ import {
 
 interface Props {
     className?: string;
+    play?: "view" | "mount";
 }
 
 const PATH = linePath(CASH_SERIES, RULE_CHART);
 
-export default function SignatureRule({ className = "h-10" }: Props) {
+export default function SignatureRule({ className = "h-10", play = "view" }: Props) {
+    const drawn = { pathLength: 1 };
+
     return (
         <svg
             viewBox={`0 0 ${RULE_CHART.width} ${RULE_CHART.height}`}
@@ -29,7 +32,8 @@ export default function SignatureRule({ className = "h-10" }: Props) {
                 strokeWidth={1.5}
                 vectorEffect="non-scaling-stroke"
                 initial={{ pathLength: 0 }}
-                whileInView={{ pathLength: 1 }}
+                animate={play === "mount" ? drawn : undefined}
+                whileInView={play === "view" ? drawn : undefined}
                 viewport={{ once: true, margin: "-10%" }}
                 transition={{ duration: LINE_DRAW_SECONDS, ease: REVEAL_EASE }}
             />

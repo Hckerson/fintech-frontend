@@ -90,4 +90,16 @@ describe("registering", () => {
         expect((await response.json()).message).toBe("User already exists");
         expect(response.headers.get("set-cookie")).toBeNull();
     });
+
+    it("answers 503 when the backend cannot be reached", async () => {
+        vi.stubGlobal(
+            "fetch",
+            vi.fn().mockRejectedValue(new TypeError("fetch failed")),
+        );
+
+        const response = await postWith(VISITOR);
+
+        expect(response.status).toBe(503);
+        expect(response.headers.get("set-cookie")).toBeNull();
+    });
 });
