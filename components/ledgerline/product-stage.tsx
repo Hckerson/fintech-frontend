@@ -27,7 +27,7 @@ export default function ProductStage({ ref, progress }: Props) {
     return (
         <motion.div
             ref={ref}
-            className="product-stage relative mx-auto w-full max-w-6xl"
+            className="relative mx-auto w-full max-w-6xl perspective-[1800px]"
             initial={{ opacity: 0, y: FRAME_MOTION.enter }}
             animate={{ opacity: 1, y: 0 }}
             transition={{

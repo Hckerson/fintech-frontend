@@ -11,19 +11,29 @@ export const frameOf = (series: readonly number[]): SeriesFrame => ({
     total: series.length,
 });
 
-const project = (series: readonly number[], box: ChartBox, frame: SeriesFrame): Point[] => {
-    const spanX = box.width - box.pad * 2;
+const project = (
+    series: readonly number[],
+    box: ChartBox,
+    frame: SeriesFrame,
+): Point[] => {
+    const padX = box.padX ?? box.pad;
+    const spanX = box.width - padX * 2;
     const spanY = box.height - box.pad * 2;
     const range = frame.max - frame.min || 1;
     return series.map((value, index) => [
-        box.pad + ((frame.start + index) / Math.max(frame.total - 1, 1)) * spanX,
+        padX + ((frame.start + index) / Math.max(frame.total - 1, 1)) * spanX,
         box.pad + (1 - (value - frame.min) / range) * spanY,
     ]);
 };
 
-const format = (point: Point): string => `${point[0].toFixed(2)} ${point[1].toFixed(2)}`;
+const format = (point: Point): string =>
+    `${point[0].toFixed(2)} ${point[1].toFixed(2)}`;
 
-export const linePath = (series: readonly number[], box: ChartBox, frame: SeriesFrame = frameOf(series)): string => {
+export const linePath = (
+    series: readonly number[],
+    box: ChartBox,
+    frame: SeriesFrame = frameOf(series),
+): string => {
     const points = project(series, box, frame);
     const segments = points.slice(1).map((current, offset) => {
         const index = offset + 1;
@@ -43,7 +53,11 @@ export const linePath = (series: readonly number[], box: ChartBox, frame: Series
     return `M ${format(points[0])} ${segments.join(" ")}`;
 };
 
-export const areaPath = (series: readonly number[], box: ChartBox, frame: SeriesFrame = frameOf(series)): string => {
+export const areaPath = (
+    series: readonly number[],
+    box: ChartBox,
+    frame: SeriesFrame = frameOf(series),
+): string => {
     const points = project(series, box, frame);
     const floor = box.height - box.pad;
     return `${linePath(series, box, frame)} L ${format([points[points.length - 1][0], floor])} L ${format([points[0][0], floor])} Z`;
@@ -55,11 +69,18 @@ export const bandPath = (
     box: ChartBox,
     frame: SeriesFrame,
 ): string => {
-    const edge = [...project(upper, box, frame), ...project(lower, box, frame).reverse()];
+    const edge = [
+        ...project(upper, box, frame),
+        ...project(lower, box, frame).reverse(),
+    ];
     return `M ${edge.map(format).join(" L ")} Z`;
 };
 
-export const lastPoint = (series: readonly number[], box: ChartBox, frame: SeriesFrame = frameOf(series)): Point => {
+export const lastPoint = (
+    series: readonly number[],
+    box: ChartBox,
+    frame: SeriesFrame = frameOf(series),
+): Point => {
     const points = project(series, box, frame);
     return points[points.length - 1];
 };

@@ -1,7 +1,11 @@
 "use client";
 import { Fragment } from "react";
 import { motion } from "motion/react";
-import { REVEAL_EASE, WORD_DURATION, WORD_STAGGER } from "@/lib/ledgerline/constants";
+import {
+    REVEAL_EASE,
+    WORD_DURATION,
+    WORD_STAGGER,
+} from "@/lib/ledgerline/constants";
 
 const TAGS = { h2: motion.h2, h3: motion.h3, p: motion.p } as const;
 
@@ -14,7 +18,10 @@ interface Props {
 
 const word = {
     hidden: { y: "110%" },
-    shown: { y: "0%", transition: { duration: WORD_DURATION, ease: REVEAL_EASE } },
+    shown: {
+        y: "0%",
+        transition: { duration: WORD_DURATION, ease: REVEAL_EASE },
+    },
 };
 
 export default function RevealWords({ text, as = "h2", id, className }: Props) {
@@ -31,8 +38,8 @@ export default function RevealWords({ text, as = "h2", id, className }: Props) {
         >
             {text.split(" ").map((part, index) => (
                 <Fragment key={`${part}-${index}`}>
-                    <span className="word-mask">
-                        <motion.span className="word" variants={word}>
+                    <span className="-mb-[0.1em] inline-block overflow-hidden pb-[0.1em] align-top">
+                        <motion.span className="inline-block" variants={word}>
                             {part}
                         </motion.span>
                     </span>{" "}

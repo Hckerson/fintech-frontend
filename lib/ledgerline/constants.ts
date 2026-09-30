@@ -68,7 +68,15 @@ export const CHART = { width: 640, height: 220, pad: 8 } as const;
 
 export const CHART_GRIDLINES = [0.25, 0.5, 0.75] as const;
 
-export const RULE_CHART = { width: 1200, height: 40, pad: 4 } as const;
+export const FOOTER_CHART = { width: 320, height: 72, pad: 4 } as const;
+
+export const RULE_CHART = { width: 2400, height: 80, pad: 8 } as const;
+
+export const AUTH_CHART = { width: 1440, height: 640, pad: 64 } as const;
+
+export const STATUS_CHART = { width: 2400, height: 480, pad: 32 } as const;
+
+export const STATUS_BREAK_AT = 17;
 
 export const FORECAST_CHART = { width: 720, height: 260, pad: 12 } as const;
 

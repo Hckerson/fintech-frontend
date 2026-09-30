@@ -10,6 +10,7 @@ export interface ChartBox {
     width: number;
     height: number;
     pad: number;
+    padX?: number;
 }
 
 export interface NavLink {

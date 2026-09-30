@@ -22,7 +22,7 @@ export default function LedgerNav() {
     );
 
     return (
-        <header className="ledger-pill z-(--z-indices-fixed)">
+        <header className="fixed top-(--ledger-pill-offset) left-1/2 z-(--z-indices-fixed) w-[min(100%-2*var(--ledger-gutter),var(--ledger-pill-width))] -translate-x-1/2">
             <div
                 className={clsx(
                     "border transition-[background-color,border-color,box-shadow,border-radius] duration-500",
@@ -32,7 +32,7 @@ export default function LedgerNav() {
                         : "border-border bg-background/60",
                 )}
             >
-                <div className="ledger-nav-bar flex items-center gap-6 pr-2 pl-5">
+                <div className="flex h-(--ledger-nav) items-center gap-6 pr-2 pl-5">
                     <LedgerLogo />
                     <nav
                         aria-label={LEDGER_BRAND.menu.primary}

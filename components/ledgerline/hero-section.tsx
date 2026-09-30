@@ -48,7 +48,7 @@ export default function HeroSection() {
         >
             <motion.div
                 aria-hidden
-                className="hero-glow"
+                className="pointer-events-none absolute inset-x-0 top-[30%] h-[80%] bg-[radial-gradient(55%_50%_at_50%_45%,var(--ledger-glow),transparent_72%)]"
                 style={{ opacity: glowOpacity }}
             />
             <div className="ledger-shell relative pt-16 lg:pt-24">
@@ -63,7 +63,7 @@ export default function HeroSection() {
                         >
                             <span
                                 aria-hidden
-                                className="live-dot bg-accent size-1.5 rounded-full"
+                                className="animate-ledger-pulse bg-accent size-1.5 rounded-full motion-reduce:animate-none"
                             />
                             {LEDGER_HERO.badge} · {LEDGER_HERO.badgeDetail}
                         </motion.p>

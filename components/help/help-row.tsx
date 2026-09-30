@@ -24,7 +24,10 @@ export default function HelpRow({ article }: Props) {
                         {article.summary}
                     </span>
                 </span>
-                <span aria-hidden className="leader mx-4" />
+                <span
+                    aria-hidden
+                    className="border-border-dark mx-4 min-w-6 flex-1 border-b border-dotted"
+                />
                 <span className="text-text-muted flex shrink-0 items-center gap-2 font-mono text-xs">
                     {readMinutes(article)} {HELP_COPY.minutes}
                     <ArrowRight

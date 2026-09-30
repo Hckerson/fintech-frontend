@@ -11,36 +11,60 @@ const SPENT_SHARE = CARDS_COPY.spentMinor / CARDS_COPY.limitMinor;
 export default function MetalCard() {
     return (
         <div className="flex flex-col gap-6">
-            <div className="metal-card sheen mx-auto w-full max-w-md rounded-2xl p-7 text-text">
+            <div className="sheen text-text relative mx-auto aspect-[1.586] w-full max-w-md overflow-hidden rounded-2xl bg-linear-145 from-(--ledger-card-top) to-(--ledger-card-bottom) p-7 shadow-(--ledger-frame-shadow)">
                 <div className="relative flex h-full flex-col justify-between">
                     <div className="flex items-start justify-between">
-                        <span className="text-lg font-semibold tracking-tight">{LEDGER_BRAND.name}</span>
-                        <span aria-hidden className="h-8 w-11 rounded-md bg-linear-to-br from-accent to-accent-dark opacity-90" />
+                        <span className="text-lg font-semibold tracking-tight">
+                            {LEDGER_BRAND.name}
+                        </span>
+                        <span
+                            aria-hidden
+                            className="from-accent to-accent-dark h-8 w-11 rounded-md bg-linear-to-br opacity-90"
+                        />
                     </div>
                     <div className="flex items-end justify-between">
                         <div className="flex flex-col gap-1">
-                            <span className="text-sm text-text-secondary">{CARDS_COPY.holder}</span>
-                            <span className="font-mono text-sm tracking-widest text-text-secondary">{CARDS_COPY.number}</span>
+                            <span className="text-text-secondary text-sm">
+                                {CARDS_COPY.holder}
+                            </span>
+                            <span className="text-text-secondary font-mono text-sm tracking-widest">
+                                {CARDS_COPY.number}
+                            </span>
                         </div>
-                        <LedgerGlyph className="size-7 text-accent" />
+                        <LedgerGlyph className="text-accent size-7" />
                     </div>
                 </div>
             </div>
             <div className="surface-card mx-auto flex w-full max-w-md flex-col gap-3 p-5">
                 <div className="flex items-baseline justify-between text-sm">
-                    <span className="text-text-muted">{CARDS_COPY.spendLabel}</span>
-                    <span className="tabular-nums text-text">
-                        {formatMoney(CARDS_COPY.spentMinor, CARDS_COPY.currency)}
-                        <span className="text-text-muted"> / {formatMoney(CARDS_COPY.limitMinor, CARDS_COPY.currency)}</span>
+                    <span className="text-text-muted">
+                        {CARDS_COPY.spendLabel}
+                    </span>
+                    <span className="text-text tabular-nums">
+                        {formatMoney(
+                            CARDS_COPY.spentMinor,
+                            CARDS_COPY.currency,
+                        )}
+                        <span className="text-text-muted">
+                            {" "}
+                            /{" "}
+                            {formatMoney(
+                                CARDS_COPY.limitMinor,
+                                CARDS_COPY.currency,
+                            )}
+                        </span>
                     </span>
                 </div>
-                <div className="h-1.5 overflow-hidden rounded-full bg-background-muted">
+                <div className="bg-background-muted h-1.5 overflow-hidden rounded-full">
                     <motion.div
-                        className="h-full origin-left rounded-full bg-accent"
+                        className="bg-accent h-full origin-left rounded-full"
                         initial={{ scaleX: 0 }}
                         whileInView={{ scaleX: SPENT_SHARE }}
                         viewport={{ once: true }}
-                        transition={{ duration: LINE_DRAW_SECONDS, ease: REVEAL_EASE }}
+                        transition={{
+                            duration: LINE_DRAW_SECONDS,
+                            ease: REVEAL_EASE,
+                        }}
                     />
                 </div>
             </div>
