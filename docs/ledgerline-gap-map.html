@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ledgerline Gap Map</title>
+<style>
+:root {
+  --bg: #f6f7f9; --panel: #ffffff; --ink: #14171c; --muted: #5d6573; --line: #e2e5ea;
+  --ok: #1f8a5b; --ok-bg: #e3f4ec; --diff: #b7700f; --diff-bg: #fbf0dc; --stale: #3b63c4; --stale-bg: #e5ecfb;
+  --none: #8a919e; --none-bg: #eef0f3; --defer: #7a5cc4; --defer-bg: #efe9fb; --gap: #c0392b; --gap-bg: #fbe7e5;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1116; --panel: #161a21; --ink: #e9ecf1; --muted: #9aa3b2; --line: #262c36;
+    --ok: #5fd39a; --ok-bg: #16362a; --diff: #f0b35a; --diff-bg: #3a2c14; --stale: #8fb0ff; --stale-bg: #1c2744;
+    --none: #8b93a1; --none-bg: #20252e; --defer: #b9a2ff; --defer-bg: #2a2342; --gap: #ff8a7d; --gap-bg: #3d1e1b;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 1120px; margin: 0 auto; padding: 40px 16px 80px; }
+h1 { font-size: 28px; margin: 0 0 6px; letter-spacing: -0.02em; }
+h2 { font-size: 19px; margin: 48px 0 6px; }
+h3 { font-size: 15px; margin: 22px 0 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+p.lead { color: var(--muted); margin: 0 0 24px; max-width: 70ch; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+.stat { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+.stat b { display: block; font-size: 30px; letter-spacing: -0.03em; }
+.stat span { color: var(--muted); font-size: 13px; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 0; }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.chip::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.ok { color: var(--ok); background: var(--ok-bg); }
+.diff { color: var(--diff); background: var(--diff-bg); }
+.stale { color: var(--stale); background: var(--stale-bg); }
+.none { color: var(--none); background: var(--none-bg); }
+.defer { color: var(--defer); background: var(--defer-bg); }
+.gap { color: var(--gap); background: var(--gap-bg); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+.tile { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
+.tile.is-built { border-width: 2px; }
+.tile .id { font: 600 12px ui-monospace, monospace; color: var(--muted); }
+.tile .name { font-weight: 600; }
+.tile .route { font: 12px ui-monospace, monospace; color: var(--muted); word-break: break-all; }
+.tile .note { font-size: 12.5px; color: var(--muted); }
+table { width: 100%; border-collapse: collapse; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); background: var(--bg); }
+tr:last-child td { border-bottom: 0; }
+td.n { font: 600 12px ui-monospace, monospace; color: var(--muted); width: 36px; }
+.wrap { overflow-x: auto; }
+ul.fixes { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px 16px 16px 36px; margin: 0; }
+ul.fixes li { margin: 6px 0; }
+code { font: 13px ui-monospace, monospace; }
+footer { margin-top: 48px; color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+<main>
+<h1>Ledgerline: what the docs say vs what is built</h1>
+<p class="lead">Every page the design OS specifies (<code>design-os/generated/phase-4-page-blueprints.md</code>), checked against the code on <code>development</code> as of 2026-09-30. The status the docs record comes from Phase 8.</p>
+
+<div class="stats">
+  <div class="stat"><b>35</b><span>pages specified</span></div>
+  <div class="stat"><b>5</b><span>pages built in the code</span></div>
+  <div class="stat"><b>2</b><span>pages the docs think are built</span></div>
+  <div class="stat"><b>28</b><span>specified, not built yet</span></div>
+  <div class="stat"><b>2</b><span>deferred on purpose (payments)</span></div>
+</div>
+
+<div class="legend">
+  <span class="chip ok">Built, matches the spec</span>
+  <span class="chip diff">Built, differs from the spec</span>
+  <span class="chip stale">Built, docs don't know yet</span>
+  <span class="chip none">Specified, not built</span>
+  <span class="chip defer">Deferred</span>
+</div>
+
+<h2>All 35 pages</h2>
+
+<h3>Marketing &amp; public</h3>
+<div class="grid">
+  <div class="tile is-built"><span class="id">P01</span><span class="name">Home</span><span class="route">/</span><span class="chip diff">Built, differs</span><span class="note">Sells more than v1 offers; buttons skip sign-up and sign-in. See the breakdown below.</span></div>
+  <div class="tile is-built"><span class="id">P28</span><span class="name">Help center</span><span class="route">/help, /help/[slug]</span><span class="chip stale">Built, docs say not built</span><span class="note">Matches the spec except legal links and the signed-in support route.</span></div>
+</div>
+
+<h3>Authentication</h3>
+<div class="grid">
+  <div class="tile is-built"><span class="id">P02</span><span class="name">Sign in</span><span class="route">/auth/login</span><span class="chip diff">Built, differs</span><span class="note">Rebuilt as a Ledgerline page in <code>app/(auth)</code>, defects H-01 to H-05 and H-16 fixed. Differs only where pages are missing: Forgot password opens a help article, Get started opens the enquiry form.</span></div>
+  <div class="tile"><span class="id">P03</span><span class="name">Register</span><span class="route">/auth/register</span><span class="chip none">Not built</span></div>
+  <div class="tile"><span class="id">P04</span><span class="name">Forgot password</span><span class="route">/auth/forgot-password</span><span class="chip none">Not built</span></div>
+  <div class="tile"><span class="id">P05</span><span class="name">Reset password</span><span class="route">/auth/reset-password</span><span class="chip none">Not built</span></div>
+  <div class="tile"><span class="id">P06</span><span class="name">Two-step verification</span><span class="route">/auth/verify</span><span class="chip none">Not built</span></div>
+</div>
+
+<h3>Workspace app</h3>
+<div class="grid">
+  <div class="tile"><span class="id">P07</span><span class="name">Onboarding &amp; verification</span><span class="route">/onboarding</span><span class="chip none">Not built</span></div>
+  <div class="tile"><span class="id">P08</span><span class="name">Dashboard</span><span class="route">/dashboard</span><span class="chip none">Not built</span><span class="note">The route is protected but has no page.</span></div>
+  <div class="tile"><span class="id">P09</span><span class="name">Accounts</span><span class="route">/accounts</span><span class="chip none">Not built</span></div>
+  <div class="tile"><span class="id">P10</span><span class="name">Account ledger</span><span class="route">/accounts/[accountId]</span><span class="chip none">Not built</span></div>
+  <div class="tile"><span class="id">P11</span><span class="name">Transaction search</span><span class="route">/transactions</span><span class="chip none">Not built</span></div>
+  <div class="tile"><span class="id">P12</span><span class="name">Transaction detail</span><span class="route">/transactions/[transactionId]</span><span class="chip none">Not built</span></div>
+  <div class="tile"><span class="id">P13</span><span class="name">Saved views</span><span class="route">/transactions/views</span><span class="chip none">Not built</span></div>
+  <div class="tile"><span class="id">P14</span><span class="name">Flagged transactions</span><span class="route">/transactions/flagged</span><span class="chip none">Not built</span></div>
+  <div class="tile"><span class="id">P15</span><span class="name">Compare periods</span><span class="route">/insights/compare</span><span class="chip none">Not built</span></div>
+  <div class="tile"><span class="id">P16</span><span class="name">Runway calculator</span><span class="route">/insights/runway</span><span class="chip none">Not built</span></div>
+  <div class="tile"><span class="id">P17</span><span class="name">Statements</span><span class="route">/statements</span><span class="chip none">Not built</span></div>
+  <div class="tile"><span class="id">P18</span><span class="name">Exports</span><span class="route">/exports</span><span class="chip none">Not built</span></div>
+  <div class="tile"><span class="id">P19</span><span class="name">Counterparty</span><span class="route">/counterparties/[id]</span><span class="chip none">Not built</span></div>
+  <div class="tile"><span class="id">P20</span><span class="name">Notifications</span><span class="route">/notifications</span><span class="chip none">Not built</span></div>
+  <div class="tile"><span class="id">P21</span><span class="name">Messages</span><span class="route">/messages</span><span class="chip none">Not built</span></div>
+  <div class="tile"><span class="id">P22</span><span class="name">Workspace settings</span><span class="route">/settings</span><span class="chip none">Not built</span></div>
+  <div class="tile"><span class="id">P23</span><span class="name">Team</span><span class="route">/settings/team</span><span class="chip none">Not built</span></div>
+  <div class="tile"><span class="id">P24</span><span class="name">Team member profile</span><span class="route">/settings/team/[memberId]</span><span class="chip none">Not built</span></div>
+  <div class="tile"><span class="id">P25</span><span class="name">Profile &amp; security</span><span class="route">/settings/profile</span><span class="chip none">Not built</span></div>
+</div>
+
+<h3>Payments</h3>
+<div class="grid">
+  <div class="tile"><span class="id">P26</span><span class="name">Transfer</span><span class="route">/payments/transfer</span><span class="chip defer">Deferred</span><span class="note">v1 is read-only (OD3). The home page advertises this anyway (OD9).</span></div>
+  <div class="tile"><span class="id">P27</span><span class="name">Payees &amp; bill pay</span><span class="route">/payments</span><span class="chip defer">Deferred</span></div>
+</div>
+
+<h3>Internal (admin)</h3>
+<div class="grid">
+  <div class="tile"><span class="id">P29</span><span class="name">Admin overview</span><span class="route">/admin</span><span class="chip none">Not built</span></div>
+  <div class="tile"><span class="id">P30</span><span class="name">Admin users</span><span class="route">/admin/users</span><span class="chip none">Not built</span></div>
+  <div class="tile"><span class="id">P31</span><span class="name">Admin user detail</span><span class="route">/admin/users/[userId]</span><span class="chip none">Not built</span></div>
+  <div class="tile"><span class="id">P32</span><span class="name">Compliance queue</span><span class="route">/admin/compliance</span><span class="chip none">Not built</span></div>
+  <div class="tile"><span class="id">P33</span><span class="name">Support console</span><span class="route">/admin/support</span><span class="chip none">Not built</span></div>
+</div>
+
+<h3>System</h3>
+<div class="grid">
+  <div class="tile is-built"><span class="id">P34</span><span class="name">Not found (404)</span><span class="route">app/not-found.tsx</span><span class="chip stale">Built, docs say not built</span><span class="note">Matches the spec.</span></div>
+  <div class="tile is-built"><span class="id">P35</span><span class="name">Server error (500)</span><span class="route">app/error.tsx, app/global-error.tsx</span><span class="chip stale">Built, docs say not built</span><span class="note">Matches the spec, including retry, reference code, offline and second-failure states.</span></div>
+</div>
+
+<h2>Home page (P01): line by line</h2>
+<p class="lead">What the spec says the page must show, in priority order, against what is on the page.</p>
+<div class="wrap"><table>
+  <thead><tr><th>#</th><th>The spec asks for</th><th>What is built</th><th>Status</th></tr></thead>
+  <tbody>
+    <tr><td class="n">1</td><td>What Ledgerline is and who it is for, one start action, one sign-in action</td><td>"Your cash, in one line." with Open an account and Book a demo. Both go to the enquiry form, not sign-up or sign-in.</td><td><span class="chip diff">Differs (OD10)</span></td></tr>
+    <tr><td class="n">2</td><td>Navigation to the page's topics and the start actions</td><td>Nav bar with section links and Open an account.</td><td><span class="chip ok">Matches</span></td></tr>
+    <tr><td class="n">3</td><td>The four v1 capabilities: see balances, search transactions, statements &amp; exports, team access</td><td>Five different ones: multi-currency accounts, payments with approvals, cards, treasury forecast, reconciliation. Search, statements and team are never mentioned.</td><td><span class="chip diff">Differs (OD9)</span></td></tr>
+    <tr><td class="n">4</td><td>Headline figures, only if true</td><td>Four sample figures, labelled as samples.</td><td><span class="chip diff">Differs (OD9)</span></td></tr>
+    <tr><td class="n">5</td><td>How accounts are protected, only behaviour that exists</td><td>Six security controls, labelled as placeholders.</td><td><span class="chip diff">Differs (OD9)</span></td></tr>
+    <tr><td class="n">6</td><td>Price, if offered</td><td>Three sample plans.</td><td><span class="chip diff">Differs (OD9)</span></td></tr>
+    <tr><td class="n">7</td><td>Common questions, including whether Ledgerline is a real bank</td><td>FAQ with "Is Ledgerline a real bank? No."</td><td><span class="chip ok">Matches</span></td></tr>
+    <tr><td class="n">8</td><td>A way to start: enquiry and/or registration</td><td>Enquiry email form (sends nothing). No registration.</td><td><span class="chip diff">Partial (OD10)</span></td></tr>
+    <tr><td class="n">9</td><td>Legal, disclosure and support links</td><td>Disclosure and help links are there. No privacy or terms links.</td><td><span class="chip gap">Partial: no legal links</span></td></tr>
+  </tbody>
+</table></div>
+
+<h2>Help center (P28): line by line</h2>
+<div class="wrap"><table>
+  <thead><tr><th>#</th><th>The spec asks for</th><th>What is built</th><th>Status</th></tr></thead>
+  <tbody>
+    <tr><td class="n">1</td><td>Search over articles; on an article, its answer</td><td>Search, article pages with breadcrumbs and related articles.</td><td><span class="chip ok">Matches</span></td></tr>
+    <tr><td class="n">2</td><td>Categories to browse</td><td>Category filter.</td><td><span class="chip ok">Matches</span></td></tr>
+    <tr><td class="n">3</td><td>A route to a person: Message support when signed in, sign-in for visitors</td><td>Sign-in link for everyone. There is no signed-in state or Messages page yet.</td><td><span class="chip diff">Partial</span></td></tr>
+    <tr><td class="n">4</td><td>Legal and support links</td><td>Support links in the footer. No privacy or terms links.</td><td><span class="chip gap">Partial: no legal links</span></td></tr>
+    <tr><td class="n">·</td><td>Search term kept in the URL (<code>?q=</code>)</td><td>Yes.</td><td><span class="chip ok">Matches</span></td></tr>
+    <tr><td class="n">·</td><td>No results: "No articles match" with a way to get help</td><td>Empty state linking to sign-in.</td><td><span class="chip ok">Matches</span></td></tr>
+    <tr><td class="n">·</td><td>Unknown article shows the 404</td><td>Yes.</td><td><span class="chip ok">Matches</span></td></tr>
+  </tbody>
+</table></div>
+
+<h2>Not found (P34): line by line</h2>
+<div class="wrap"><table>
+  <thead><tr><th>#</th><th>The spec asks for</th><th>What is built</th><th>Status</th></tr></thead>
+  <tbody>
+    <tr><td class="n">1</td><td>A plain statement that the page does not exist</td><td>Yes.</td><td><span class="chip ok">Matches</span></td></tr>
+    <tr><td class="n">2</td><td>One way forward (dashboard if signed in, home otherwise)</td><td>Back to home. There is no signed-in state yet, so no dashboard link.</td><td><span class="chip ok">Matches for now</span></td></tr>
+    <tr><td class="n">3</td><td>A help link</td><td>Yes.</td><td><span class="chip ok">Matches</span></td></tr>
+  </tbody>
+</table></div>
+
+<h2>Sign in (P02): line by line</h2>
+<div class="wrap"><table>
+  <thead><tr><th>#</th><th>The spec asks for</th><th>What is built</th><th>Status</th></tr></thead>
+  <tbody>
+    <tr><td class="n">1</td><td>Email and password with one submit action</td><td>Work email and password, show/hide toggle, one Sign in button.</td><td><span class="chip ok">Matches</span></td></tr>
+    <tr><td class="n">2</td><td>The error stated without saying which field was wrong, focus moved to it, announced politely</td><td>Separate messages for bad input, wrong credentials, too many attempts and service down; focus moves to the message; polite live region.</td><td><span class="chip ok">Matches</span></td></tr>
+    <tr><td class="n">3</td><td>Links to Forgot password (P04) and Create account (P03)</td><td>Forgot password opens the "Signing in" help article; Get started opens the enquiry form. P03 and P04 are not built.</td><td><span class="chip diff">Differs (P03, P04, OD10)</span></td></tr>
+    <tr><td class="n">4</td><td>Help link</td><td>Help and Back to site under the form.</td><td><span class="chip ok">Matches</span></td></tr>
+    <tr><td class="n">·</td><td>Submit shows progress; fields read-only until the response</td><td>Yes.</td><td><span class="chip ok">Matches</span></td></tr>
+    <tr><td class="n">·</td><td>Autofill and password managers work (H-03, H-05)</td><td><code>useId</code> ids, <code>name</code> and <code>autoComplete</code> on both fields.</td><td><span class="chip ok">Matches</span></td></tr>
+    <tr><td class="n">·</td><td><code>?next=</code> cannot redirect off-site (H-16)</td><td><code>internalPath</code> resolves against a fixed origin, with tests.</td><td><span class="chip ok">Matches</span></td></tr>
+    <tr><td class="n">·</td><td>Success goes to <code>next</code>, or the dashboard (staff to admin)</td><td>Goes to <code>next</code>, else home. No dashboard or admin pages exist yet.</td><td><span class="chip ok">Matches for now</span></td></tr>
+  </tbody>
+</table></div>
+
+<h2>Server error (P35): line by line</h2>
+<div class="wrap"><table>
+  <thead><tr><th>#</th><th>The spec asks for</th><th>What is built</th><th>Status</th></tr></thead>
+  <tbody>
+    <tr><td class="n">1</td><td>Retry, with one sentence saying viewing failed and money was not affected</td><td>Try again (shows progress) and "Your money and records were not affected."</td><td><span class="chip ok">Matches</span></td></tr>
+    <tr><td class="n">2</td><td>The reference code (error digest)</td><td>Shown with a copy button when a digest exists.</td><td><span class="chip ok">Matches</span></td></tr>
+    <tr><td class="n">3</td><td>Support route (Messages signed in, Help otherwise)</td><td>Help link for everyone. No signed-in state or Messages page yet.</td><td><span class="chip ok">Matches for now</span></td></tr>
+    <tr><td class="n">·</td><td>Offline variant</td><td>"You're offline." when the browser has no connection.</td><td><span class="chip ok">Matches</span></td></tr>
+    <tr><td class="n">·</td><td>A second failure points more firmly at support</td><td>"Still not loading." with Get help promoted.</td><td><span class="chip ok">Matches</span></td></tr>
+    <tr><td class="n">·</td><td><code>global-error.tsx</code> renders its own page, no stack traces</td><td>Yes, plus a boundary inside the marketing layout.</td><td><span class="chip ok">Matches</span></td></tr>
+  </tbody>
+</table></div>
+
+<h2>Where the docs are out of date</h2>
+<ul class="fixes">
+  <li>P28 Help center, P34 Not found and P35 Server error are built, but Phase 8 still lists them as Specified.</li>
+  <li>P02 is recorded as the starter's login at <code>app/auth/login</code> with open defects; it is rebuilt at <code>app/(auth)/auth/login</code> with H-01 to H-05 and H-16 fixed.</li>
+  <li>Route groups (FD04) are complete: the home page is in <code>(marketing)</code>, sign-in in <code>(auth)</code>, and an <code>(admin)</code> layout exists.</li>
+  <li>The help center's sections S46 and S47, and S54 (used by the 404 and 500 pages), are built but not marked Built in Phase 5 or Phase 8.</li>
+  <li>Library decision LD1 (charts) is listed as pending, but <code>recharts</code> is now in <code>package.json</code>.</li>
+</ul>
+
+<h2>Where the build is missing something the spec asks for</h2>
+<ul class="fixes">
+  <li>Protected routes (FD06): only <code>/dashboard</code> is protected. The other twelve app prefixes, including <code>/admin</code>, are open to signed-out visitors, and the proxy has no admin role check (only the admin layout has one).</li>
+  <li>Register (P03) and Forgot password (P04), which sign-in links to.</li>
+  <li>Privacy and terms links on every public page (S07).</li>
+  <li>The home page's four v1 capabilities (S05), unless OD9 changes the scope.</li>
+  <li>Real sign-up and sign-in from the home page, unless OD10 settles on enquiry only.</li>
+</ul>
+
+<footer>Generated 2026-09-30 from <code>design-os/generated/</code> and the code on <code>development</code>. Checked by reading the code; the pages were not run.</footer>
+</main>
+</body>
+</html>

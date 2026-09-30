@@ -34,8 +34,8 @@ If you are the maintainer, answering these two unblocks the public page. If you 
 | [phase-1-product-vision.md](phase-1-product-vision.md) | Why Ledgerline exists, for whom, and the rules every later phase obeys |
 | [phase-2-experience-maps.md](phase-2-experience-maps.md) | F1–F7, D1–D7, X1–X11 journeys |
 | [phase-3-information-architecture.md](phase-3-information-architecture.md) | Navigation, routes, roles, labels, search, filters, SEO |
-| [phase-4-page-blueprints.md](phase-4-page-blueprints.md) | P01–P35 content requirements and device needs |
-| [phase-5-section-blueprints.md](phase-5-section-blueprints.md) | S01–S64 content, data, interaction and states |
+| [phase-4-page-blueprints.md](phase-4-page-blueprints.md) | P01–P35 user goals, states and device needs |
+| [phase-5-section-blueprints.md](phase-5-section-blueprints.md) | S01–S64 purpose, data, interaction and states |
 | [phase-6-interaction-contracts.md](phase-6-interaction-contracts.md) | C01–C68 behaviour: states, keyboard, ARIA, validation |
 | [phase-7-frontend-architecture.md](phase-7-frontend-architecture.md) | Where code goes and how data flows |
 | [phase-8-implementation-roadmap.md](phase-8-implementation-roadmap.md) | Sprints, milestones, risks, build status |

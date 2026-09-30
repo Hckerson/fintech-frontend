@@ -63,8 +63,8 @@ Read before coding. The session should open only the parts named for the work.
 | [Phase 1 — Product Vision](phase-1-product-vision.md) | Product purpose, personas, business rules BR1–BR12, permission matrix, product principles, non-goals, OD1–OD10 | Every rule here binds code; OD9/OD10 explain the home-page divergence |
 | [Phase 2 — Experience Maps](phase-2-experience-maps.md) | The flows the work serves (F, D, X) | Failure and recovery paths become states and tests |
 | [Phase 3 — Information Architecture](phase-3-information-architecture.md) | Sitemap, role navigation, §6 permissions, §8 labels, §11 filters, §13 breadcrumbs, §14–§16 routes and prefixes | Routes, labels and guards are fixed here |
-| [Phase 4 — Page Blueprints](phase-4-page-blueprints.md) | Conventions + the pages in scope | Content requirements in priority order, device needs, states |
-| [Phase 5 — Section Blueprints](phase-5-section-blueprints.md) | Section contract + the sections in scope | Content model, data, interaction, states |
+| [Phase 4 — Page Blueprints](phase-4-page-blueprints.md) | Conventions + the pages in scope | Primary tasks, permissions, device needs, states, sections depended on |
+| [Phase 5 — Section Blueprints](phase-5-section-blueprints.md) | Section contract + the sections in scope | Purpose, data, interaction, states |
 | [Phase 6 — Interaction Contracts](phase-6-interaction-contracts.md) | Inherited rules + the contracts in scope | Keyboard, ARIA, validation, loading, error behaviour |
 
 ## 3. Visual Design Hand-off
@@ -73,7 +73,7 @@ This design OS defines what each page must do, not how it looks. The look of eac
 
 How to apply it in this repository:
 
-1. **Inputs to the concept.** The page's Content requirements and Device needs ([Phase 4](phase-4-page-blueprints.md)), its sections' content models ([Phase 5](phase-5-section-blueprints.md)) and the contracts it uses ([Phase 6](phase-6-interaction-contracts.md)). These fix what must be there and in what priority; they do not fix arrangement or appearance.
+1. **Inputs to the concept.** The page's primary tasks, states and device needs ([Phase 4](phase-4-page-blueprints.md)), its sections' purpose and behaviour ([Phase 5](phase-5-section-blueprints.md)) and the contracts it uses ([Phase 6](phase-6-interaction-contracts.md)). These fix what users must get done and how the product behaves; they do not fix what the page contains, its arrangement or its appearance.
 2. **UI skills.** Use the skills the repo provides for UI work (for example `elegant-ui` for app screens; a register skill such as `cinematic-web` where the owner wants it for public pages). The skills govern how UI is written; the concept decides how this page looks.
 3. **Present, then wait.** Show the concept to the owner. Do not write page code until it is approved. Record the approval (date, page ID) in the PR.
 4. **Build to the approved concept** and to the requirements. If the two conflict, stop and ask; do not drop a requirement to fit a concept.
@@ -220,7 +220,7 @@ Build C18, C20, C29 in Sprint 1; C11, C41, C45, C52 in Sprint 2; base C05, C07, 
 
 - **Build:** FD04 route groups (move P01/P02 only after the owner commits), FD06 prefixes + admin guard, FD11 host fixes, FD12 CI, FD03 only if a colour-scheme preference is offered; P34, P35; S01, S02, S03, S54; contracts in [SETUP §8](SETUP-CHECKLIST.md#8-interaction-contract-bootstrap); `use-me`, `use-workspace`.
 - **Request:** LD1–LD5, OD4, OD9, OD10.
-- **Exit:** signed-out requests to every protected prefix redirect; `USER` cannot open `/admin`; P34/P35 render in each shell; host S1 findings closed.
+- **Exit:** signed-out requests to every protected prefix redirect; `USER` cannot open `/admin`; P34/P35 render within each group layout; host S1 findings closed.
 
 ### 6.4 Sprint 2 — Auth and first real-data slice (weeks 3–4)
 
@@ -234,8 +234,8 @@ Build C18, C20, C29 in Sprint 1; C11, C41, C45, C52 in Sprint 2; base C05, C07, 
 
 ### 6.6 Sprint 4 — Transactions (weeks 7–8)
 
-- **Build:** P11–P14 (P12 page + overlay); S24–S27; C28, C38, C49, C60.
-- **Exit:** ⌘K everywhere; overlay returns focus to the row; optimistic annotations roll back.
+- **Build:** P11–P14 (P12 page + intercepted route); S24–S27; C28, C38, C49, C60.
+- **Exit:** ⌘K everywhere; closing P12 opened from a list returns focus to the originating transaction; optimistic annotations roll back.
 
 ### 6.7 Sprint 5 — Dashboard and documents (weeks 9–10)
 
@@ -266,7 +266,7 @@ F6, F7, P26, P27, S44, S45 stay fully specified and unbuilt until OD3 is answere
 
 | M | End of | Done when |
 |---|---|---|
-| M1 | Sprint 1 | Shell, guards, P34/P35, host S1 fixes, requests sent |
+| M1 | Sprint 1 | Layouts, guards, P34/P35, host S1 fixes, requests sent |
 | M2 | Sprint 2 | Admin slice on real data; P03; sign-out; expiry |
 | M3 | Sprint 4 | F2, F3 end to end; 5M budget |
 | M4 | Sprint 6 | F1, F4, F5, X6, D1–D6 |
@@ -444,8 +444,8 @@ See [Phase 4 › Reference page](phase-4-page-blueprints.md#reference-page). A p
 - Route: segment `loading.tsx`.
 - Section: its placeholder reserving final space, shown after `LOADING_DELAY_MS`.
 - Refetch: keep data, mark busy (`aria-busy`), no placeholder flash.
-- Pagination: C25 in place; next-page placeholders appended.
-- Actions: C17 inside the acting control.
+- Pagination: C25; loading more never moves what the user has already read.
+- Actions: C17 on the acting control, which is marked busy.
 
 ### 8.8 Empty states
 
@@ -469,7 +469,7 @@ See [Phase 4 › Reference page](phase-4-page-blueprints.md#reference-page). A p
 
 ### 9.3 End-to-end scenarios (LD4)
 
-X1 sign in (and failure messages) · X2 register → P07 · X3 sign out (Back shows no balances) · X4 expiry keeps a draft note · F1 dashboard per role · F2 filter, share URL, reopen · F3 search → overlay → annotate → return focus · F4 export queued → ready → download · F5 case round-trip with P32 · X6 invite and role change · X7 notification to subject · X10 offline and 500 recovery · X11 enquiry validation · public page: sign-in route per OD10.
+X1 sign in (and failure messages) · X2 register → P07 · X3 sign out (Back shows no balances) · X4 expiry keeps a draft note · F1 dashboard per role · F2 filter, share URL, reopen · F3 search → open over the list → annotate → return focus · F4 export queued → ready → download · F5 case round-trip with P32 · X6 invite and role change · X7 notification to subject · X10 offline and 500 recovery · X11 enquiry validation · public page: sign-in route per OD10.
 
 ### 9.4 Accessibility testing
 

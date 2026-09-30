@@ -71,9 +71,9 @@ Each phase entry gives a long description, who needs it, when to open it, what i
 
 **File:** [phase-4-page-blueprints.md](phase-4-page-blueprints.md)
 
-**Description.** One blueprint per page, P01–P35: purpose, business and user objectives, tasks, content requirements in priority order (information and actions, never layout), required data, permissions, device needs, loading/empty/error/success states, actions, dependencies and implementation notes. Conventions cover route groups, segment files, composition, metadata, enforcement and a reference page. P01 lists both the specified and the built sections and names the OD9/OD10 divergences.
+**Description.** One blueprint per page, P01–P35: purpose, business and user objectives, primary tasks as user goals, required data, permissions, device needs, loading/empty/error/success states, dependencies (including the sections each page uses) and implementation notes. Conventions cover route groups, segment files, composition, metadata, enforcement and a reference page. P01 lists both the specified and the built sections and names the OD9/OD10 divergences.
 
-**Who needs it.** Everyone building or reviewing a page — including the visual concept, which starts from the content priorities here.
+**Who needs it.** Everyone building or reviewing a page — including the visual concept, which starts from the user goals and priorities here.
 
 **When to reference it.** At the start of every page.
 
@@ -85,9 +85,9 @@ Each phase entry gives a long description, who needs it, when to open it, what i
 
 **File:** [phase-5-section-blueprints.md](phase-5-section-blueprints.md)
 
-**Description.** Sixty-four sections, each doing one job: the four-state rule, shared data conventions (money, query keys, stale tiers, cursors, URL filters), the accessibility floor, and per section its content model with primary information first, data requirements, interaction model, controls (contract IDs), device needs, accessibility, states, reuse and technical notes. The ten built public-page sections are recorded as found with their open-decision facets.
+**Description.** Sixty-four sections, each doing one job: the four-state rule, shared data conventions (money, query keys, stale tiers, cursors, URL filters), the accessibility floor, and per section its purpose, responsibilities, data requirements, interaction model, contract IDs, device needs, accessibility, states, reuse and technical notes. The ten built public-page sections are recorded as found with their open-decision facets.
 
-**Who needs it.** Engineers and QA daily; designers for content per section.
+**Who needs it.** Engineers and QA daily; designers for what each section is for and how it behaves.
 
 **When to reference it.** Building or testing any section.
 
@@ -182,8 +182,8 @@ Each phase entry gives a long description, who needs it, when to open it, what i
 | 1 | vision, persona, JTBD, business rule, minor units, masking, invitation, KPI, North Star, non-goal, open decision, OD9, OD10 |
 | 2 | journey, flow, failure path, recovery, dashboard, step-up, session expiry, enquiry, dependency |
 | 3 | navigation, sitemap, route group, role, capability, permission, label, severity, search, filter, URL, SEO, breadcrumb, 404 |
-| 4 | page, content requirements, priority, device needs, state ladder, reference page, metadata, role variant |
-| 5 | section, four-state, content model, query key, stale time, cursor, empty state, public site |
+| 4 | page, primary tasks, priority, device needs, state ladder, reference page, metadata, role variant |
+| 5 | section, four-state, purpose, query key, stale time, cursor, empty state, public site |
 | 6 | contract, keyboard, ARIA, focus, validation, Amount, MaskedAccountNumber, CommandPalette, DataTable, PermissionGate |
 | 7 | folder, route, layout, provider, hook, action, contract flow, lint, library, performance, security, template |
 | 8 | sprint, milestone, risk, dependency, backend module, register, status, Deferred, ledger |

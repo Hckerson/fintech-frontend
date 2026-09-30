@@ -33,8 +33,8 @@ Today: 32 register rows Built (mostly the home page, still uncommitted in the wo
 | 1 | [phase-1-product-vision.md](phase-1-product-vision.md) | Why Ledgerline exists and for whom: personas R1–R8, JTBD, business rules BR1–BR12 (money as minor-unit strings, masked account numbers, invitation for non-owners), metrics and North Star, product principles, non-goals, open decisions OD1–OD10. |
 | 2 | [phase-2-experience-maps.md](phase-2-experience-maps.md) | Every journey as intent → journey → failures → recoveries → system behaviour → dependencies: F1–F7, D1–D7, X1–X11. |
 | 3 | [phase-3-information-architecture.md](phase-3-information-architecture.md) | Two shells, sitemap and page index, role navigation, capability matrix and enforcement layers, taxonomy, labels, cross-links, search, filter schema, SEO, breadcrumbs, empty and fallback routes, protected prefixes. |
-| 4 | [phase-4-page-blueprints.md](phase-4-page-blueprints.md) | P01–P35 with content requirements in priority order and device needs; conventions for groups, segment files, composition, metadata, permissions and states; D1–D4 role variants. |
-| 5 | [phase-5-section-blueprints.md](phase-5-section-blueprints.md) | S01–S64 with content model, data, interaction, controls, device needs, accessibility and four states; the section contract; the ten built public-page sections. |
+| 4 | [phase-4-page-blueprints.md](phase-4-page-blueprints.md) | P01–P35 with purpose, objectives, primary tasks as user goals, data, permissions, device needs, states and the sections each page depends on; conventions for groups, segment files, composition, metadata, permissions and states; D1–D4 role variants. |
+| 5 | [phase-5-section-blueprints.md](phase-5-section-blueprints.md) | S01–S64 with purpose, responsibilities, data, interaction, device needs, accessibility and four states; the section contract; the ten built public-page sections. |
 | 6 | [phase-6-interaction-contracts.md](phase-6-interaction-contracts.md) | C01–C68 behaviour contracts: inputs, states, keyboard, ARIA, validation, loading, error, content rules, do/don't. |
 | 7 | [phase-7-frontend-architecture.md](phase-7-frontend-architecture.md) | Folder and route structure, layouts, providers, feature folders, hook inventory and query keys, utilities, constants, API flow, component layers, libraries, splitting, performance, security, observability, templates. |
 | 8 | [phase-8-implementation-roadmap.md](phase-8-implementation-roadmap.md) | Eight sprints, five milestones, backend and library dependencies, risks R-1–R-11, testing, deployment, the build-status register and the scope-preservation ledger. |
@@ -95,7 +95,7 @@ Use it as the table of contents for the whole set. To find a thing by ID:
 | Phase 2 | Phase 5 | failure and recovery paths → section states |
 | Phase 3 | Phase 4 | routes, groups, SEO, breadcrumbs, empty routes |
 | Phase 3 | Phase 6 | labels, search, filter schema → C12, C38, C46–C48 |
-| Phase 4 | Phase 5 | content requirements → sections |
+| Phase 4 | Phase 5 | page dependencies → sections |
 | Phase 5 | Phase 6 | "Contracts" per section → C IDs |
 | Phases 4–6 | Phase 7 | pages → routes; sections → feature folders and hooks; contracts → component layers |
 | Phases 2–7 | Phase 8 | every item → register row and sprint |
@@ -146,8 +146,9 @@ R8 Prospect; X11 Get-started enquiry; S55–S64 (public navigation, headline fig
 - Layouts: named layout classes (`.app-shell`, `.page-stack`, `.band-grid`, `.split-view`, `.form-column`, `.auth-frame`, `.context-rail`, …), the responsive frame table, "left to right", "focal" placement, sidebar/top-bar/hero/band/strip wording; phone navigation pattern.
 - Visual "feel" references (Linear, Vercel).
 - Withdrawn IDs: DP3, DP4, DP5, DP13, OD7, A7, PA2, A13, A14, P7-A7 (was P8-A7), FD02, Q6-4, Q6-5; 23 QA items and 6 host findings retired as visual.
-- Renames: 22 sections and 19 contracts (tables in Phases 5 and 6); page "Modules" → Content requirements; "Responsive behavior" → Device needs; `tone` → `severity`.
+- Renames: 22 sections and 19 contracts (tables in Phases 5 and 6); page "Modules" → Content requirements (since removed, below); "Responsive behavior" → Device needs; `tone` → `severity`.
 - Status: 1.0.0 "Scheduled" rows → Specified with a planned sprint (no Sprint 1 start date yet); P01, S04, S06, S07 → Built.
+- Self-audit against the tightened No Visual Prescription rule (screen content): Phase 4 "Content requirements" and "Actions" removed from all 35 pages and Phase 5 "Content model" and "Controls" removed from all 64 sections, with genuine requirements (security, permission, confirmation, truthfulness, accessibility rules; data shapes; primary information; section mapping) moved into the fields the seed defines; Phase 4 "Primary tasks" rewritten as user goals; Phase 5 Technical notes stripped of component files; Phase 3 §4 Content hierarchy and navigation notes reduced to structure and reachability; placement and container wording (shell, overlay, badge, chip, row, inline, dialog, toast, header) rewritten as behaviour in Phases 2–5, Phase 8 and the implementation prompt. No page, section, contract, flow, state or open decision removed.
 
 ### Removed
 

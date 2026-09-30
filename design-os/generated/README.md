@@ -29,8 +29,8 @@ Version 2.0.0 is a **merge** over 1.0.0: everything specified before is retained
 | [phase-1-product-vision.md](phase-1-product-vision.md) | Vision, personas R1–R8, JTBD, business rules BR1–BR12, metrics, principles, non-goals, open decisions OD1–OD10 |
 | [phase-2-experience-maps.md](phase-2-experience-maps.md) | Journeys F1–F7, dashboards D1–D7, supporting flows X1–X11 with failures, recoveries, system behaviour and backend dependencies |
 | [phase-3-information-architecture.md](phase-3-information-architecture.md) | Navigation, sitemap, role navigation, capability matrix, taxonomy, labels, cross-links, search, filters and URL schema, SEO, breadcrumbs, fallbacks |
-| [phase-4-page-blueprints.md](phase-4-page-blueprints.md) | P01–P35: purpose, objectives, content requirements in priority, data, permissions, device needs, states, actions |
-| [phase-5-section-blueprints.md](phase-5-section-blueprints.md) | S01–S64: purpose, content model, data, interaction, controls, device needs, accessibility, states |
+| [phase-4-page-blueprints.md](phase-4-page-blueprints.md) | P01–P35: purpose, objectives, primary tasks, data, permissions, device needs, states, dependencies |
+| [phase-5-section-blueprints.md](phase-5-section-blueprints.md) | S01–S64: purpose, responsibilities, data, interaction, device needs, accessibility, states |
 | [phase-6-interaction-contracts.md](phase-6-interaction-contracts.md) | C01–C68: inputs, states, keyboard, ARIA, validation, loading, error, content rules |
 | [phase-7-frontend-architecture.md](phase-7-frontend-architecture.md) | Folders, routes, layouts, providers, hooks, API, libraries, performance, security, templates |
 | [phase-8-implementation-roadmap.md](phase-8-implementation-roadmap.md) | Eight sprints, milestones, dependencies, risks, testing, deployment, build-status register, scope ledger |
@@ -55,7 +55,7 @@ Start with [Phase 1](phase-1-product-vision.md). Your decisions are the open one
 
 ### Designers
 
-This design OS gives you requirements, not layouts. For each page, [Phase 4](phase-4-page-blueprints.md) lists what information and actions must be offered and in what priority, and what users on each device need; [Phase 5](phase-5-section-blueprints.md) gives each section's content and states; [Phase 6](phase-6-interaction-contracts.md) gives how every control behaves. The visual concept is yours to propose at build time and the owner's to approve.
+This design OS gives you requirements, not layouts. For each page, [Phase 4](phase-4-page-blueprints.md) says what users come to get done, what they are told in each state, and what users on each device need; [Phase 5](phase-5-section-blueprints.md) gives each section's purpose, behaviour and states; [Phase 6](phase-6-interaction-contracts.md) gives how every control behaves. The visual concept is yours to propose at build time and the owner's to approve.
 
 ### Engineers
 

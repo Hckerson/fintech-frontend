@@ -825,7 +825,7 @@ Domain-free (C01–C33). None imports a hook, contract type or domain copy; mean
 - **Keyboard / ARIA** — —.
 - **Interaction patterns** — never in `(app)`/`(admin)` data views (rows re-render on filter); reduced motion honoured via `MotionConfig reducedMotion="user"` (C61).
 - **Validation / Loading / Error** — —.
-- **Content rules** — never hides the page's primary information behind a reveal.
+- **Content rules** — never hides what the member came to the page for behind a reveal.
 - **Do** — play once. **Don't** — stagger list items that re-render.
 - **Dependencies** — motion. **Used by** — P01. **Built** — `components/wrappers/motion-wrapper.tsx` (host).
 

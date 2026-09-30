@@ -83,12 +83,12 @@ Conventions used in every map:
 - **Trigger:** start of day; a customer says they paid; a payroll date approaches; a low-balance alert (X7).
 - **Entry points:** sign-in redirect to P08 Dashboard `/dashboard`; S01 Primary navigation; C38 CommandPalette "Dashboard"; X7 alert link.
 - **Journey:**
-  1. P08 loads the shell (S01 Primary navigation, S02 Global utilities) and S03 Page title & actions with the workspace name.
-  2. S14 Cash position shows total cash per currency (one primary figure per currency) with C41 DeltaChip for today's net movement.
-  3. S15 Account summary lists each account with balance, C12 Status label for non-`active` states, and a link to P10.
-  4. S16 Recent activity shows the latest transactions; `pending` rows are labelled as pending in text.
+  1. P08 loads within the `(app)` layout (S01 Primary navigation, S02 Global utilities); S03 Page title & actions names the workspace.
+  2. S14 Cash position tells the user total cash per currency (one primary figure per currency) and today's net movement (C41).
+  3. S15 Account summary gives each account's balance, names any non-`active` state in words (C12), and reaches P10.
+  4. S16 Recent activity gives the latest transactions; `pending` ones are identified as pending in words.
   5. S17 Pending items surfaces pending transactions, running exports and verification needs.
-  6. S18 Cash flow over time shows inflow vs outflow for the selected range (C23 Tabs: 30 / 90 days).
+  6. S18 Cash flow over time gives inflow vs outflow for the chosen range (30 / 90 days, C23).
   7. The user either leaves satisfied or drills into an account (F2) or a transaction (F3).
 - **Decision points:** drill into an account or a transaction; change chart range; act on a pending item.
 - **Emotional state:** anxious or hurried on arrival → reassured when the total appears fast and exact; alarmed if a figure looks wrong, which is why exactness (BR1) is non-negotiable.
@@ -98,8 +98,8 @@ Conventions used in every map:
   - Balance source (OD5) is delayed: figures are stale without the user knowing.
   - R4 has no permitted accounts: empty dashboard that looks broken.
 - **Recovery paths:**
-  - Stale data: S14 shows "as of" time from the backend; C33 ErrorState retry on fetch failure.
-  - Frozen account: badge plus link to X9 Help and support contact.
+  - Stale data: S14 gives the "as of" time from the backend; C33 ErrorState retry on fetch failure.
+  - Frozen account: the state is named in words, with a way to X9 Help and support contact.
   - R4 with nothing permitted: C32 EmptyState explaining that an owner grants account access, naming the owner role.
 - **System behavior:** `use-accounts` (balances), `use-transactions` with a limit (S16), `use-transactions` pending filter + `use-exports` + `use-verification-case` (S17), `use-cash-flow` (S18). Query keys include workspace ID. Refetch on window focus; no polling on the dashboard. No audit event for viewing.
 - **Completion criteria:** the user has seen a total per currency, each account's balance with state, and today's movement, all with an "as of" time.
@@ -112,25 +112,25 @@ Conventions used in every map:
 - **Trigger:** month-end; a question about an account; clicking an account on P08.
 - **Entry points:** P09 Accounts `/accounts`; S15 on P08; C38 CommandPalette account search; direct link `/accounts/[accountId]` with filters in URL.
 - **Journey:**
-  1. P09 shows S19 Account list: name, C42 MaskedAccountNumber, balance, state.
+  1. On P09, S19 Account list lets the user identify each account (masked, C42) and see its balance and state.
   2. Selecting an account opens P10 Account ledger `/accounts/[accountId]`.
-  3. S20 Account overview shows balance, state, masked number with C51 CopyButton and reveal (X4).
-  4. S21 Ledger filters sets date range (C48), type, amount range, status via C46 Filter set and C47 Active filter; filters write to URL params.
-  5. S22 Ledger summary shows server-computed opening balance, credits, debits and closing balance for the filter.
-  6. S23 Ledger entries streams rows with cursor pagination and virtualization (C53); running position is kept on back navigation.
-  7. The user opens a row (F3), saves the filter as a view (P13), or exports the filtered set (F4).
+  3. S20 Account overview gives balance and state; the masked number can be copied (C51) and the full number revealed after step-up (X4).
+  4. S21 Ledger filters narrows by date range (C48), type, amount range and status (C46, C47); filters write to URL params.
+  5. S22 Ledger summary gives server-computed opening balance, credits, debits and closing balance for the filter.
+  6. S23 Ledger entries streams transactions with cursor pagination and virtualization (C53); the user's position is kept on back navigation.
+  7. The user opens a transaction (F3), saves the filter as a view (P13), or exports the filtered set (F4).
 - **Decision points:** narrow by filter vs scroll; save as view; export; reveal account number.
 - **Emotional state:** focused and methodical; frustrated by lost scroll position or totals that do not match the statement.
 - **Failure paths:**
   - Account ID not found or not permitted for the member: P34 Not found (never reveal that the account exists).
-  - Filter returns zero rows.
-  - A `pending` transaction in view is later `returned`: the row's status label and effect on the balance change after the user has noted it.
-  - A 5-million-row ledger scrolled far: client memory grows if rows are not virtualized.
+  - Filter matches no transactions.
+  - A `pending` transaction in view is later `returned`: its status and effect on the balance change after the user has noted it.
+  - A 5-million-row ledger scrolled far: client memory grows if entries are not virtualized.
   - Reveal step-up fails (X4).
 - **Recovery paths:**
-  - Zero rows: C32 EmptyState with "clear filters" action that resets URL params.
-  - Returned transaction: row shows the `returned` status label with problem severity and the timeline (S25) explains it; S22 totals refresh from server.
-  - Long scroll: virtualization keeps DOM small; "jump to date" via C48 instead of scrolling.
+  - No matches: C32 EmptyState tells the user nothing matches and offers to clear the filters, resetting URL params.
+  - Returned transaction: its status is named `returned` with problem severity and the timeline (S25) explains it; S22 totals refresh from server.
+  - Long scroll: virtualization keeps the DOM small; "jump to date" via C48 instead of scrolling.
   - Step-up failure: number stays masked; copy explains why; retry available.
 - **System behavior:** `use-account`, `use-ledger-summary`, `use-transactions` (infinite, cursor). Filters are server-side; URL is the source of truth for filter state. Summary is never computed by summing loaded rows. Reveal is audit-logged by the backend.
 - **Completion criteria:** the user sees the filtered ledger with totals that equal the server summary, and the URL reproduces the view.
@@ -141,17 +141,17 @@ Conventions used in every map:
 - **User intent:** find one transaction, understand it and leave a trace of what was learned.
 - **Personas:** R2, R3 primarily; R1; R4 read-only.
 - **Trigger:** unknown debit; accountant query; customer payment confirmation; large-transaction alert (X7).
-- **Entry points:** C38 CommandPalette (⌘K / Ctrl+K); P11 Transaction search `/transactions`; a row in S23 or S16; P14 Flagged transactions `/transactions/flagged`; P13 Saved views `/transactions/views`; a shared link `/transactions/[transactionId]`; X7 notification.
+- **Entry points:** C38 CommandPalette (⌘K / Ctrl+K); P11 Transaction search `/transactions`; a transaction in S23 or S16; P14 Flagged transactions `/transactions/flagged`; P13 Saved views `/transactions/views`; a shared link `/transactions/[transactionId]`; X7 notification.
 - **Journey:**
-  1. The user searches by counterparty, amount or reference in C38 or S21 on P11; results render in S23.
-  2. Opening a row shows P12 Transaction detail as an intercepted overlay (C22) over the list, preserving list position; a direct link renders the full page.
-  3. S24 Transaction detail shows amount (C40), status badge, account, counterparty, references, with C51 CopyButton for the share link.
-  4. S25 Transaction lifecycle shows lifecycle events (`pending` → `posted` → `returned` / `reversed`).
-  5. The user follows the counterparty to P19 Counterparty `/counterparties/[counterpartyId]`, where S33 Counterparty summary and S23 show history with that party.
+  1. The user searches by counterparty, amount or reference in C38 or S21 on P11; results arrive in S23.
+  2. Opening a transaction from a list opens P12 Transaction detail on the intercepted route (C22) without losing the list's position; a direct link opens the full page.
+  3. S24 Transaction detail tells the user the amount (C40), status, account, counterparty and references; the share link can be copied (C51).
+  4. S25 Transaction lifecycle gives lifecycle events (`pending` → `posted` → `returned` / `reversed`).
+  5. The user follows the counterparty to P19 Counterparty `/counterparties/[counterpartyId]`, where S33 Counterparty summary and S23 give history with that party.
   6. Back on P12, S26 Notes & attachments: add a note, set a category, flag, attach a receipt.
   7. The user copies the share link or returns to the list with position intact.
-- **Decision points:** open overlay vs full page; annotate vs flag for someone else; follow counterparty.
-- **Emotional state:** suspicious or puzzled → relieved when the story is clear; the overlay keeps context so the user does not feel lost.
+- **Decision points:** open over the list vs full page; annotate vs flag for someone else; follow counterparty.
+- **Emotional state:** suspicious or puzzled → relieved when the story is clear; keeping the list's context means the user does not feel lost.
 - **Failure paths:**
   - Search matches nothing.
   - Shared link opened by a member without permission, or by someone signed out.
@@ -175,11 +175,11 @@ Conventions used in every map:
 - **Trigger:** month-end close; auditor request; "statement ready" or "export ready" notification (X7).
 - **Entry points:** P17 Statements `/statements`; P18 Exports `/exports`; export action on P10 carrying current filters; P15 Compare periods `/insights/compare`; X7 notification.
 - **Journey:**
-  1. P17 S30 Statement list shows one row per account per month with a PDF download.
-  2. On P18, S31 Export builder: choose accounts, period (C48), format (CSV or OFX-style), columns.
-  3. Submitting creates a job; S32 Export jobs shows it `queued` → `running` → `ready`.
+  1. On P17, S30 Statement list offers a PDF statement per account per month.
+  2. On P18, S31 Export builder: the user chooses accounts, period (C48), format (CSV or OFX-style) and which data to include.
+  3. Submitting creates a job; S32 Export jobs reports it `queued` → `running` → `ready`.
   4. The user downloads the file when `ready`; an X7 notification also arrives if they left.
-  5. Optionally P15 S28 Period comparison shows the period against the previous one to spot anomalies before closing.
+  5. Optionally P15 S28 Period comparison compares the period against the previous one to spot anomalies before closing.
   6. The user reconciles in their accounting tool against S22 totals and the statement.
 - **Decision points:** statement vs export; which format; compare before closing.
 - **Emotional state:** under deadline pressure; relieved when the file is right first time; distrustful if totals differ.
@@ -191,9 +191,9 @@ Conventions used in every map:
   - Export totals differ from the statement because pending transactions were included.
   - R4 reaches P18 by URL.
 - **Recovery paths:**
-  - Current month: row shows "available after month end" with the expected date from the backend, and offers an export instead.
-  - Failed: error badge, reason copy, "try again" re-submits the same parameters.
-  - Expired: "create again" pre-fills the builder from the expired job.
+  - Current month: the user is told it is "available after month end" with the expected date from the backend, and offers an export instead.
+  - Failed: the failure is named with its reason; trying again re-submits the same parameters.
+  - Expired: creating it again pre-fills the builder from the expired job.
   - Session expiry: job continues server-side; after re-authentication S32 shows it `ready`.
   - Pending mismatch: builder states clearly whether pending is included (default: posted only).
   - R4: C59 PermissionGate renders a not-permitted state naming the roles that can export.
@@ -209,11 +209,11 @@ Conventions used in every map:
 - **Entry points:** P03 Register `/auth/register` then redirect; P07 Onboarding & verification `/onboarding`; S13 Verification status notice on P08; X7 notification.
 - **Journey:**
   1. X2 Register creates the user and session; the user creates a workspace.
-  2. P07 shows S09 Verification progress: business details, beneficial owners, documents, review.
-  3. S10 Business details form (legal name, registration number, address; fields set by OD1).
-  4. S11 Beneficial owners form: add each owner; removal confirmed with C52 ConfirmDialog.
-  5. S12 Document upload: registration documents and owner IDs with C49 File upload and C26 Meter progress.
-  6. Review and submit; the case moves to `submitted`; S13 notice reflects the state on P08.
+  2. On P07, S09 Verification progress takes the user through four steps: business details, beneficial owners, documents, review.
+  3. S10 Business details form collects the business's identity (legal name, registration number, address; exact data set by OD1).
+  4. S11 Beneficial owners form: add each owner; removal confirmed first (C52).
+  5. S12 Document upload: registration documents and owner IDs (C49), with upload progress reported (C26).
+  6. Review and submit; the case moves to `submitted`; S13 reports the state on P08.
   7. R6 reviews on P32 (D6); outcome `approved`, `rejected` or `needs_info` returns to R1 via X7 and S13.
 - **Decision points:** save and continue later; add another owner; respond to `needs_info`.
 - **Emotional state:** impatient and wary of sharing documents; progress must never be lost; clarity about "what is missing" matters more than speed.
@@ -226,9 +226,9 @@ Conventions used in every map:
 - **Recovery paths:**
   - Leaving: every step saves to the case (`in_progress`) and S09 reopens at the first incomplete step.
   - Upload failure: retry per file; other files are not lost.
-  - `needs_info`: stepper highlights only the steps with requested items and shows the analyst's message verbatim.
+  - `needs_info`: S09 identifies only the steps with requested items and gives the analyst's message verbatim.
   - `rejected`: clear statement, reason where the backend provides one, and a route to X9.
-  - Concurrent edit: server version wins; the user sees a toast and refreshed values.
+  - Concurrent edit: server version wins; the user is told (C24) and gets refreshed values.
 - **System behavior:** `use-verification-case`, `use-update-verification-case`, `use-upload-document`. Documents upload directly to the backend-issued target; the frontend never stores them. State transitions and decisions are audit-logged.
 - **Completion criteria:** the case reaches `submitted` with every required item; final completion is `approved`.
 - **Dependencies:** Exists: `POST /api/auth/register`. Required: workspaces, verification cases (workspace side, documents upload, decision), notifications.
@@ -285,12 +285,12 @@ D1–D4 are one page, P08 Dashboard `/dashboard`, composed by workspace role fro
 - **Trigger:** daily check; low-balance or large-transaction alert (X7); verification outcome.
 - **Entry points:** default landing after X1 for `owner` at P08 Dashboard `/dashboard`; S01 Primary navigation; C38 CommandPalette.
 - **Journey:**
-  1. S13 Verification status notice appears first, only while the case is not `approved`, naming the next action.
-  2. S14 Cash position shows total per currency with C41 DeltaChip.
-  3. S15 Account summary lists each account with state.
-  4. S17 Pending items lists pending transactions, running exports and verification requests.
+  1. S13 Verification status notice comes first in priority, only while the case is not `approved`, naming the next action.
+  2. S14 Cash position gives total per currency with today's movement (C41).
+  3. S15 Account summary gives each account with its state.
+  4. S17 Pending items gathers pending transactions, running exports and verification requests.
   5. S18 Cash flow over time gives inflow vs outflow for the chosen range.
-  6. S16 Recent activity links each row to P12.
+  6. S16 Recent activity reaches P12 for each transaction.
 - **Decision points:** finish verification (F5); drill into F2 or F3; invite a teammate (X6) from the empty-team hint; open P16 Runway calculator.
 - **Emotional state:** wants reassurance in seconds; unwanted noise erodes trust.
 - **Failure paths:**
@@ -324,7 +324,7 @@ D1–D4 are one page, P08 Dashboard `/dashboard`, composed by workspace role fro
   - An export in S17 has become `expired`.
 - **Recovery paths:**
   - S17 refetches on focus and after any export or annotation mutation.
-  - Expired export row offers "create again" into P18 pre-filled.
+  - An expired export offers "create again" into P18 pre-filled.
 - **System behavior:** as F1; pending queries invalidated after mutations.
 - **Completion criteria:** the finance lead knows what is pending and reaches it in one click.
 - **Dependencies:** as F1 and F4.
@@ -338,7 +338,7 @@ D1–D4 are one page, P08 Dashboard `/dashboard`, composed by workspace role fro
 - **Journey:**
   1. C36 WorkspaceSwitcher lists every workspace the accountant belongs to; select one.
   2. P08 reloads for that workspace: S14, S17 (flagged and pending), S16.
-  3. S03 Page title & actions shows the workspace name prominently.
+  3. S03 Page title & actions names the workspace unmistakably.
   4. Shortcuts lead to P17 Statements, P18 Exports and P14 Flagged transactions.
 - **Decision points:** which client workspace; statements vs exports first.
 - **Emotional state:** context-switching fatigue; the workspace name must be unmistakable.
@@ -346,7 +346,7 @@ D1–D4 are one page, P08 Dashboard `/dashboard`, composed by workspace role fro
   - Stale data from the previous workspace flashes after switching.
   - Access revoked by the owner while the accountant is working.
 - **Recovery paths:**
-  - Query keys include the workspace ID, so no cross-workspace cache is ever shown; skeletons render until the new workspace's data arrives.
+  - Query keys include the workspace ID, so no cross-workspace cache is ever shown; loading placeholders stand in until the new workspace's data arrives.
   - Revoked access removes the workspace from C36 and redirects to the next available workspace with a C24 Transient message.
 - **System behavior:** `use-workspace`, `use-me`; switching resets workspace-scoped queries.
 - **Completion criteria:** the accountant is in the right workspace with period tools one click away.
@@ -407,10 +407,10 @@ D1–D4 are one page, P08 Dashboard `/dashboard`, composed by workspace role fro
 - **Trigger:** cases in `submitted`.
 - **Entry points:** P32 Compliance queue `/admin/compliance`; case link `/admin/compliance/[caseId]`.
 - **Journey:**
-  1. S51 Compliance case queue, filtered by state with C47 Active filter and sorted by age.
-  2. Open a case: S52 Compliance case review in C22 Detail overlay shows business details, owners and documents.
+  1. S51 Compliance case queue, narrowed by state (C47) and ordered by age.
+  2. Open a case: S52 Compliance case review (C22) gives the business details, owners and documents.
   3. Choose approve, reject or request info; write the reason or message.
-  4. Confirm with C52 ConfirmDialog.
+  4. Confirm (C52).
   5. The queue refreshes and the next case is offered.
 - **Decision points:** approve / reject / `needs_info`.
 - **Emotional state:** careful; each decision carries regulatory weight.
@@ -433,10 +433,10 @@ D1–D4 are one page, P08 Dashboard `/dashboard`, composed by workspace role fro
 - **Trigger:** routine review; support escalation.
 - **Entry points:** P29 Admin overview `/admin`; P30 Admin users `/admin/users`; P31 Admin user detail `/admin/users/[userId]`.
 - **Journey:**
-  1. P29 S48 Platform growth figures: total users and a series chart.
+  1. P29 S48 Platform growth figures: total users and the trend over time.
   2. P30 S49 Platform user directory: search, filter by role and status.
-  3. Create a user through C21 Dialog.
-  4. P31 S50 Admin user record: edit role and status; delete with C52 ConfirmDialog.
+  3. Create a user (C21).
+  4. P31 S50 Admin user record: edit role and status; delete, confirmed first (C52).
 - **Decision points:** create, edit, suspend or delete a user.
 - **Emotional state:** deliberate; destructive actions must feel heavy.
 - **Failure paths:**
@@ -497,8 +497,8 @@ D1–D4 are one page, P08 Dashboard `/dashboard`, composed by workspace role fro
   - Password fails policy.
   - Network error.
 - **Recovery paths:**
-  - Field-level error with a link to sign in.
-  - Policy shown inline before submit.
+  - The email is reported as already registered, with a way to sign in.
+  - The password policy is available before submit.
   - Values kept on retry.
 - **System behavior:** `use-register` posts to `app/api/register`; session cookie set on success; Zod validation on the client composes over the generated register schema.
 - **Completion criteria:** the user is signed in and on P07.
@@ -544,7 +544,7 @@ D1–D4 are one page, P08 Dashboard `/dashboard`, composed by workspace role fro
   - Expiry in another tab.
 - **Recovery paths:**
   - The export job continues server-side and shows `ready` in S32 after re-authentication.
-  - Drafts are kept in component state across the dialog and saved after re-authentication.
+  - Drafts are kept in component state across re-authentication (C55) and saved afterwards.
   - After repeated step-up failure the number stays masked and the user is pointed to X5.
   - Expiry is broadcast across tabs so every tab shows C55.
 - **System behavior:** a 401 from any call opens C55 rather than hard-redirecting; step-up grants are short-lived; reveals audit-logged.
@@ -581,12 +581,12 @@ D1–D4 are one page, P08 Dashboard `/dashboard`, composed by workspace role fro
 - **Trigger:** new hire; accountant engaged; someone leaves.
 - **Entry points:** P23 Team `/settings/team`; P24 Team member profile `/settings/team/[memberId]`; D1 empty-team hint.
 - **Journey:**
-  1. P23 S39 Team members lists members, roles and pending invitations.
-  2. "Invite" opens S40 Invite member form in C21 Dialog: email, role, permitted accounts for a viewer.
-  3. The invitation appears as pending in S39.
+  1. On P23, S39 Team members gives members, roles and pending invitations.
+  2. Inviting starts S40 Invite member form (C21): who, which role, and which accounts a viewer may see.
+  3. The invitation is listed as pending in S39.
   4. S41 Role permissions reference explains what each role can do.
-  5. Role change or removal from the S39 row menu (C20 Menu), confirmed with C52 ConfirmDialog.
-  6. P24 shows a member read-only (S42 variant) with S41.
+  5. Role change or removal from S39 (C20), confirmed first (C52).
+  6. P24 gives a member read-only (S42 variant) with S41.
 - **Decision points:** which role; which accounts for a viewer; remove vs downgrade.
 - **Emotional state:** cautious about over-sharing.
 - **Failure paths:**
@@ -595,10 +595,10 @@ D1–D4 are one page, P08 Dashboard `/dashboard`, composed by workspace role fro
   - Removing the last owner.
   - Invitation expired before acceptance.
 - **Recovery paths:**
-  - Inline error naming the existing member.
+  - The user is told who the existing member is; input kept.
   - Role options filtered by C59 PermissionGate.
   - Last-owner removal blocked with an explanation.
-  - "Resend invitation" on the pending row.
+  - The pending invitation can be resent.
 - **System behavior:** `use-team`, `use-invite-member`, `use-team-member`; role changes audit-logged; a removed member loses workspace access on their next request.
 - **Completion criteria:** invitation sent or role change saved and reflected in S39.
 - **Dependencies:** Required: workspaces + memberships + invitations, audit log.
@@ -696,7 +696,7 @@ D1–D4 are one page, P08 Dashboard `/dashboard`, composed by workspace role fro
 - **Emotional state:** worried that money is affected; copy says plainly that viewing failed, not that funds changed.
 - **Failure paths:**
   - The outage persists.
-  - The error occurs inside the shell itself.
+  - The error occurs in the group layout itself.
 - **Recovery paths:**
   - The health check result is shown when the backend reports unavailable.
   - `global-error.tsx` renders as the last resort.
@@ -715,7 +715,7 @@ Added in 2.0.0 from the built home page. Its place in the product depends on [OD
 - **Journey:**
   1. The visitor reaches S64 and enters a work email.
   2. Submit validates the email on the client (`contactSchema` in `lib/validations/contact.ts`).
-  3. A valid email shows a confirmation; an invalid one shows a field error naming the problem.
+  3. A valid email is confirmed; an invalid one is reported, naming the problem.
 - **Decision points:** enquire vs register (X2) vs sign in (X1) — today only enquiry is offered from P01 (OD10).
 - **Emotional state:** low commitment; wary of being put on a mailing list; needs to know what happens next.
 - **Failure paths:**
@@ -766,6 +766,7 @@ Added in 2.0.0 from the built home page. Its place in the product depends on [OD
 - **Retained:** F1–F7, D1–D7, X1–X10 with every step, failure and recovery path.
 - **Changed:** section and contract names updated to the 2.0.0 names; "drawer" wording replaced by "overlay" (the route slot keeps its code name `@drawer`); visual wording (tones, "visibly distinct", "placed first") rewritten as behaviour; phase links renumbered to the 9-phase set.
 - **Added:** X11 Get-started enquiry; R8 in the flow index; enquiry intake in the dependency summary; OD9 and OD10 notes.
+- **Self-audit (tightened seed, No Visual Prescription):** journey steps that listed what a section shows (fields such as "name, C42, balance, state"; "badge"; "DeltaChip"; "CopyButton"; "row menu"; "Dialog"; "overlay"; "toast"; "skeletons"; "stepper highlights"; "shell") rewritten as what the user learns or does, keeping contract IDs for traceability. No flow, step, failure or recovery path removed.
 
 ## Traceability
 

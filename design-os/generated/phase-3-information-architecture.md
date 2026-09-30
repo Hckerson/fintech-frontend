@@ -41,50 +41,50 @@ Rules that shape every decision below:
 
 ## 2. Navigation hierarchy
 
-Ledgerline has two shells. The `(app)` shell serves workspace members (R1–R4); the `(admin)` shell serves internal staff (R5–R7). They never share a navigation set. Why: an internal agent looking at a customer's workspace must always know which side of the glass they are on.
+Ledgerline has two signed-in areas. The `(app)` route group serves workspace members (R1–R4); the `(admin)` route group serves internal staff (R5–R7). They never share a navigation set. Why: an internal agent looking at a customer's workspace must always know which side of the glass they are on.
 
 ### 2.1 Primary navigation — `(app)` shell (S01 Primary navigation)
 
 | Order | Group | Item | Route | Page | Notes |
 |---|---|---|---|---|---|
-| — | (header) | Workspace switcher | — | — | C36 WorkspaceSwitcher, above all groups |
+| — | (workspace) | Workspace switcher | — | — | C36 WorkspaceSwitcher; reachable wherever primary navigation is |
 | 1 | Overview | Dashboard | `/dashboard` | P08 | Role-composed (D1–D4) |
 | 2 | Money | Accounts | `/accounts` | P09 | Active on `/accounts/*` |
 | 3 | Money | Transactions | `/transactions` | P11 | Active on `/transactions/*` and `/counterparties/*` |
-| 4 | Money | Payments | `/payments` | P27 | Rendered only when money movement is enabled |
+| 4 | Money | Payments | `/payments` | P27 | Offered only when money movement is enabled |
 | 5 | Documents | Statements | `/statements` | P17 | |
 | 6 | Documents | Exports | `/exports` | P18 | |
-| 7 | Insights | Insights | `/insights/compare` | P15 | Sub-tabs: Compare periods (P15), Runway (P16) |
-| 8 | Inbox | Notifications | `/notifications` | P20 | Unread count badge |
-| 9 | Inbox | Messages | `/messages` | P21 | Unread thread count badge |
-| 10 | Settings | Settings | first permitted of `/settings`, `/settings/team`, `/settings/profile` | P22 P23 P25 | Sub-tabs inside the page header |
+| 7 | Insights | Insights | `/insights/compare` | P15 | Sub-pages: Compare periods (P15), Runway (P16) |
+| 8 | Inbox | Notifications | `/notifications` | P20 | Carries the unread count |
+| 9 | Inbox | Messages | `/messages` | P21 | Carries the unread thread count |
+| 10 | Settings | Settings | first permitted of `/settings`, `/settings/team`, `/settings/profile` | P22 P23 P25 | Sub-pages: Workspace, Team, Profile & security |
 | — | (secondary) | Help | `/help` | P28 | Opens in the same tab |
 | — | (secondary) | Colour-scheme preference | — | — | C54, only if the build offers more than one scheme |
 
-Each item is a C35 NavItem. Group labels are read by assistive technology as the group names. The nav config (labels, routes, icons, required capability, group) is one typed array in `lib/data/`; S01 renders it after filtering by capability. Why: one source feeds the navigation, the command palette's Pages scope ([§10](#10-search-hierarchy)) and the breadcrumb root labels.
+Each item is a C35 NavItem. Group labels are read by assistive technology as the group names. The nav config (labels, routes, icons, required capability, group) is one typed array in `lib/data/`; S01 filters it by capability. Why: one source feeds the navigation, the command palette's Pages scope ([§10](#10-search-hierarchy)) and the breadcrumb root labels.
 
-**Depth limit.** Primary navigation is two levels deep at most (group → item). Anything deeper — Insights sub-pages, Settings sub-pages, saved views, flagged — is reached through C23 Tabs in S03 Page title & actions or through in-page links. Why: nested disclosure hides the thing a member came for; tabs keep sibling pages one step apart without growing the navigation.
+**Depth limit.** Primary navigation is two levels deep at most (group → item). Anything deeper — Insights sub-pages, Settings sub-pages, saved views, flagged — is reached from its sibling pages (C23, through S03 Page title & actions) or by in-page links. Why: nested disclosure hides the thing a member came for; keeping sibling pages one step apart does not grow the navigation.
 
-**Transactions sub-navigation** (tabs in S03 on P11, P13, P14): All (`/transactions`) · Saved views (`/transactions/views`) · Flagged (`/transactions/flagged`).
+**Transactions sub-navigation** (siblings P11, P13, P14, each reachable from the others): All (`/transactions`) · Saved views (`/transactions/views`) · Flagged (`/transactions/flagged`).
 
-**Settings sub-navigation** (tabs in S03): Workspace (`/settings`) · Team (`/settings/team`) · Profile & security (`/settings/profile`). Tabs a role cannot open are not rendered.
+**Settings sub-navigation** (siblings, each reachable from the others): Workspace (`/settings`) · Team (`/settings/team`) · Profile & security (`/settings/profile`). Sub-pages a role cannot open are not offered.
 
-**Onboarding.** P07 `/onboarding` is not a navigation item. While the workspace's verification case is not `approved`, S13 Verification status notice appears on P08 and links to P07. Why: onboarding is a task with an end, not a place members return to.
+**Onboarding.** P07 `/onboarding` is not a navigation item. While the workspace's verification case is not `approved`, S13 Verification status notice on P08 leads to P07. Why: onboarding is a task with an end, not a place members return to.
 
 ### 2.2 Global utilities — S02
 
-Available on every `(app)` and `(admin)` page, in priority order: C38 CommandPalette (⌘K / Ctrl+K, with a C28 Shortcut hint) · C39 Notification entry point · C37 UserMenu (Profile & security, Help, Sign out) · C29 Breadcrumbs on detail pages ([§13](#13-breadcrumb-strategy)). Their arrangement is decided at build.
+Reachable from every `(app)` and `(admin)` page: global search (C38 CommandPalette, ⌘K / Ctrl+K, C28) · notifications (C39) · the member's own account — Profile & security, Help, Sign out (C37) · the breadcrumb trail on detail pages (C29, [§13](#13-breadcrumb-strategy)). How they appear is decided at build.
 
 ### 2.3 Admin navigation — `(admin)` shell
 
-| Order | Item | Route | Page | Visible to |
+| Order | Item | Route | Page | Reachable by |
 |---|---|---|---|---|
 | 1 | Overview | `/admin` | P29 | R5 R6 R7 |
 | 2 | Users | `/admin/users` | P30 | R7 |
 | 3 | Compliance | `/admin/compliance` | P32 | R6 R7 |
 | 4 | Support | `/admin/support` | P33 | R5 R7 |
 
-The admin shell has no workspace switcher; its shell is named "Ledgerline Admin" so a staff member never mistakes it for a customer workspace. P31 Admin user detail is reached from P30 or from P33 search results, never from primary navigation.
+The `(admin)` area has no workspace switching; it is named "Ledgerline Admin" so a staff member never mistakes it for a customer workspace. P31 Admin user detail is reached from P30 or from P33 search results, never from primary navigation.
 
 ### 2.4 Small screens (360 CSS px and up)
 
@@ -92,7 +92,7 @@ Every navigation item stays reachable on a phone, with the same groups, order an
 
 ### 2.5 Public site navigation — S55 (added 2.0.0)
 
-The built P01 has its own navigation (S55) with in-page links to its sections (Accounts, Payments, Cards, Treasury, Security, Pricing) and the start actions. It is separate from the `(app)` navigation. Two of its destinations (Payments, Cards) are capabilities v1 does not have (OD9), and its "Sign in" link leads to the enquiry form rather than P02 (OD10). Both are recorded, not resolved.
+The built P01 has its own navigation (S55) reaching the page's topics (Accounts, Payments, Cards, Treasury, Security, Pricing) and the ways to start. It is separate from the `(app)` navigation. Two of its destinations (Payments, Cards) are capabilities v1 does not have (OD9), and its sign-in route leads to the enquiry (S64) rather than P02 (OD10). Both are recorded, not resolved.
 
 ## 3. Sitemap
 
@@ -110,7 +110,7 @@ app/
 │   ├── /auth/reset-password                P05 Reset password
 │   └── /auth/verify                        P06 Two-step verification
 ├── (app)/                                  protected: session + workspace membership
-│   ├── @drawer/(.)transactions/[transactionId]   P12 intercepted overlay
+│   ├── @drawer/(.)transactions/[transactionId]   P12 intercepted route
 │   ├── /onboarding                         P07 Onboarding & verification
 │   ├── /dashboard                          P08 Dashboard
 │   ├── /accounts                           P09 Accounts
@@ -143,7 +143,7 @@ app/
     └── error.tsx, global-error.tsx (+ per segment)   P35 Server error (500)
 ```
 
-`/help` is listed under `(marketing)` because it must render without a session; a signed-in member reaching it from primary navigation sees the same page with the marketing header. Why: one help corpus, one URL per article, indexable ([§12](#12-seo-hierarchy)).
+`/help` is listed under `(marketing)` because it must render without a session; a signed-in member reaching it from primary navigation gets the same public page within the `(marketing)` layout. Why: one help corpus, one URL per article, indexable ([§12](#12-seo-hierarchy)).
 
 ### 3.2 Page index
 
@@ -160,7 +160,7 @@ app/
 | P09 | Accounts | `/accounts` | (app) | [P09](phase-4-page-blueprints.md#p09--accounts) |
 | P10 | Account ledger | `/accounts/[accountId]` | (app) | [P10](phase-4-page-blueprints.md#p10--account-ledger) |
 | P11 | Transaction search | `/transactions` | (app) | [P11](phase-4-page-blueprints.md#p11--transaction-search) |
-| P12 | Transaction detail | `/transactions/[transactionId]` + overlay | (app) | [P12](phase-4-page-blueprints.md#p12--transaction-detail) |
+| P12 | Transaction detail | `/transactions/[transactionId]` + intercepted route | (app) | [P12](phase-4-page-blueprints.md#p12--transaction-detail) |
 | P13 | Saved views | `/transactions/views` | (app) | [P13](phase-4-page-blueprints.md#p13--saved-views) |
 | P14 | Flagged transactions | `/transactions/flagged` | (app) | [P14](phase-4-page-blueprints.md#p14--flagged-transactions) |
 | P15 | Compare periods | `/insights/compare` | (app) | [P15](phase-4-page-blueprints.md#p15--compare-periods) |
@@ -189,62 +189,49 @@ Route groups do not appear in URLs; they exist to give each audience its own lay
 
 ## 4. Content hierarchy
 
-Each surface names its primary information — what the member came to learn — then the priority order of everything else. Priority is content order, not placement. Section IDs refer to Phase 5.
+Which Phase 5 sections each page uses, and the rules that decide who gets which. This records structure only. It does not rank what a page shows or say what appears first; that is decided when each page is built.
 
 ### P08 — Dashboard
 
-1. S13 Verification status notice (only while verification is not `approved`) — blocks nothing, but sits first because an unverified workspace cannot receive data.
-2. S14 Cash position — **primary:** total available balance per currency, with today's movement as C41 DeltaChip.
-3. S15 Account summary — each account's available balance.
-4. S17 Pending items — pending transactions, running exports, verification requests.
-5. S18 Cash flow over time — money in vs out over the selected period.
-6. S16 Recent activity — the last transactions, each linking to P12.
+Sections: S13 Verification status notice (only while verification is not `approved`), S14 Cash position, S15 Account summary, S16 Recent activity, S17 Pending items, S18 Cash flow over time.
 
-Role variants: D1 Owner and D2 Finance show all six; D3 Accountant leads with S16 and S17 (reconciliation work); D4 Viewer shows S14 and S15 for permitted accounts only and S16, without S17 export items. Flow: [F1](phase-2-experience-maps.md#f1--check-cash-position).
+Role variants: D1 Owner and D2 Finance get all six; D3 Accountant gets S16 and S17 for reconciliation work; D4 Viewer gets S14 and S15 for permitted accounts only, and S16, without S17 export items. Flow: [F1](phase-2-experience-maps.md#f1--check-cash-position).
 
 ### P10 — Account ledger
 
-1. S20 Account overview — **primary:** available balance; then current balance; C42 MaskedAccountNumber; account status label.
-2. S21 Ledger filters — filters ([§11](#11-filtering-hierarchy)), saved view selector.
-3. S22 Ledger summary — money in, money out, net for the filtered range.
-4. S23 Ledger entries — newest first, pending rows grouped above posted rows.
+Sections: S20 Account overview, S21 Ledger filters (with saved views, [§11](#11-filtering-hierarchy)), S22 Ledger summary for the filtered range, S23 Ledger entries (newest first; pending before posted).
 
 Flow: [F2](phase-2-experience-maps.md#f2--review-an-accounts-ledger).
 
 ### P11 — Transaction search / P14 — Flagged transactions
 
-1. S21 Ledger filters with the search field first and focused on arrival from the palette.
-2. S23 Ledger entries across all permitted accounts, with an Account column that P10 omits.
-
-**Primary:** the result count and active filter chips. Why: on a search page the question is "did I find it", not a balance.
+Sections: S21 Ledger filters (focus is in the query on arrival from the palette) and S23 Ledger entries across all permitted accounts, identifying the account each transaction belongs to (P10 does not need to).
 
 ### P12 — Transaction detail
 
-1. S24 Transaction detail — **primary:** signed amount (C40 Amount), then status label, counterparty (link to P19), account (link to P10), dates, reference with C51 CopyButton.
-2. S25 Transaction lifecycle — lifecycle events (`pending` → `posted` → `returned` / `reversed`).
-3. S26 Notes & attachments — category, flag, note, files.
+Sections: S24 Transaction detail (reaches P19 and P10), S25 Transaction lifecycle (`pending` → `posted` → `returned` / `reversed`), S26 Notes & attachments.
 
 Flow: [F3](phase-2-experience-maps.md#f3--investigate-a-transaction).
 
 ### P17 — Statements / P18 — Exports
 
-P17: S30 Statement list grouped by account, newest period first; **primary:** the latest closed month. P18: S31 Export builder, then S32 Export jobs; **primary:** the newest job's state. Flow: [F4](phase-2-experience-maps.md#f4--export-and-reconcile).
+P17: S30 Statement list, grouped by account, newest period first. P18: S31 Export builder and S32 Export jobs. Flow: [F4](phase-2-experience-maps.md#f4--export-and-reconcile).
 
 ### P07 — Onboarding & verification
 
-S09 Verification progress (**primary:** current step) → S10 Business details → S11 Beneficial owners → S12 Document upload → S13 status. One step visible at a time; completed steps stay editable until submission.
+Sections: S09 Verification progress, S10 Business details, S11 Beneficial owners, S12 Document upload, S13 status. The member works on one step at a time; completed steps stay editable until submission.
 
 ### P23 — Team
 
-S39 Team members (**primary:** member count and pending invitations) → S40 Invite member form in a C21 Dialog → S41 Role permissions reference as supporting reference.
+Sections: S39 Team members, S40 Invite member form (C21), S41 Role permissions reference.
 
 ### P29 — Admin overview / P32 — Compliance queue
 
-P29: S48 Platform growth figures (**primary:** total users) then links into P30, P32, P33. P32: S51 Compliance case queue sorted oldest-submitted first (**primary:** count of `submitted` cases); S52 Compliance case review opens at `/admin/compliance/[caseId]`.
+P29: S48 Platform growth figures, reaching P30, P32 and P33. P32: S51 Compliance case queue, oldest-submitted first, and S52 Compliance case review at `/admin/compliance/[caseId]`.
 
 ## 5. Role-based navigation
 
-✓ visible · — hidden. "Hidden" means the item is not rendered at all, not disabled.
+✓ offered · — not offered. "Not offered" means the item does not exist for that role, not that it is disabled.
 
 | Nav item | R1 Owner | R2 Finance | R3 Accountant | R4 Viewer | R5 Support | R6 Compliance | R7 Admin |
 |---|---|---|---|---|---|---|---|
@@ -271,7 +258,7 @@ Rules:
 
 - The role in this table is the member's role **in the current workspace**. Switching workspace (C36) re-filters the navigation. Why: A4 — one person can be an owner in one business and an accountant for another.
 - Internal staff (R5–R7) land in `/admin`. If a staff member also holds a workspace membership under a separate user, that is a separate sign-in. Why: support access to customer data must never look like membership.
-- Settings resolves to the first permitted tab: R1 → `/settings`, R2 → `/settings` (alert rules section only), R3 and R4 → `/settings/profile`.
+- Settings resolves to the first permitted sub-page: R1 → `/settings`, R2 → `/settings` (alert rules section only), R3 and R4 → `/settings/profile`.
 
 ## 6. Permissions
 
@@ -317,11 +304,11 @@ The matrix is static product config in `lib/data/`, rendered verbatim by S41 Rol
 | `proxy.ts` | A valid session cookie exists for a protected prefix ([§16](#16-protected-prefixes)) | Redirect to `/auth/login?next=<path>`, drop an invalid cookie | Authentication only |
 | Server layout `app/(app)/layout.tsx` | Session user is a member of the current workspace; role loaded into C63 WorkspaceProvider | Redirect to `/onboarding` when there is no workspace yet | Convenience |
 | Server layout `app/(admin)/layout.tsx` | Session role is a platform role (today `ADMIN`, A9) | Render P34 — the admin area does not reveal it exists | Convenience |
-| Page / section | Capability for this page from the matrix | C33 ErrorState "You don't have access to <page label>" inside the shell | Convenience |
-| C59 PermissionGate | Capability for a control (Annotate, Invite, Reveal) | Control not rendered; read-only text in its place | Convenience |
+| Page / section | Capability for this page from the matrix | C33 ErrorState "You don't have access to <page label>" within the group's layout | Convenience |
+| C59 PermissionGate | Capability for a control (Annotate, Invite, Reveal) | The control is not offered; the value stays readable | Convenience |
 | Backend | Every request, every field | 401 → X4 re-auth; 403 → C33 ErrorState; 404 for resources outside the workspace | **Final** |
 
-**The UI is never the authority.** A hidden button protects nothing; a crafted request reaches the backend regardless. Every layer above the backend exists to keep members from walking into refusals, and every one of them may be wrong without exposing data. Why it is written this way: if a member's role is lowered while their tab is open, the next request fails loudly with 403 and the UI refreshes the role — the member sees a clear refusal instead of a page that pretends to work.
+**The UI is never the authority.** Withholding a control protects nothing; a crafted request reaches the backend regardless. Every layer above the backend exists to keep members from walking into refusals, and every one of them may be wrong without exposing data. Why it is written this way: if a member's role is lowered while their tab is open, the next request fails loudly with 403 and the UI refreshes the role — the member sees a clear refusal instead of a page that pretends to work.
 
 Proxy scope stays narrow: the proxy verifies the token and nothing else. It does not read roles or memberships because it runs on every request, including assets matched by `config.matcher`, and a database call there would slow every page for every member.
 
@@ -357,7 +344,7 @@ Categories are member annotations, not bank data. v1 uses a fixed list from cons
 
 ### 7.5 Counterparty
 
-The other party on a transaction as the bank reports it, normalized by the backend into one record per business or person. A transaction has at most one counterparty. Fees and interest usually have none; they render the type label ("Fee", "Interest") in the counterparty position, never a substituted name. Why: attributing a fee to a named party the data does not name would be invented content.
+The other party on a transaction as the bank reports it, normalized by the backend into one record per business or person. A transaction has at most one counterparty. Fees and interest usually have none; the type label ("Fee", "Interest") stands in for the counterparty, never a substituted name. Why: attributing a fee to a named party the data does not name would be invented content.
 
 ### 7.6 Statuses (spine §2)
 
@@ -374,7 +361,7 @@ Enums live in `lib/constants.ts` as `as const` tuples so Zod (`z.enum`) and labe
 
 ### 8.1 Navigation labels (exact)
 
-Dashboard · Accounts · Transactions · Payments · Statements · Exports · Insights · Notifications · Messages · Settings · Help. Group labels: Overview · Money · Documents · Insights · Inbox · Settings. Tabs: All · Saved views · Flagged · Compare periods · Runway · Workspace · Team · Profile & security. Admin: Overview · Users · Compliance · Support. The Insights group holds one item of the same name; the group label is suppressed when it would repeat the item.
+Dashboard · Accounts · Transactions · Payments · Statements · Exports · Insights · Notifications · Messages · Settings · Help. Group labels: Overview · Money · Documents · Insights · Inbox · Settings. Sub-pages: All · Saved views · Flagged · Compare periods · Runway · Workspace · Team · Profile & security. Admin: Overview · Users · Compliance · Support. The Insights group holds one item of the same name; the group label is suppressed when it would repeat the item.
 
 Page titles equal the Phase 4 page name (P11 title "Transactions" is the one exception, because the nav label is what members search for; its registry name stays "Transaction search").
 
@@ -407,14 +394,14 @@ The primary figure on P08 and P10 is Available balance; Current balance is alway
 - Amounts: `Intl.NumberFormat` with `style: "currency"` and the transaction's ISO 4217 code, from integer minor units held as strings (C40 Amount). Never a float, never client arithmetic on floats.
 - Sign: credits carry an explicit plus ("+$1,250.00"); debits a minus ("−$1,250.00"). Ordinary debits carry no problem severity; only `returned` and `failed` do. Severity is always also given in words.
 - Numbers, counts and references go through C27 Number display; amounts through C40 Amount.
-- Dates: stored and sent as `yyyy-MM-dd` (`DATE_VALUE_FORMAT`); shown as "Sep 26, 2026" via `Intl.DateTimeFormat`. Posting dates are calendar dates and are never shifted by the viewer's time zone. Timestamps (notifications, timeline events) show local time with the zone abbreviation on hover.
+- Dates: stored and sent as `yyyy-MM-dd` (`DATE_VALUE_FORMAT`); shown as "Sep 26, 2026" via `Intl.DateTimeFormat`. Posting dates are calendar dates and are never shifted by the viewer's time zone. Timestamps (notifications, timeline events) show local time with the zone abbreviation available (never hover-only).
 - Account numbers: "Operating ••4821". Full number only after step-up.
 
 ## 9. Cross-linking
 
 | From | To | Link | Carries |
 |---|---|---|---|
-| Transaction (S23 row, S16 row) | P12 | Row click → overlay; ⌘/Ctrl-click → full page | Current filters stay in the underlying URL |
+| Transaction (S23 row, S16 row) | P12 | Opening it → P12 over the list (intercepted route); ⌘/Ctrl-click → full page | Current filters stay in the underlying URL |
 | P12 | P10 | Account name | — |
 | P12 | P19 | Counterparty name | — |
 | P12 | P17 | "In statement for Sep 2026" once posted in a closed month | Statement month + account |
@@ -434,11 +421,11 @@ Rule: every entity mention is a link to its canonical page, except on that page 
 
 ## 10. Search hierarchy
 
-C38 CommandPalette (⌘K / Ctrl+K) is the single global search. Results are grouped in this order, each group capped at five rows with "Show all" where a full page exists:
+C38 CommandPalette (⌘K / Ctrl+K) is the single global search. Results are grouped in this order, each group capped at five results, with a way to all results where a full page exists:
 
 | Order | Scope | Matches | Source | "Show all" goes to |
 |---|---|---|---|---|
-| 1 | Pages | Nav labels and tab labels | nav config in `lib/data/`, filtered by capability | — |
+| 1 | Pages | Navigation and sub-page labels | nav config in `lib/data/`, filtered by capability | — |
 | 2 | Accounts | Account name, last 4 digits | use-accounts cache | P09 |
 | 3 | Transactions | Amount, reference, counterparty name, description | backend search | `/transactions?q=<query>` (P11) |
 | 4 | Counterparties | Name | backend search | P11 with `q` |
@@ -446,7 +433,7 @@ C38 CommandPalette (⌘K / Ctrl+K) is the single global search. Results are grou
 
 Amount matching: a query that parses as a money amount ("1250", "1,250.00", "$1,250") is converted to minor units by string parsing (no float) and matched on absolute value, so "1250" finds both +$1,250.00 and −$1,250.00. Reference matching is exact-prefix. Why pages rank first: most palette use is navigation, and a page match is instant while a transaction match waits on the network.
 
-Scopes a role cannot open never appear. In the `(admin)` shell the palette scopes are Pages, Users (P31) and Help. Other searches: S21 on P11 (full-text, same backend search), S46 on P28 (help only), S53 on P33 (users and workspaces).
+Scopes a role cannot open never appear. In the `(admin)` area the palette scopes are Pages, Users (P31) and Help. Other searches: S21 on P11 (full-text, same backend search), S46 on P28 (help only), S53 on P33 (users and workspaces).
 
 ## 11. Filtering hierarchy
 
@@ -465,9 +452,9 @@ Scopes a role cannot open never appear. In the `(admin)` shell the palette scope
 | `flagged` | Only flagged transactions | `true` | All (P14 implies `true`) |
 | `view` | Saved view applied | saved view ID | None |
 
-Dates filter on posting date for posted rows and on initiation date for pending rows. `min`/`max` are minor units so the URL never contains a decimal separator that depends on locale; C47 Active filter shows them formatted ("≥ $500.00"). The cursor for "load more" is not a URL parameter. Why: a shared link should open at the top of the result, not mid-scroll.
+Dates filter on posting date for posted rows and on initiation date for pending rows. `min`/`max` are minor units so the URL never contains a decimal separator that depends on locale; C47 Active filter gives them formatted ("≥ $500.00"). The cursor for "load more" is not a URL parameter. Why: a shared link should open at the start of the result, not mid-scroll.
 
-Hierarchy: `view` expands into the other params on apply; if a member then changes a filter, the view chip shows "Edited" and the URL keeps both `view` and the changed params. Filters narrow in this order in the toolbar: date range (C48) → search → status → type → amount → account → flagged.
+Hierarchy: `view` expands into the other params on apply; if a member then changes a filter, the applied view is marked "Edited" and the URL keeps both `view` and the changed params. Filter priority (for the build, not placement): date range (C48) → search → status → type → amount → account → flagged.
 
 ### 11.2 Validation
 
@@ -530,7 +517,7 @@ Metadata comes from constants: the product name, title template ("%s · Ledgerli
 
 ## 13. Breadcrumb strategy
 
-C29 Breadcrumbs render in S03 Page title & actions **only on detail pages**. Top-level pages show their title alone. Breadcrumbs follow **ownership, not history**:
+Breadcrumb trails (C29, part of S03 Page title & actions) exist **only on detail pages**. Top-level pages have none. Breadcrumbs follow **ownership, not history**:
 
 | Page | Trail |
 |---|---|
@@ -546,7 +533,7 @@ C29 Breadcrumbs render in S03 Page title & actions **only on detail pages**. Top
 | P32 case | Admin › Compliance › <business name> |
 | P28 article | Help › <article title> |
 
-Why ownership: a transaction opened from search, from the dashboard or from a notification has one place in the structure; the trail teaches that place. History is served by the browser Back button, which works because filters live in the URL. The P12 overlay shows no breadcrumb; its header links to the account and counterparty instead. On mobile the trail collapses to its parent item only ("‹ Operating ••4821").
+Why ownership: a transaction opened from search, from the dashboard or from a notification has one place in the structure; the trail teaches that place. History is served by the browser Back button, which works because filters live in the URL. P12 opened over a list (intercepted route) has no trail; it reaches its account and counterparty directly ([§9](#9-cross-linking)). On a phone the trail may shorten to its parent ("‹ Operating ••4821"), which stays reachable.
 
 ## 14. Empty routes
 
@@ -567,14 +554,14 @@ The money-movement switch is read on the server and must match the backend; the 
 | Situation | File | Renders |
 |---|---|---|
 | Unknown URL anywhere | `app/not-found.tsx` | P34, marketing chrome |
-| Unknown ID inside `(app)` (`accounts/[accountId]`, `transactions/[transactionId]`, `counterparties/[counterpartyId]`, `messages/[threadId]`, `settings/team/[memberId]`) | per-segment `not-found.tsx` | P34 body inside the app shell, with a link back to the parent list |
-| Unknown ID inside `(admin)` (`users/[userId]`, `compliance/[caseId]`) | per-segment `not-found.tsx` | P34 body inside the admin shell |
+| Unknown ID inside `(app)` (`accounts/[accountId]`, `transactions/[transactionId]`, `counterparties/[counterpartyId]`, `messages/[threadId]`, `settings/team/[memberId]`) | per-segment `not-found.tsx` | P34 within the `(app)` layout, leading back to the parent list |
+| Unknown ID inside `(admin)` (`users/[userId]`, `compliance/[caseId]`) | per-segment `not-found.tsx` | P34 within the `(admin)` layout |
 | Unknown help slug | `help/[slug]/not-found.tsx` | P34 body with S46 search |
-| Render or data error in a group | `(app)/error.tsx`, `(admin)/error.tsx`, `(marketing)/error.tsx` | P35 body inside the shell, retry via C33 |
+| Render or data error in a group | `(app)/error.tsx`, `(admin)/error.tsx`, `(marketing)/error.tsx` | P35 within the group's layout, retry via C33 |
 | Root layout failure | `app/global-error.tsx` | P35 standalone |
 | A single section fails | C58 SectionErrorBoundary | C33 in that section only; the rest of the page stays |
-| Offline | S54 offline variant | Last data stays visible, marked stale ([X10](phase-2-experience-maps.md#x10--error-offline-and-outage-recovery)) |
-| Transaction overlay on hard refresh or direct link | `@drawer/(.)transactions/[transactionId]` intercepts only client navigation; a full load of `/transactions/[transactionId]` renders P12 as a full page; `@drawer/default.tsx` renders nothing | The shared link always works, with or without the list behind it |
+| Offline | S54 offline variant | Last data stays readable, marked stale ([X10](phase-2-experience-maps.md#x10--error-offline-and-outage-recovery)) |
+| Intercepted transaction route on hard refresh or direct link | `@drawer/(.)transactions/[transactionId]` intercepts only client navigation; a full load of `/transactions/[transactionId]` renders P12 as a full page; `@drawer/default.tsx` renders nothing | The shared link always works, with or without the list behind it |
 
 A resource that exists in another workspace returns 404 from the backend, not 403. Why: a 403 would confirm to a member that an ID is real in a business they cannot see.
 
@@ -615,7 +602,7 @@ Requirements that travel with it:
 | Multi-entity (one member, several businesses) | Already modelled: workspace switcher C36; IDs are globally unique, so a shared link from another workspace switches context after a membership check | Workspace is **not** in the URL in v1. Moving to `/w/[workspace]/…` later breaks every shared link and bookmark — decide before launch (expensive to reverse) |
 | Money movement (transfers, bill pay) | `/payments`, `/payments/transfer` (P26, P27), Payments nav item under Money | None; routes and permissions reserved above |
 | Cards | New Money item `/cards`, `card` transaction type already in [§7.3](#73-transaction-types) | One nav entry and one protected prefix |
-| Integrations (accounting software sync) | New Settings tab `/settings/integrations` | One tab; exports (P18) remain the manual path |
+| Integrations (accounting software sync) | New Settings sub-page `/settings/integrations` | One sub-page; exports (P18) remain the manual path |
 | Custom categories | Workspace-level list managed in Settings › Workspace | Category becomes an ID instead of a constant value; migration on stored annotations |
 | Locales | No locale segment in `(app)` URLs; locale is a member preference read by `Intl` (A6). Marketing and help may add a `[locale]` segment | Help slugs must stay stable per locale |
 | More platform roles | Admin navigation filtered by the same capability matrix | Backend role model (A9) |
@@ -624,11 +611,12 @@ Rule for any addition: a new top-level section needs a nav entry in `lib/data/`,
 
 ## Changes in this version
 
-- **Retained:** both shells, every navigation item, sitemap, page index P01–P35, role navigation, capability matrix, enforcement layers, taxonomy, labels, cross-links, search and filter hierarchy (including the filter schema), SEO, breadcrumbs, empty and fallback routes, protected prefixes, expansion strategy.
+- **Retained:** both signed-in areas, every navigation item, sitemap, page index P01–P35, role navigation, capability matrix, enforcement layers, taxonomy, labels, cross-links, search and filter hierarchy (including the filter schema), SEO, breadcrumbs, empty and fallback routes, protected prefixes, expansion strategy.
 - **Changed:** section and contract names updated to 2.0.0; "sidebar", "top bar", "left to right", "focal", group-label styling and the phone navigation pattern rewritten as behaviour; the state "Tone" column renamed "Severity" with non-visual values (positive, attention, problem, information, neutral); the figure typography rule and theme colour metadata dropped as visual.
 - **Added:** §2.5 Public site navigation (S55); note on P01's built location below.
+- **Self-audit (tightened seed: structure and reachability only):** §4 Content hierarchy rewritten from field and component inventories (C40, C41, C42, C51, "Account column", "filter chips", "C21 Dialog") to primary information plus sections by priority; navigation notes ("above all groups", "badge", "sub-tabs inside the page header", "tabs in S03"), "shell" wording, "marketing header", "overlay", "view chip", toolbar order, "on hover", "rows", "hidden button" and breadcrumb placement rewritten as structure or behaviour. Headings kept unchanged so links resolve (two still say "shell"). No page, route, role rule, flow or decision removed.
 
-**Note on P01 (2.0.0).** The built home page lives at `app/page.tsx` (no `(marketing)` group yet) and renders its own navigation and closing links. Moving it into the `(marketing)` group is FD04 in [Phase 8](phase-8-implementation-roadmap.md); the URL `/` does not change.
+**Note on P01 (2.0.0).** The built home page lives at `app/page.tsx` (no `(marketing)` group yet) and has its own navigation (S55) and legal & support links (S07). Moving it into the `(marketing)` group is FD04 in [Phase 8](phase-8-implementation-roadmap.md); the URL `/` does not change.
 
 ## Traceability
 

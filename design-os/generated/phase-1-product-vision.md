@@ -356,7 +356,7 @@ How the product behaves and treats its users. Each has a rule that can be checke
 
 - **Systems before pages.** Primitives (`components/ui/`), then compositions (`components/common/`), then sections, then pages. A pattern used twice is promoted.
 - **Sections are data-bound.** Each section owns its hook, its four states and its error boundary (C58). Pages compose sections and hold page-level state such as URL filters.
-- **URL is state.** Ledger filters, date ranges and selected tabs live in URL params so every view is shareable and back-button safe.
+- **URL is state.** Ledger filters, date ranges and chosen sub-views live in URL params so every view is shareable and back-button safe.
 - **Server state through TanStack Query.** Cursor-based infinite queries for ledgers; polling only while a job runs (S32); no global store (C63 WorkspaceProvider is a context, with its reason stated).
 - **Contract-derived types.** Types come from `z.infer` over generated schemas; no parallel hand-written shapes; no `any`, no unchecked casts.
 - **Reuse before install.** Native platform first (`<dialog>`, `popover`, `Intl`, native date inputs); installed libraries second; new libraries only after approval.

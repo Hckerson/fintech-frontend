@@ -38,16 +38,16 @@ This file is the **only** place where build status lives. Phases 1–7 describe 
 
 | # | Phase | Sprint | Weeks | What a user can do at the end |
 |---|---|---|---|---|
-| 1 | Foundations | 1 | 1–2 | Sign in and land in a real shell with honest 404/500 pages; protected routes and admin guard enforced. |
+| 1 | Foundations | 1 | 1–2 | Sign in and land in the real signed-in app with honest 404/500 pages; protected routes and admin guard enforced. |
 | 2 | Auth + admin slice | 2 | 3–4 | Register, sign out, see a session-expiry warning. A platform admin sees real user totals, a real user list and can edit a user — on endpoints that exist today. |
 | 3 | Ledger | 3 | 5–6 | Open the account list, open an account and filter and search its ledger at millions of rows. |
-| 4 | Transactions | 4 | 7–8 | Search transactions, open one in an overlay, annotate it, save a view, jump anywhere with ⌘K. |
+| 4 | Transactions | 4 | 7–8 | Search transactions, open one without leaving the list, annotate it, save a view, jump anywhere with ⌘K. |
 | 5 | Dashboard + documents | 5 | 9–10 | Role-aware dashboard, statements, exports. |
 | 6 | Verification + team | 6 | 11–12 | KYB/KYC onboarding; compliance review; support lookup; invitations and roles. |
 | 7 | Comms, settings, security | 7 | 13–14 | Notifications and alerts, messaging, workspace and profile settings, password reset, two-step, counterparties. |
 | 8 | Insights, public, hardening | 8 | 15–16 | Compare periods, runway, help center, public page reconciled with OD9/OD10; full Phase 9 pass. |
 
-Why this order: foundations first because every section depends on the shell and boundaries (C57, C58); the admin slice second because it runs on real data today; then the read path (ledger → transactions → dashboard) in the order trust is built — a dashboard is only as believable as the ledger underneath.
+Why this order: foundations first because every section depends on the group layouts and boundaries (C57, C58); the admin slice second because it runs on real data today; then the read path (ledger → transactions → dashboard) in the order trust is built — a dashboard is only as believable as the ledger underneath.
 
 ## Priority order
 
@@ -101,7 +101,7 @@ Exit: filters in URL; 5M-row seed scroll within budget; C40 property tests pass;
 ### Sprint 4 — Transactions (weeks 7–8 · M3)
 
 Pages P11–P14 · Sections S24–S27 · Contracts C28, C38, C49, C60 · Flow F3 (counterparty leg Sprint 7).
-Exit: ⌘K opens C38 anywhere; overlay and full page share sections; focus returns to the originating row; optimistic annotations roll back with a message.
+Exit: ⌘K opens C38 anywhere; intercepted route and full page share sections; focus returns to the originating transaction; optimistic annotations roll back with a message.
 
 ### Sprint 5 — Dashboard and documents (weeks 9–10)
 
@@ -141,7 +141,7 @@ Exit: every Built item passes Phase 9 and moves to Verified; P01 states only app
 
 | ID | Name | End of | Definition of done |
 |---|---|---|---|
-| M1 | Shell & guards | Sprint 1 | Shell S01–S03; P34/P35; host defects closed; admin guard; LD and OD9/OD10 requests made. |
+| M1 | Layouts & guards | Sprint 1 | Layouts with S01–S03; P34/P35; host defects closed; admin guard; LD and OD9/OD10 requests made. |
 | M2 | First real-data slice | Sprint 2 | P29–P31 on existing endpoints; P03; sign-out; session expiry. |
 | M3 | Ledger & transactions | Sprint 4 | F2, F3 (minus counterparty) on seed data; 5M-row budget met. |
 | M4 | Onboarding + team | Sprint 6 | F1, F4, F5, X6, D1–D6. |
@@ -384,7 +384,7 @@ Verified: 0.
 | [P09](phase-4-page-blueprints.md#p09--accounts) | Accounts | Specified | 3 | — |
 | [P10](phase-4-page-blueprints.md#p10--account-ledger) | Account ledger | Specified | 3 | LD2 |
 | [P11](phase-4-page-blueprints.md#p11--transaction-search) | Transaction search | Specified | 4 | — |
-| [P12](phase-4-page-blueprints.md#p12--transaction-detail) | Transaction detail | Specified | 4 | page + overlay |
+| [P12](phase-4-page-blueprints.md#p12--transaction-detail) | Transaction detail | Specified | 4 | page + intercepted route |
 | [P13](phase-4-page-blueprints.md#p13--saved-views) | Saved views | Specified | 4 | — |
 | [P14](phase-4-page-blueprints.md#p14--flagged-transactions) | Flagged transactions | Specified | 4 | — |
 | [P15](phase-4-page-blueprints.md#p15--compare-periods) | Compare periods | Specified | 8 | LD1 |
@@ -452,7 +452,7 @@ Verified: 0.
 | C66 | Sample interaction control | Built | — | `approval-card.tsx`, `card-controls.tsx`. Uncommitted. |
 | C67 | Enquiry form | Built | — | `contact-section.tsx`. Uncommitted. |
 | C68 | Text reveal | Built | — | `reveal-words.tsx`; accessibility to confirm. Uncommitted. |
-| C02–C10, C12–C14, C16–C18, C20, C27, C29, C32, C33, C35–C37, C54, C57–C59, C63 | primitives batch 1, shell compositions, wrappers, workspace provider | Specified | 1 | C18, C20, C29 pulled forward |
+| C02–C10, C12–C14, C16–C18, C20, C27, C29, C32, C33, C35–C37, C54, C57–C59, C63 | primitives batch 1, layout compositions, wrappers, workspace provider | Specified | 1 | C18, C20, C29 pulled forward |
 | C11, C15, C19, C21–C25, C30, C41, C45, C52, C53, C55, C62 | — | Specified | 2 | C30 LD1; C53 LD2 |
 | C31, C40, C42, C43, C44, C46, C47, C48, C51 | — | Specified | 3 | — |
 | C28, C38, C49, C60 | — | Specified | 4 | — |
@@ -489,7 +489,7 @@ This is **generation 2**, a merge over generation 1 (commit `9565964`, 16 files)
 |---|---|
 | **Retained** | Personas R1–R7; F1–F7; D1–D7; X1–X10; P01–P35; S01–S54; C01–C63 (as interaction contracts); FD01, FD03–FD17; BR1–BR11; OD1–OD6, OD8; LD1–LD5; M1–M5; BE-* modules; KPIs K1–K14, SM1–SM5, North Star; Q-001–Q-250 IDs (visual ones retired, not deleted); host findings H-01–H-23; all states (transaction, account, verification, export, user) and all role variants. |
 | **Added** | R8 Prospect; X11 Get-started enquiry; S55–S64; C64–C68; FD18; BR12; OD9; OD10; R-10, R-11; BE-enquiry; `use-enquiry`; host findings H-24, H-25; QA items Q-251–Q-262; Phase 5 Q5–Q6; Phase 6 Q6-8. |
-| **Changed** | Files: 16 → 15 (Phase 7 Design Tokens dropped as visual; Phases 8–10 renumbered 7–9; Phase 6 renamed Interaction Contracts). Visual prescriptions dropped: dark-default palette with lime accent and the Daylight light theme, Geist / Geist Mono type, type scale, spacing, radii, elevation, shadows, opacity, breakpoints, grid, container widths, icon sizes, focus-ring tokens, z-index, motion durations and presets, contrast proofs tied to specific colours, component tokens, `.figure` typography and tone map, named layout classes, responsive frame, depth floor, density rules, register rules, styled templates, visual "feel" references (Linear, Vercel). Withdrawn: DP3, DP4, DP5, DP13, OD7, A7, PA2, A13, A14, P7-A7, FD02, Q6-4, Q6-5. Reworded: BR3, BR4, DP2, DP6–DP8. Renamed: 22 sections, 19 contracts (tables in Phases 5 and 6). Page "Modules" → Content requirements; "Responsive behavior" → Device needs. Status: 1.0.0 "Scheduled" rows → "Specified" with a planned sprint; P01, S04, S06, S07 → Built. |
+| **Changed** | Files: 16 → 15 (Phase 7 Design Tokens dropped as visual; Phases 8–10 renumbered 7–9; Phase 6 renamed Interaction Contracts). Visual prescriptions dropped: dark-default palette with lime accent and the Daylight light theme, Geist / Geist Mono type, type scale, spacing, radii, elevation, shadows, opacity, breakpoints, grid, container widths, icon sizes, focus-ring tokens, z-index, motion durations and presets, contrast proofs tied to specific colours, component tokens, `.figure` typography and tone map, named layout classes, responsive frame, depth floor, density rules, register rules, styled templates, visual "feel" references (Linear, Vercel). Withdrawn: DP3, DP4, DP5, DP13, OD7, A7, PA2, A13, A14, P7-A7, FD02, Q6-4, Q6-5. Reworded: BR3, BR4, DP2, DP6–DP8. Renamed: 22 sections, 19 contracts (tables in Phases 5 and 6). Page "Modules" → Content requirements (removed in the later self-audit); "Responsive behavior" → Device needs. Status: 1.0.0 "Scheduled" rows → "Specified" with a planned sprint; P01, S04, S06, S07 → Built. |
 | **Removed** | **Empty.** No feature was removed. |
 
 Deferred items (F6, F7, P26, P27, S44, S45) are retained in full; deferral is a status.
