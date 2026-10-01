@@ -1,8 +1,8 @@
 import {
+    FORGOT_PASSWORD_ROUTE,
     HTTP_STATUS,
     INVALID_CREDENTIALS,
     REGISTER_ROUTE,
-    helpArticleRoute,
 } from "@/lib/constants";
 
 export const SIGN_IN_FIELDS = {
@@ -31,7 +31,7 @@ export const SIGN_IN_COPY = {
     pending: "Signing in",
     forgot: {
         label: "Forgot password?",
-        href: helpArticleRoute("signing-in-and-sessions"),
+        href: FORGOT_PASSWORD_ROUTE,
     },
     create: {
         prompt: "New to Ledgerline?",

@@ -14,13 +14,13 @@ interface Props {
 export default function AuthShell({ statement, visual, children }: Props) {
     return (
         <div className="grid min-h-svh lg:grid-cols-2">
-            <div className="relative flex flex-col px-6 py-6 sm:px-10 lg:p-12 xl:p-16 short:lg:py-8">
+            <div className="short:lg:py-8 relative flex flex-col px-6 py-6 sm:px-10 lg:p-12 xl:p-16">
                 <div className="absolute inset-x-0 top-0 lg:hidden">
                     <SignatureRule className="h-6" play="mount" />
                 </div>
                 <div className="mx-auto flex w-full max-w-md flex-1 flex-col lg:max-w-none">
                     <LedgerLogo />
-                    <main className="flex flex-1 items-center py-8 lg:py-6 short:lg:py-4">
+                    <main className="short:lg:py-4 flex flex-1 items-center py-8 lg:py-6">
                         <div className="w-full">{children}</div>
                     </main>
                     <nav

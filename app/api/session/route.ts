@@ -4,7 +4,7 @@ import { HTTP_STATUS, SESSION_COOKIE } from "@/lib/constants";
 import { routes } from "@/lib/contract/routes";
 import { signInMessage } from "@/lib/data/auth/sign-in";
 import { startSession } from "@/lib/utils/session";
-import { loginSchema } from "@/lib/validations/auth";
+import { challengeEnvelopeSchema, loginSchema } from "@/lib/validations/auth";
 
 const rejected = (status: number) =>
     NextResponse.json({ message: signInMessage(status) }, { status });
@@ -23,6 +23,15 @@ export const POST = async (request: NextRequest) => {
     }
     if (upstream.status === HTTP_STATUS.tooManyRequests) {
         return rejected(HTTP_STATUS.tooManyRequests);
+    }
+
+    const challenge = challengeEnvelopeSchema.safeParse(
+        await readJson(upstream.clone()),
+    );
+    if (upstream.ok && challenge.success) {
+        return NextResponse.json(challenge.data.data, {
+            status: HTTP_STATUS.accepted,
+        });
     }
 
     return (await startSession(upstream)) ?? rejected(HTTP_STATUS.unauthorized);

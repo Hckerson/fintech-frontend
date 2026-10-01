@@ -14,6 +14,7 @@ import AuthFormFooter from "@/components/auth/auth-form-footer";
 import AuthFormHeader from "@/components/auth/auth-form-header";
 import AuthSubmit from "@/components/auth/auth-submit";
 import PasswordField from "@/components/auth/password-field";
+import { verifyRoute } from "@/lib/constants";
 import { useLogin } from "@/lib/hooks/use-login";
 import { statusOf } from "@/lib/utils/http-status";
 import {
@@ -52,8 +53,8 @@ export default function SignInForm({ next }: Props) {
     const submit = (event: FormEvent) => {
         event.preventDefault();
         login.mutate(values, {
-            onSuccess: () => {
-                router.push(next);
+            onSuccess: ({ challenge }) => {
+                router.push(challenge ? verifyRoute(challenge, next) : next);
                 router.refresh();
             },
             onError: () =>
@@ -66,7 +67,7 @@ export default function SignInForm({ next }: Props) {
             onSubmit={submit}
             noValidate
             aria-describedby={message ? errorId : undefined}
-            className="flex flex-col gap-8 short:gap-6"
+            className="short:gap-6 flex flex-col gap-8"
         >
             <AuthFormHeader
                 eyebrow={SIGN_IN_COPY.eyebrow}
@@ -74,7 +75,7 @@ export default function SignInForm({ next }: Props) {
                 lead={SIGN_IN_COPY.lead}
             />
             <AuthFormError ref={errorRef} id={errorId} message={message} />
-            <div className="flex flex-col gap-5 short:gap-4">
+            <div className="short:gap-4 flex flex-col gap-5">
                 <AuthField
                     id={`${baseId}-email`}
                     {...SIGN_IN_FIELDS.email}

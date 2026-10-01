@@ -6,7 +6,7 @@ import type { AuthResponseUserDto, LoginDto } from "@/lib/contract/schemas";
 export const useLogin = () =>
     useMutation({
         mutationFn: (input: LoginDto) =>
-            local.post<{ user: AuthResponseUserDto }>(
+            local.post<{ user?: AuthResponseUserDto; challenge?: string }>(
                 apiRoutes.session(),
                 input,
             ),

@@ -99,7 +99,7 @@ export default function RegisterForm({ next }: Props) {
             onSubmit={submit}
             noValidate
             aria-describedby={message ? errorId : undefined}
-            className="flex flex-col gap-8 short:gap-6"
+            className="short:gap-6 flex flex-col gap-8"
         >
             <AuthFormHeader
                 eyebrow={REGISTER_COPY.eyebrow}
@@ -107,7 +107,7 @@ export default function RegisterForm({ next }: Props) {
                 lead={REGISTER_COPY.lead}
             />
             <AuthFormError ref={errorRef} id={errorId} message={message} />
-            <div className="flex flex-col gap-5 short:gap-4">
+            <div className="short:gap-4 flex flex-col gap-5">
                 <AuthField
                     {...REGISTER_FIELDS.fullName}
                     {...field("fullName")}

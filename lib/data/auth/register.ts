@@ -39,11 +39,6 @@ export const REGISTER_COPY = {
         href: LOGIN_ROUTE,
     },
     statement: "Every pound lands on the line the moment it moves.",
-    account: {
-        name: "New operating account",
-        currency: "GBP",
-        value: "£0.00",
-    },
 } as const;
 
 export const REGISTER_FIELD_ERRORS: Partial<
