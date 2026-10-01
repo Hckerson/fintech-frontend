@@ -7,7 +7,15 @@ import StatusLine from "@/components/status/status-line";
 import { NOT_FOUND_COPY } from "@/lib/data/status/not-found";
 import { HELP_ROUTE, HOME_ROUTE } from "@/lib/constants";
 
-export default function NotFoundPanel() {
+interface Props {
+    home?: { label: string; href: string };
+    showPath?: boolean;
+}
+
+export default function NotFoundPanel({
+    home = { label: NOT_FOUND_COPY.home, href: HOME_ROUTE },
+    showPath = true,
+}: Props) {
     const pathname = usePathname();
 
     return (
@@ -31,8 +39,8 @@ export default function NotFoundPanel() {
                     </p>
                 </header>
                 <div className="flex flex-wrap items-center gap-6">
-                    <LedgerButton href={HOME_ROUTE} tone="accent">
-                        {NOT_FOUND_COPY.home}
+                    <LedgerButton href={home.href} tone="accent">
+                        {home.label}
                         <ArrowRight
                             aria-hidden
                             className="size-4 transition-transform group-hover:translate-x-0.5"
@@ -50,7 +58,11 @@ export default function NotFoundPanel() {
                 <span className="text-text-muted tracking-[0.12em] uppercase">
                     {NOT_FOUND_COPY.tag}
                 </span>
-                <span className="text-text max-w-56 truncate">{pathname}</span>
+                {showPath ? (
+                    <span className="text-text max-w-56 truncate">
+                        {pathname}
+                    </span>
+                ) : null}
             </StatusLine>
         </section>
     );

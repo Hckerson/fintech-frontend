@@ -14,7 +14,15 @@ import { HELP_ROUTE, HOME_ROUTE } from "@/lib/constants";
 
 const retriedAcrossRemounts = new Set<string>();
 
-export default function ServerErrorPanel({ error, reset }: ErrorBoundaryProps) {
+interface Props extends ErrorBoundaryProps {
+    home?: { label: string; href: string };
+}
+
+export default function ServerErrorPanel({
+    error,
+    reset,
+    home = { label: COPY.home, href: HOME_ROUTE },
+}: Props) {
     const router = useRouter();
     const online = useOnline();
     const [pending, startTransition] = useTransition();
@@ -85,10 +93,10 @@ export default function ServerErrorPanel({ error, reset }: ErrorBoundaryProps) {
                         {pending ? COPY.retrying : COPY.retry}
                     </button>
                     <Link
-                        href={HOME_ROUTE}
+                        href={home.href}
                         className="text-text-secondary hover:text-text underline-offset-4 hover:underline"
                     >
-                        {COPY.home}
+                        {home.label}
                     </Link>
                     {again ? null : (
                         <Link
