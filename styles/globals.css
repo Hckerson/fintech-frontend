@@ -2,6 +2,7 @@
 @import "./tokens.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
+@custom-variant short (@media (max-height: 50rem));
 
 @theme {
     /* Map plural tokens to singular Tailwind v4 theme names */
@@ -115,12 +116,135 @@
     --radius-lg: var(--radii-lg);
     --radius-xl: var(--radii-xl);
     --radius-full: var(--radii-full);
+
+    --animate-ledger-pulse: ledger-pulse 2.4s var(--timing-functions-in-out)
+        infinite;
+
+    @keyframes ledger-pulse {
+        50% {
+            opacity: 0.35;
+        }
+    }
 }
 
 *,
 *::before,
 *::after {
     box-sizing: border-box;
+}
+
+@utility ledger-shell {
+    width: min(100% - 2 * var(--ledger-gutter), var(--ledger-shell));
+    margin-inline: auto;
+}
+
+@utility ledger-section {
+    padding-block: var(--ledger-section);
+}
+
+@utility status-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100svh;
+    padding-top: calc(var(--ledger-header) + var(--ledger-gutter));
+}
+
+@utility ledger-display {
+    font-size: var(--ledger-display);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.045em;
+}
+
+@utility ledger-title {
+    font-size: var(--ledger-title);
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+}
+
+@utility ledger-figure {
+    font-size: var(--ledger-figure);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.035em;
+    font-variant-numeric: tabular-nums;
+}
+
+@utility surface-card {
+    background: var(--colors-background-alt);
+    border: 1px solid var(--colors-border);
+    border-radius: var(--radii-xl);
+}
+
+@utility frame-panel {
+    padding: 1rem;
+    background: var(--colors-background);
+    border: 1px solid var(--colors-border);
+    border-radius: var(--radii-lg);
+}
+
+@utility product-frame {
+    position: relative;
+    transform-origin: 50% 0%;
+    box-shadow: var(--ledger-frame-shadow);
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset-inline: 12%;
+        top: -1px;
+        height: 1px;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            var(--colors-line),
+            transparent
+        );
+        opacity: 0.6;
+    }
+}
+
+@utility signature-line {
+    fill: none;
+    stroke: var(--colors-line);
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 6px var(--ledger-glow));
+}
+
+@utility signature-area {
+    fill: var(--ledger-glow);
+}
+
+@utility sheen {
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(
+            115deg,
+            transparent 35%,
+            var(--ledger-sheen) 50%,
+            transparent 65%
+        );
+        transform: translateX(-100%);
+    }
+
+    &:hover::after {
+        transform: translateX(100%);
+        transition: transform var(--ledger-sheen-duration) var(--ledger-ease);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        &::after {
+            display: none;
+        }
+    }
 }
 
 .pad {

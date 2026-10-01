@@ -2,7 +2,9 @@
 import type { Endpoint } from "@/lib/types/api";
 import { queryString } from "@/lib/utils/query-string";
 import type {
+    AccountResponseDto,
     AuthResponseDto,
+    CashFlowSeriesResponseDto,
     HealthResponseDto,
     PeriodSeriesResponseDto,
     PeriodTotalResponseDto,
@@ -29,4 +31,10 @@ export const routes = {
         `/api/stats/users/total${queryString(query)}` as Endpoint<PeriodTotalResponseDto>,
     statsUsersSeries: (query: { period: "day" | "month" | "year" }) =>
         `/api/stats/users/series${queryString(query)}` as Endpoint<PeriodSeriesResponseDto>,
+    accountsFindAll: () => "/api/accounts" as Endpoint<AccountResponseDto[]>,
+    cashFlowSeries: (query: {
+        range: "30d" | "90d" | "12m";
+        currency?: string;
+    }) =>
+        `/api/cash-flow${queryString(query)}` as Endpoint<CashFlowSeriesResponseDto>,
 } as const;

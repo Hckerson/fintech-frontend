@@ -83,6 +83,20 @@ describe("creating a session", () => {
 
         expect((await postWith(CREDENTIALS)).status).toBe(401);
     });
+
+    it("passes a rate limit through so the form can say to wait", async () => {
+        vi.stubGlobal("fetch", respondWith(429, { message: "Too many" }));
+
+        expect((await postWith(CREDENTIALS)).status).toBe(429);
+    });
+
+    it("reports the service as unavailable, not the password as wrong, when the backend fails", async () => {
+        vi.stubGlobal("fetch", respondWith(500, { message: "Boom" }));
+        expect((await postWith(CREDENTIALS)).status).toBe(503);
+
+        vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("offline")));
+        expect((await postWith(CREDENTIALS)).status).toBe(503);
+    });
 });
 
 describe("destroying a session", () => {

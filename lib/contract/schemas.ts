@@ -100,3 +100,48 @@ export const periodSeriesResponseDtoSchema = z.object({
 export type PeriodSeriesResponseDto = z.infer<
     typeof periodSeriesResponseDtoSchema
 >;
+
+export const moneyDtoSchema = z.object({
+    amountMinor: z.string(),
+    currency: z.string(),
+});
+export type MoneyDto = z.infer<typeof moneyDtoSchema>;
+
+export const accountResponseDtoSchema = z.object({
+    id: z.string(),
+    name: z.string(),
+    kind: z.enum(["OPERATING", "RESERVE", "SAVINGS"]),
+    last4: z.string(),
+    currency: z.string(),
+    available: moneyDtoSchema,
+    current: moneyDtoSchema,
+    state: z.enum(["OPEN", "FROZEN", "CLOSED"]),
+    openedAt: z.string(),
+});
+export type AccountResponseDto = z.infer<typeof accountResponseDtoSchema>;
+
+export const cashFlowPointDtoSchema = z.object({
+    inflow: moneyDtoSchema,
+    outflow: moneyDtoSchema,
+    net: moneyDtoSchema,
+    periodStart: z.string(),
+});
+export type CashFlowPointDto = z.infer<typeof cashFlowPointDtoSchema>;
+
+export const cashFlowTotalsDtoSchema = z.object({
+    inflow: moneyDtoSchema,
+    outflow: moneyDtoSchema,
+    net: moneyDtoSchema,
+});
+export type CashFlowTotalsDto = z.infer<typeof cashFlowTotalsDtoSchema>;
+
+export const cashFlowSeriesResponseDtoSchema = z.object({
+    range: z.enum(["30d", "90d", "12m"]),
+    granularity: z.enum(["day", "month", "year"]),
+    currency: z.string(),
+    points: z.array(cashFlowPointDtoSchema),
+    totals: cashFlowTotalsDtoSchema,
+});
+export type CashFlowSeriesResponseDto = z.infer<
+    typeof cashFlowSeriesResponseDtoSchema
+>;
