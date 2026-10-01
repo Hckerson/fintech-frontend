@@ -5,7 +5,7 @@ import { CircleDash } from "@carbon/icons-react";
 import type { ButtonHTMLAttributes } from "react";
 
 type ButtonSize = "sm" | "md" | "lg" | "xl";
-type ButtonTone = "accent" | "quiet" | "ghost";
+type ButtonTone = "accent" | "quiet" | "ghost" | "danger";
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
     isLoading?: boolean;
@@ -24,7 +24,23 @@ const tones: Record<ButtonTone, string> = {
     accent: "border-accent bg-accent text-text-inverse hover:bg-accent-dark",
     quiet: "border-border bg-background-muted text-text hover:border-border-dark",
     ghost: "border-transparent text-text-secondary hover:bg-background-muted hover:text-text",
+    danger: "border-error bg-error text-text-inverse hover:opacity-90",
 };
+
+export const buttonClass = (
+    tone: ButtonTone = "accent",
+    size: ButtonSize = "md",
+    className?: string,
+) =>
+    clsx(
+        "smooth font-body inline-flex cursor-pointer items-center justify-center border font-medium select-none",
+        "focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none",
+        "disabled:cursor-not-allowed disabled:opacity-50",
+        "aria-disabled:cursor-not-allowed aria-disabled:opacity-50",
+        sizes[size],
+        tones[tone],
+        className,
+    );
 
 const Button = forwardRef<HTMLButtonElement, Props>(function Button(
     {
@@ -46,14 +62,7 @@ const Button = forwardRef<HTMLButtonElement, Props>(function Button(
             type={type}
             disabled={disabled ?? isLoading}
             aria-busy={isLoading}
-            className={clsx(
-                "smooth font-body inline-flex cursor-pointer items-center justify-center border font-medium select-none",
-                "focus-visible:ring-accent focus-visible:ring-2 focus-visible:outline-none",
-                "disabled:cursor-not-allowed disabled:opacity-50",
-                sizes[size],
-                tones[tone],
-                className,
-            )}
+            className={buttonClass(tone, size, className)}
         >
             {isLoading && <CircleDash className="size-3 animate-spin" />}
             {children}

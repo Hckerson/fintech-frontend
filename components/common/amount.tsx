@@ -1,3 +1,4 @@
+import { NOT_AVAILABLE } from "@/lib/constants";
 import { formatMoney } from "@/lib/utils/money";
 
 interface Props {
@@ -25,7 +26,7 @@ export default function Amount({
             aria-label={label && text ? `${label}: ${text}` : undefined}
             className={className}
         >
-            {text ?? <span aria-label="Not available">—</span>}
+            {text ?? <span aria-label={NOT_AVAILABLE}>—</span>}
         </data>
     );
 }

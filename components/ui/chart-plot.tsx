@@ -15,6 +15,7 @@ interface Props {
     points: ChartPoint[];
     marker?: ChartMarker;
     formatTick: (value: number) => string;
+    wholeTicks?: boolean;
 }
 
 const AXIS = {
@@ -24,7 +25,12 @@ const AXIS = {
     axisLine: false,
 };
 
-export default function ChartPlot({ points, marker, formatTick }: Props) {
+export default function ChartPlot({
+    points,
+    marker,
+    formatTick,
+    wholeTicks = false,
+}: Props) {
     return (
         <ResponsiveContainer width="100%" height="100%">
             <AreaChart
@@ -48,7 +54,12 @@ export default function ChartPlot({ points, marker, formatTick }: Props) {
                 </defs>
                 <CartesianGrid vertical={false} stroke="var(--colors-border)" />
                 <XAxis dataKey="label" {...AXIS} minTickGap={24} />
-                <YAxis {...AXIS} width={64} tickFormatter={formatTick} />
+                <YAxis
+                    {...AXIS}
+                    width={64}
+                    tickFormatter={formatTick}
+                    allowDecimals={!wholeTicks}
+                />
                 <Tooltip
                     cursor={{ stroke: "var(--colors-border-dark)" }}
                     content={({ active, payload }) =>

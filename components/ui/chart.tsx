@@ -16,6 +16,7 @@ interface Props {
     points: ChartPoint[];
     marker?: ChartMarker;
     formatTick: (value: number) => string;
+    wholeTicks?: boolean;
     table: { x: string; y: string; toggle: string };
 }
 
@@ -25,6 +26,7 @@ export default function Chart({
     points,
     marker,
     formatTick,
+    wholeTicks,
     table,
 }: Props) {
     const id = useId();
@@ -42,6 +44,7 @@ export default function Chart({
                     points={points}
                     marker={marker}
                     formatTick={formatTick}
+                    wholeTicks={wholeTicks}
                 />
             </div>
             <details className="group text-sm">
