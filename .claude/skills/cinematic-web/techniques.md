@@ -14,6 +14,8 @@ Pick one per build on what the metaphor needs, and justify it against the other 
 
 Route B looks the most expensive and is often the cheapest: a four-second render does what a week of shader work does. Route C is only right when the object must respond live in ways a clip cannot.
 
+The libraries named in this table are examples, not requirements. Use whichever library, dataset or service fits the concept, including ones not listed here.
+
 "Nothing new" is not a reason to pick a route. The first Haulr build chose Route A to avoid new packages and came out as a flat diagram; the rebuild on deck.gl, with real state outlines and interstate data, was what the concept needed from the start.
 
 ## Scene container
