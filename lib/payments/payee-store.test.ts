@@ -8,7 +8,8 @@ import {
     renameStoredPayee,
 } from "./payee-store";
 
-const all = () => listStoredPayees({ search: "", status: "all", cursor: null }).items;
+const all = () =>
+    listStoredPayees({ search: "", status: "all", cursor: null }).items;
 
 const NEW_PAYEE = {
     name: "Ada Lovelace Ltd",
@@ -25,7 +26,11 @@ describe("the payee stand-in", () => {
     });
 
     it("narrows by a case-insensitive search", () => {
-        const { items } = listStoredPayees({ search: "TERN", status: "all", cursor: null });
+        const { items } = listStoredPayees({
+            search: "TERN",
+            status: "all",
+            cursor: null,
+        });
 
         expect(items.map((payee) => payee.id)).toEqual(["pye_tern"]);
     });
@@ -49,8 +54,14 @@ describe("the payee stand-in", () => {
 
     it("creates one record for a repeated idempotency key", () => {
         const before = all().length;
-        const first = addStoredPayee({ input: NEW_PAYEE, idempotencyKey: "k1" });
-        const again = addStoredPayee({ input: NEW_PAYEE, idempotencyKey: "k1" });
+        const first = addStoredPayee({
+            input: NEW_PAYEE,
+            idempotencyKey: "k1",
+        });
+        const again = addStoredPayee({
+            input: NEW_PAYEE,
+            idempotencyKey: "k1",
+        });
 
         expect(first).toEqual(again);
         expect(first.ok && first.data.status).toBe("pending_verification");

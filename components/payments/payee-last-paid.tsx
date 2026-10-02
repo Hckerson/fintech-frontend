@@ -14,7 +14,9 @@ export default function PayeeLastPaid({
         : null;
 
     return lastPaidAt && day ? (
-        <time dateTime={lastPaidAt} className="whitespace-nowrap">{day}</time>
+        <time dateTime={lastPaidAt} className="whitespace-nowrap">
+            {day}
+        </time>
     ) : (
         <span className="text-text-muted">{PAYEE_COPY.neverPaid}</span>
     );

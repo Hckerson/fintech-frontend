@@ -24,7 +24,7 @@ export default function PayeeDigitsField({
     onChange,
 }: Props) {
     return (
-        <Field label={label} hint={hint} error={error}>
+        <Field label={label} hint={error ? undefined : hint} error={error}>
             {(control) => (
                 <TextInput
                     {...control}

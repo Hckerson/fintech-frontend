@@ -6,18 +6,16 @@ import StatusLabel from "@/components/ui/status-label";
 import { PAYEE_COPY } from "@/lib/data/payments/copy";
 import type { Payee } from "@/lib/types";
 
-interface Props {
-    payee: Payee;
-    reasonId: string;
-}
-
-export default function PayeeIdentity({ payee, reasonId }: Props) {
+export default function PayeeIdentity({ payee }: { payee: Payee }) {
     return (
-        <div className="flex items-start gap-3">
+        <div className="flex items-start gap-3 md:items-center">
             <Avatar name={payee.name} className="size-8" />
             <div className="flex min-w-0 flex-1 flex-col gap-1">
-                <span className="flex min-h-8 flex-wrap items-center gap-x-2 gap-y-1">
-                    <span className="text-text font-medium wrap-anywhere">
+                <span className="flex min-h-8 items-center gap-2">
+                    <span
+                        title={payee.name}
+                        className="text-text font-medium max-md:wrap-anywhere md:truncate"
+                    >
                         {payee.name}
                     </span>
                     {payee.paymentInProgress ? (
@@ -33,11 +31,6 @@ export default function PayeeIdentity({ payee, reasonId }: Props) {
                 <span className="md:hidden">
                     <PayeeStatus status={payee.status} />
                 </span>
-                {payee.status === "active" ? null : (
-                    <span id={reasonId} className="text-text-muted text-xs">
-                        {PAYEE_COPY.reasons.pendingVerification}
-                    </span>
-                )}
                 <div className="md:hidden">
                     <PayeeHistory payee={payee} />
                 </div>

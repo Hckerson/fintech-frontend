@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import type { MouseEvent } from "react";
+import { useId, type MouseEvent } from "react";
 import { Edit, OverflowMenuVertical, TrashCan } from "@carbon/icons-react";
 import Button, { buttonClass } from "@/components/ui/button";
 import Menu from "@/components/ui/menu";
@@ -11,7 +11,6 @@ import type { Payee } from "@/lib/types";
 interface Props {
     payee: Payee;
     online: boolean;
-    reasonId: string;
     onRename: (payee: Payee) => void;
     onRemove: (payee: Payee) => void;
 }
@@ -27,10 +26,10 @@ const refocusTrigger = (event: MouseEvent<HTMLElement>) =>
 export default function PayeeActions({
     payee,
     online,
-    reasonId,
     onRename,
     onRemove,
 }: Props) {
+    const reasonId = useId();
     const removable = online && !payee.paymentInProgress;
     const reason = online
         ? payee.paymentInProgress
@@ -49,15 +48,24 @@ export default function PayeeActions({
                     {PAYEE_COPY.pay}
                 </Link>
             ) : (
-                <Button
-                    tone="quiet"
-                    size="sm"
-                    aria-disabled
-                    aria-describedby={reasonId}
-                    aria-label={PAYEE_COPY.payNamed(payee.name)}
-                >
-                    {PAYEE_COPY.pay}
-                </Button>
+                <span className="group relative inline-flex">
+                    <Button
+                        tone="quiet"
+                        size="sm"
+                        aria-disabled
+                        aria-describedby={reasonId}
+                        aria-label={PAYEE_COPY.payNamed(payee.name)}
+                    >
+                        {PAYEE_COPY.pay}
+                    </Button>
+                    <span
+                        id={reasonId}
+                        role="tooltip"
+                        className="border-border-dark bg-background-alt text-text-secondary invisible absolute top-full right-0 z-(--z-indices-dropdown) mt-2 w-56 rounded-lg border px-3 py-2 text-left text-xs shadow-(--shadows-xl) group-focus-within:visible group-hover:visible"
+                    >
+                        {PAYEE_COPY.reasons.pendingVerification}
+                    </span>
+                </span>
             )}
             <Menu
                 label={PAYEE_COPY.moreNamed(payee.name)}

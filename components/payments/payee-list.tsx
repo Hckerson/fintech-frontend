@@ -34,6 +34,7 @@ export default function PayeeList() {
     const [target, setTarget] = useState<PayeeTarget | null>(null);
     const [outcome, setOutcome] = useState("");
     const denied = !allowed || payees.error?.kind === "forbidden";
+    const summary = payees.data?.pages[0]?.summary;
     const add = () => setTarget({ kind: "add" });
 
     const finish = (message: string, refocus = false) => {
@@ -64,13 +65,14 @@ export default function PayeeList() {
                 <NotPermitted page={PAGE_TITLES.payments} />
             ) : (
                 <>
-                    <PayeeSummary summary={payees.data?.pages[0]?.summary} />
+                    <PayeeSummary summary={summary} />
                     <section
                         aria-label={PAYEE_COPY.section}
                         className="surface-card flex min-w-0 flex-col"
                     >
                         <PayeeToolbar
                             panelId={panelId}
+                            summary={summary}
                             filter={filter}
                             search={search}
                             onFilter={setFilter}

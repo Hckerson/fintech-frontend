@@ -19,7 +19,7 @@ export default function PayeeHistory({ payee }: { payee: Payee }) {
                     {PAYEE_COPY.totalPaid}
                 </dt>
                 <dd>
-                    <PayeeTotals totals={payee.totalPaid} />
+                    <PayeeTotals payee={payee} />
                 </dd>
             </div>
         </dl>

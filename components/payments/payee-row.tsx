@@ -1,5 +1,4 @@
 "use client";
-import { useId } from "react";
 import PayeeActions from "@/components/payments/payee-actions";
 import PayeeDestination from "@/components/payments/payee-destination";
 import PayeeIdentity from "@/components/payments/payee-identity";
@@ -18,32 +17,32 @@ interface Props {
 const CELL = "px-4 py-3";
 
 export default function PayeeRow({ payee, online, onRename, onRemove }: Props) {
-    const reasonId = useId();
-
     return (
-        <tr className="border-border hover:bg-background-muted/40 border-t align-top transition-colors">
-            <th scope="row" className={`${CELL} text-left font-normal`}>
-                <PayeeIdentity payee={payee} reasonId={reasonId} />
+        <tr className="border-border hover:bg-background-muted/40 border-t align-middle transition-colors">
+            <th
+                scope="row"
+                className={`${CELL} max-w-0 text-left font-normal md:w-2/5`}
+            >
+                <PayeeIdentity payee={payee} />
             </th>
-            <td className={`${CELL} leading-8 max-lg:hidden`}>
+            <td className={`${CELL} whitespace-nowrap max-lg:hidden`}>
                 <PayeeDestination payee={payee} />
             </td>
-            <td className={`${CELL} leading-8 max-md:hidden`}>
+            <td className={`${CELL} max-md:hidden`}>
                 <PayeeStatus status={payee.status} />
             </td>
             <td
-                className={`${CELL} text-text-secondary leading-8 whitespace-nowrap max-md:hidden`}
+                className={`${CELL} text-text-secondary whitespace-nowrap max-md:hidden`}
             >
                 <PayeeLastPaid lastPaidAt={payee.lastPaidAt} />
             </td>
-            <td className={`${CELL} text-right leading-8 max-md:hidden`}>
-                <PayeeTotals totals={payee.totalPaid} />
+            <td className={`${CELL} text-right max-md:hidden`}>
+                <PayeeTotals payee={payee} />
             </td>
-            <td className={CELL}>
+            <td className={`${CELL} w-px max-md:align-top`}>
                 <PayeeActions
                     payee={payee}
                     online={online}
-                    reasonId={reasonId}
                     onRename={onRename}
                     onRemove={onRemove}
                 />

@@ -64,7 +64,8 @@ export default function PayeeRenameDialog({
             onClose={onClose}
         >
             <Field
-                {...PAYEE_COPY.fields.name}
+                label={PAYEE_COPY.fields.name.label}
+                hint={invalid ? undefined : PAYEE_COPY.fields.name.hint}
                 error={invalid ? PAYEE_COPY.fieldErrors.name : undefined}
             >
                 {(control) => (

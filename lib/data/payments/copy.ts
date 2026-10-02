@@ -35,9 +35,13 @@ export const PAYEE_COPY = {
     ],
     filterLabel: "Filter payees by status",
     filters: [
-        { id: "all", label: "All" },
-        { id: "active", label: "Ready to pay" },
-        { id: "pending_verification", label: "Pending" },
+        { id: "all", label: "All", stat: "total" },
+        { id: "active", label: "Ready to pay", stat: "active" },
+        {
+            id: "pending_verification",
+            label: "Pending",
+            stat: "pendingVerification",
+        },
     ],
     showing: (shown: number, matched: number) =>
         `Showing ${shown} of ${matched}`,
@@ -51,6 +55,8 @@ export const PAYEE_COPY = {
             .filter(Boolean)
             .join(" · "),
     inProgress: "Payment in progress",
+    moreCurrencies: (count: number, name: string) =>
+        `${count} more ${count === 1 ? "currency" : "currencies"} paid to ${name}`,
     moreNamed: (name: string) => `More actions for ${name}`,
     destination: (last4: string) => `•• ${last4}`,
     destinationSpoken: (last4: string) => `account ending ${last4}`,
@@ -103,7 +109,7 @@ export const PAYEE_COPY = {
         },
     },
     fieldErrors: {
-        name: `Enter a name of ${PAYEE_NAME_MAX} characters or fewer.`,
+        name: `Enter a name, up to ${PAYEE_NAME_MAX} characters.`,
         sortCode: `Enter the ${SORT_CODE_LENGTH}-digit sort code.`,
         accountNumber: `Enter the ${ACCOUNT_NUMBER_LENGTH}-digit account number.`,
     },

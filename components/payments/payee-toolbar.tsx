@@ -4,10 +4,11 @@ import Tabs from "@/components/ui/tabs";
 import TextInput from "@/components/ui/text-input";
 import { PAYEE_COPY } from "@/lib/data/payments/copy";
 import { PAYEE_SEARCH_MAX } from "@/lib/payments/constants";
-import type { PayeeFilter } from "@/lib/types";
+import type { PayeeFilter, PayeeSummary } from "@/lib/types";
 
 interface Props {
     panelId: string;
+    summary: PayeeSummary | undefined;
     filter: PayeeFilter;
     search: string;
     onFilter: (filter: PayeeFilter) => void;
@@ -16,6 +17,7 @@ interface Props {
 
 export default function PayeeToolbar({
     panelId,
+    summary,
     filter,
     search,
     onFilter,
@@ -25,7 +27,10 @@ export default function PayeeToolbar({
         <div className="border-border flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3">
             <Tabs
                 label={PAYEE_COPY.filterLabel}
-                tabs={PAYEE_COPY.filters}
+                tabs={PAYEE_COPY.filters.map(({ id, label, stat }) => ({
+                    id,
+                    label: summary ? `${label} (${summary[stat]})` : label,
+                }))}
                 value={filter}
                 onChange={onFilter}
                 panelId={panelId}

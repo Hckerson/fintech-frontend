@@ -3,7 +3,7 @@ import type { Payee } from "@/lib/types";
 
 export default function PayeeDestination({ payee }: { payee: Payee }) {
     return (
-        <span className="flex flex-wrap items-baseline gap-x-2">
+        <span className="flex items-baseline gap-x-2 whitespace-nowrap max-md:flex-wrap">
             <span
                 className={
                     payee.bankName ? "text-text-secondary" : "text-text-muted"

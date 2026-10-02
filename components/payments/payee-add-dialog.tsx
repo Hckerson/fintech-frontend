@@ -70,7 +70,11 @@ export default function PayeeAddDialog({ onClose, onAdded }: Props) {
             onSubmit={submit}
             onClose={onClose}
         >
-            <Field {...PAYEE_COPY.fields.name} error={errorOf("name")}>
+            <Field
+                label={PAYEE_COPY.fields.name.label}
+                hint={errorOf("name") ? undefined : PAYEE_COPY.fields.name.hint}
+                error={errorOf("name")}
+            >
                 {(control) => (
                     <TextInput
                         {...control}
