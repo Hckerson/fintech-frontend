@@ -15,10 +15,10 @@ const percent = new Intl.NumberFormat(DEFAULT_LOCALE, {
 
 export default function AdminPeriodTable({ view }: { view: SeriesView }) {
     return (
-        <div className="max-h-80 overflow-auto">
+        <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
                 <caption className="sr-only">{COPY.caption}</caption>
-                <thead className="bg-background-alt text-text-muted sticky top-0 text-xs">
+                <thead className="text-text-muted">
                     <tr>
                         <th scope="col" className={HEAD}>
                             {COPY.period}
@@ -28,7 +28,7 @@ export default function AdminPeriodTable({ view }: { view: SeriesView }) {
                         </th>
                         <th
                             scope="col"
-                            className={`${HEAD} hidden pl-6 sm:table-cell`}
+                            className={`${HEAD} hidden pl-6 sm:table-cell 2xl:hidden`}
                         >
                             {COPY.share}
                         </th>
@@ -49,7 +49,7 @@ export default function AdminPeriodTable({ view }: { view: SeriesView }) {
                             <td className="text-text py-2 text-right font-mono tabular-nums">
                                 {row.display}
                             </td>
-                            <td className="hidden py-2 pl-6 sm:table-cell">
+                            <td className="hidden py-2 pl-6 sm:table-cell 2xl:hidden">
                                 <span className="flex items-center gap-2">
                                     <span
                                         aria-hidden

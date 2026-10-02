@@ -48,8 +48,8 @@ export default function AdminUserSeries({ period }: { period: StatsPeriod }) {
                 return (
                     <>
                         <AdminSeriesStats view={view} period={period} />
-                        {view.points.length > 1 ? (
-                            <div className="border-border border-t pt-4">
+                        <div className="border-border grid gap-4 border-t pt-4 2xl:grid-cols-[minmax(0,1fr)_minmax(0,20rem)]">
+                            {view.points.length > 1 ? (
                                 <Chart
                                     title={COPY.chart}
                                     summary={COPY.summary(
@@ -62,13 +62,13 @@ export default function AdminUserSeries({ period }: { period: StatsPeriod }) {
                                     wholeTicks
                                     variant="bar"
                                 />
-                            </div>
-                        ) : (
-                            <p className="border-border text-text-muted measure border-t pt-3 text-xs">
-                                {COPY.single}
-                            </p>
-                        )}
-                        <AdminPeriodTable view={view} />
+                            ) : (
+                                <p className="text-text-muted measure text-xs">
+                                    {COPY.single}
+                                </p>
+                            )}
+                            <AdminPeriodTable view={view} />
+                        </div>
                         <div className="border-border text-text-muted flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-t pt-3 text-xs">
                             <p>{notesOf(view).join(" ")}</p>
                             <AsOf

@@ -19,11 +19,7 @@ export default async function AdminOverviewPage({ searchParams }: Props) {
 
     return (
         <>
-            <PageHeader
-                eyebrow={ADMIN_OVERVIEW_COPY.eyebrow}
-                title={PAGE_TITLES.adminOverview}
-                lead={ADMIN_OVERVIEW_COPY.lead}
-            />
+            <PageHeader title={PAGE_TITLES.adminOverview} />
             <SectionErrorBoundary skeleton={<AdminKpiBandSkeleton />}>
                 <AdminKpiBand period={range} aside={<AdminQueueLinks />} />
             </SectionErrorBoundary>
