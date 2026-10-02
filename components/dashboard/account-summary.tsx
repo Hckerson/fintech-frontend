@@ -1,6 +1,5 @@
 "use client";
 import AccountRow from "@/components/common/account-row";
-import AsOf from "@/components/common/as-of";
 import SectionCard from "@/components/common/section-card";
 import SectionSkeleton from "@/components/common/section-skeleton";
 import EmptyState from "@/components/ui/empty-state";
@@ -29,39 +28,62 @@ export default function AccountSummary() {
 
     return (
         <SectionCard
+            flush
             title={DASHBOARD_COPY.sections.accountSummary}
             action={{ label: COPY.all, href: ACCOUNTS_ROUTE }}
+            count={
+                query.data ? heldAccounts(query.data.items).length : undefined
+            }
         >
             <QueryBoundary
+                flush
                 query={query}
                 isEmpty={({ items }) => heldAccounts(items).length === 0}
                 skeleton={<SectionSkeleton bare rows={4} />}
                 empty={empty}
                 denied={<EmptyState {...EMPTY_STATES.accountsNotShared} />}
             >
-                {({ items, asOf }) => {
+                {({ items }) => {
                     const { listed, hidden } = listedAccounts(
                         items,
                         DASHBOARD_ACCOUNT_LIMIT,
                     );
                     return (
                         <>
-                            <ul className="flex flex-col">
-                                {listed.map((account) => (
-                                    <li
-                                        key={account.id}
-                                        className="border-border-light border-t first:border-t-0"
-                                    >
-                                        <AccountRow account={account} />
-                                    </li>
-                                ))}
-                            </ul>
+                            <table className="w-full">
+                                <caption className="sr-only">
+                                    {DASHBOARD_COPY.sections.accountSummary}
+                                </caption>
+                                <thead>
+                                    <tr>
+                                        <th scope="col" className="data-head">
+                                            {COPY.columns.account}
+                                        </th>
+                                        <th scope="col" className="data-head">
+                                            {COPY.columns.status}
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="data-head text-right"
+                                        >
+                                            {COPY.columns.available}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {listed.map((account) => (
+                                        <AccountRow
+                                            key={account.id}
+                                            account={account}
+                                        />
+                                    ))}
+                                </tbody>
+                            </table>
                             {hidden > 0 ? (
-                                <p className="text-text-secondary text-xs">
+                                <p className="text-text-muted px-4 py-2 text-xs">
                                     {COPY.more(hidden)}
                                 </p>
                             ) : null}
-                            <AsOf asOf={asOf} timeZone={workspace.timeZone} />
                             <p role="status" className="sr-only">
                                 {COPY.loaded(listed.length + hidden)}
                             </p>

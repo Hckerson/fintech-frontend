@@ -1,5 +1,5 @@
 import { DASHBOARD_COPY } from "@/lib/data/dashboard/copy";
-import type { CashFlowSeries, ChartPoint } from "@/lib/types";
+import type { CashFlowSeries, FlowPoint } from "@/lib/types";
 import { formatMoney, fractionDigits } from "@/lib/utils/money";
 import { zonedLabel } from "@/lib/utils/zoned-time";
 import { DEFAULT_TIME_ZONE } from "@/lib/workspace/constants";
@@ -27,8 +27,11 @@ export const cashFlowView = (series: CashFlowSeries) => {
             signDisplay: signed ? "exceptZero" : "auto",
         }) ?? "";
     const last = series.points.length - 1;
+    const minor = series.points.flatMap(({ inflow, outflow, net }) =>
+        [inflow, outflow, net].map(({ amountMinor }) => Number(amountMinor)),
+    );
 
-    const points: ChartPoint[] = series.points.map(
+    const points: FlowPoint[] = series.points.map(
         ({ periodStart, inflow, outflow, net }, index) => {
             const label =
                 zonedLabel(
@@ -39,21 +42,21 @@ export const cashFlowView = (series: CashFlowSeries) => {
 
             return {
                 label: index === last ? COPY.partial(label) : label,
-                value: Number(net.amountMinor) / scale,
-                display: COPY.point(
-                    money(inflow.amountMinor),
-                    money(outflow.amountMinor),
-                    money(net.amountMinor, true),
-                ),
+                inflow: Number(inflow.amountMinor) / scale,
+                outflow: -Number(outflow.amountMinor) / scale,
+                net: Number(net.amountMinor) / scale,
+                display: {
+                    inflow: money(inflow.amountMinor),
+                    outflow: money(outflow.amountMinor),
+                    net: money(net.amountMinor, true),
+                },
             };
         },
     );
 
     return {
         points,
-        plottable: series.points.every(({ net }) =>
-            Number.isSafeInteger(Number(net.amountMinor)),
-        ),
+        plottable: minor.every(Number.isSafeInteger),
         net: money(series.totals.net.amountMinor, true),
     };
 };

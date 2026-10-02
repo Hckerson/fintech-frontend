@@ -82,3 +82,12 @@ export interface Trend {
     direction: "up" | "down" | "flat";
     ratio: number | null;
 }
+
+export interface DashboardLayout {
+    notice: readonly DashboardSectionKey[];
+    band: readonly DashboardSectionKey[];
+    rows: readonly {
+        main: readonly DashboardSectionKey[];
+        side: readonly DashboardSectionKey[];
+    }[];
+}

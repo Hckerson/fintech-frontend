@@ -21,10 +21,12 @@ export default function RecentActivity() {
 
     return (
         <SectionCard
+            flush
             title={DASHBOARD_COPY.sections.recentActivity}
             action={{ label: COPY.all, href: TRANSACTIONS_ROUTE }}
         >
             <QueryBoundary
+                flush
                 query={query}
                 isEmpty={({ items }) => items.length === 0}
                 skeleton={<SectionSkeleton bare rows={6} />}
@@ -39,21 +41,50 @@ export default function RecentActivity() {
             >
                 {({ items }) => (
                     <>
-                        <ul className="flex flex-col">
-                            {items.map((transaction) => (
-                                <li
-                                    key={transaction.id}
-                                    className="border-border-light border-t first:border-t-0"
-                                >
+                        <table className="w-full">
+                            <caption className="sr-only">
+                                {DASHBOARD_COPY.sections.recentActivity}
+                            </caption>
+                            <thead>
+                                <tr>
+                                    <th
+                                        scope="col"
+                                        className="data-head hidden md:table-cell"
+                                    >
+                                        {COPY.columns.date}
+                                    </th>
+                                    <th scope="col" className="data-head">
+                                        {COPY.columns.description}
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="data-head hidden lg:table-cell"
+                                    >
+                                        {COPY.columns.category}
+                                    </th>
+                                    <th scope="col" className="data-head">
+                                        {COPY.columns.status}
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="data-head text-right"
+                                    >
+                                        {COPY.columns.amount}
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {items.map((transaction) => (
                                     <TransactionRow
+                                        key={transaction.id}
                                         transaction={transaction}
                                         timeZone={workspace.timeZone}
                                     />
-                                </li>
-                            ))}
-                        </ul>
+                                ))}
+                            </tbody>
+                        </table>
                         {items.some(({ status }) => status === "pending") ? (
-                            <p className="text-text-muted text-xs">
+                            <p className="text-text-muted px-4 py-2 text-xs">
                                 {COPY.provisional}
                             </p>
                         ) : null}

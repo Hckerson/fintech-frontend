@@ -1,4 +1,8 @@
-import type { DashboardSectionKey, WorkspaceRole } from "@/lib/types";
+import type {
+    DashboardLayout,
+    DashboardSectionKey,
+    WorkspaceRole,
+} from "@/lib/types";
 
 export const DASHBOARD_VARIANTS: Record<
     WorkspaceRole,
@@ -31,6 +35,9 @@ export const DASHBOARD_VARIANTS: Record<
 
 export const DASHBOARD_LAYOUT = {
     notice: ["verification", "verificationNotice"],
-    main: ["cashPosition", "cashFlow", "recentActivity"],
-    side: ["pendingItems", "accountSummary"],
-} as const satisfies Record<string, readonly DashboardSectionKey[]>;
+    band: ["cashPosition"],
+    rows: [
+        { main: ["cashFlow"], side: ["pendingItems"] },
+        { main: ["recentActivity"], side: ["accountSummary"] },
+    ],
+} as const satisfies DashboardLayout;

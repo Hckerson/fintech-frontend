@@ -1,4 +1,9 @@
-import type { CashFlowRange, DashboardSectionKey, Trend } from "@/lib/types";
+import type {
+    Account,
+    CashFlowRange,
+    DashboardSectionKey,
+    Trend,
+} from "@/lib/types";
 import type { PendingSource } from "@/lib/types";
 import { TREND_DAYS } from "@/lib/dashboard/constants";
 
@@ -15,37 +20,56 @@ export const DASHBOARD_COPY = {
         pendingItems: "Needs attention",
         cashFlow: "Cash flow",
     } satisfies Record<DashboardSectionKey, string>,
-    today: (zone: string) => `Days are counted in ${zone}.`,
     dropped: (names: string) =>
         `The link had a setting we couldn't use (${names}), so the default is shown.`,
     cash: {
         available: (currency: string) => `Available balance · ${currency}`,
         current: "Current balance",
-        netToday: "Net movement today",
-        netUnavailable: "Today's movement and the trend aren't available.",
-        frozen: "Includes frozen accounts. Closed accounts are excluded.",
-        open: "Closed accounts are excluded.",
+        netToday: (zone: string) => `Net today (${zone})`,
+        frozen: "Includes frozen accounts",
+        excluded: "Closed accounts are excluded.",
         accounts: "View accounts",
+        trendLabel: `${TREND_DAYS}-day change`,
         trend: ({ direction }: Trend, percent: string | null) =>
             direction === "flat"
-                ? `No change over ${TREND_DAYS} days`
-                : `${direction === "up" ? "Up" : "Down"}${percent ? ` ${percent}` : ""} over ${TREND_DAYS} days`,
+                ? "No change"
+                : `${direction === "up" ? "Up" : "Down"}${percent ? ` ${percent}` : ""}`,
         ceiling: "more than 999%",
         loaded: (count: number) =>
             `Cash position loaded for ${plural(count, "currency", "currencies")}.`,
     },
     accounts: {
         all: "All accounts",
+        columns: {
+            account: "Account",
+            status: "Status",
+            available: "Available",
+        },
         ending: (last4: string) => `ending ${last4}`,
         available: "Available balance",
+        kinds: {
+            OPERATING: "Operating",
+            RESERVE: "Reserve",
+            SAVINGS: "Savings",
+        } satisfies Record<Account["kind"], string>,
         more: (count: number) =>
             `${plural(count, "more account is", "more accounts are")} not listed here.`,
         loaded: (count: number) => `${plural(count, "account", "accounts")}.`,
     },
     activity: {
-        all: "Search all transactions",
+        all: "All transactions",
+        columns: {
+            date: "Date",
+            description: "Description",
+            category: "Category",
+            status: "Status",
+            amount: "Amount",
+        },
+        uncategorised: "Uncategorised",
         provisional: "Provisional: this amount may change before it posts.",
         flagged: "Flagged",
+        moneyIn: "Money in",
+        moneyOut: "Money out",
         attachments: "Has attachments",
         loaded: (count: number) =>
             `${plural(count, "recent transaction", "recent transactions")}.`,
@@ -53,7 +77,7 @@ export const DASHBOARD_COPY = {
     pending: {
         transactions: (count: number, account: string) =>
             `${plural(count, "pending transaction", "pending transactions")} on ${account}`,
-        provisional: "Provisional total, may change before posting",
+        provisional: "Provisional total",
         exportReady: "Export ready to download",
         exportFailed: "Export failed",
         verification: "Verification needs information",
@@ -79,17 +103,13 @@ export const DASHBOARD_COPY = {
         moneyIn: "Money in",
         moneyOut: "Money out",
         net: "Net",
-        chartTitle: (currency: string) => `Net cash flow · ${currency}`,
+        chartTitle: (currency: string) => `Cash flow in ${currency}`,
         summary: (range: string, currency: string, net: string) =>
-            `Net ${net} over the last ${range} in ${currency}. Posted transactions only; the current period is still in progress.`,
-        point: (moneyIn: string, moneyOut: string, net: string) =>
-            `In ${moneyIn} · Out ${moneyOut} · Net ${net}`,
+            `Net ${net} over the last ${range} in ${currency}.`,
+        basis: "Posted transactions only. The current period is still in progress.",
         partial: (label: string) => `${label} (so far)`,
-        table: {
-            x: "Period",
-            y: "Money in · Money out · Net",
-            toggle: "Show the figures as a table",
-        },
+        period: "Period",
+        toggle: "Show the figures as a table",
         unplottable:
             "These amounts are too large to plot, so they are listed exactly instead.",
     },

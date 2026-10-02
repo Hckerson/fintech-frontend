@@ -1,4 +1,5 @@
 "use client";
+import AsOf from "@/components/common/as-of";
 import SectionCard from "@/components/common/section-card";
 import SectionSkeleton from "@/components/common/section-skeleton";
 import CashPositionTotal from "@/components/dashboard/cash-position-total";
@@ -17,6 +18,7 @@ export default function CashPosition() {
 
     return (
         <SectionCard
+            flush
             title={DASHBOARD_COPY.sections.cashPosition}
             action={{
                 label: DASHBOARD_COPY.cash.accounts,
@@ -24,9 +26,10 @@ export default function CashPosition() {
             }}
         >
             <QueryBoundary
+                flush
                 query={query}
                 isEmpty={(positions) => positions.length === 0}
-                skeleton={<SectionSkeleton bare rows={1} rowClassName="h-36" />}
+                skeleton={<SectionSkeleton bare rows={1} rowClassName="h-20" />}
                 empty={
                     <EmptyState
                         {...EMPTY_STATES.cashPosition}
@@ -42,7 +45,7 @@ export default function CashPosition() {
                 }
             >
                 {(positions) => (
-                    <div className="grid gap-4 sm:grid-cols-[repeat(auto-fit,minmax(16rem,1fr))]">
+                    <>
                         {positions.map((position) => (
                             <CashPositionTotal
                                 key={position.currency}
@@ -50,10 +53,17 @@ export default function CashPosition() {
                                 timeZone={workspace.timeZone}
                             />
                         ))}
+                        <div className="border-border text-text-muted flex flex-wrap items-center justify-between gap-2 border-t px-4 py-2 text-xs">
+                            <p>{DASHBOARD_COPY.cash.excluded}</p>
+                            <AsOf
+                                asOf={positions[0].asOf}
+                                timeZone={workspace.timeZone}
+                            />
+                        </div>
                         <p role="status" className="sr-only">
                             {DASHBOARD_COPY.cash.loaded(positions.length)}
                         </p>
-                    </div>
+                    </>
                 )}
             </QueryBoundary>
         </SectionCard>

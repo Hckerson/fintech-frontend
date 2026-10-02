@@ -61,25 +61,35 @@ export default function PendingItems() {
     const listed = items.slice(0, DASHBOARD_PENDING_LIMIT);
 
     return (
-        <SectionCard title={DASHBOARD_COPY.sections.pendingItems}>
+        <SectionCard
+            flush
+            title={DASHBOARD_COPY.sections.pendingItems}
+            count={loading ? undefined : items.length}
+        >
             {loading ? (
-                <div aria-busy>
+                <div aria-busy className="p-4">
                     <SectionSkeleton bare rows={3} />
                 </div>
             ) : failed.length === sources.length ? (
-                <ErrorState
-                    kind="retryable"
-                    message={ERROR_COPY.loadFailed}
-                    reference={
-                        referenceOf(failed[0]?.query.error) ?? deviceReference
-                    }
-                    onRetry={retry}
-                    retrying={retrying}
-                />
+                <div className="p-4">
+                    <ErrorState
+                        kind="retryable"
+                        message={ERROR_COPY.loadFailed}
+                        reference={
+                            referenceOf(failed[0]?.query.error) ??
+                            deviceReference
+                        }
+                        onRetry={retry}
+                        retrying={retrying}
+                    />
+                </div>
             ) : (
                 <>
                     {failed.length > 0 ? (
-                        <div role="status" className="flex flex-col gap-2">
+                        <div
+                            role="status"
+                            className="border-border flex flex-col gap-2 border-b p-4"
+                        >
                             <p className="text-warning text-xs">
                                 {COPY.partial}{" "}
                                 {failed
@@ -102,17 +112,19 @@ export default function PendingItems() {
                             {listed.map((item) => (
                                 <li
                                     key={item.id}
-                                    className="border-border-light border-t first:border-t-0"
+                                    className="border-border-light border-b last:border-b-0"
                                 >
                                     <PendingItemRow item={item} />
                                 </li>
                             ))}
                         </ul>
                     ) : failed.length === 0 ? (
-                        <EmptyState {...EMPTY_STATES.pendingItems} />
+                        <div className="p-4">
+                            <EmptyState {...EMPTY_STATES.pendingItems} />
+                        </div>
                     ) : null}
                     {items.length > listed.length ? (
-                        <p className="text-text-secondary text-xs">
+                        <p className="border-border text-text-secondary border-t px-4 py-2 text-xs">
                             {COPY.more(items.length - listed.length)}
                         </p>
                     ) : null}

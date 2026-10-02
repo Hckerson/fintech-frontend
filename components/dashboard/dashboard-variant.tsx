@@ -65,14 +65,27 @@ export default function DashboardVariant({
                 </p>
             ) : null}
             {slot(DASHBOARD_LAYOUT.notice)}
-            <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-                <div className="flex min-w-0 flex-col gap-4">
-                    {slot(DASHBOARD_LAYOUT.main)}
-                </div>
-                <div className="flex min-w-0 flex-col gap-4">
-                    {slot(DASHBOARD_LAYOUT.side)}
-                </div>
-            </div>
+            {slot(DASHBOARD_LAYOUT.band)}
+            {DASHBOARD_LAYOUT.rows.map(({ main, side }) => {
+                const left = slot(main);
+                const right = slot(side);
+
+                return left.length > 0 && right.length > 0 ? (
+                    <div
+                        key={main.join()}
+                        className="grid items-start gap-4 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]"
+                    >
+                        <div className="flex min-w-0 flex-col gap-4">
+                            {left}
+                        </div>
+                        <div className="flex min-w-0 flex-col gap-4">
+                            {right}
+                        </div>
+                    </div>
+                ) : (
+                    [...left, ...right]
+                );
+            })}
         </>
     );
 }

@@ -46,6 +46,7 @@ export default function CashFlow({ range, currency }: Props) {
 
     return (
         <SectionCard
+            flush
             title={DASHBOARD_COPY.sections.cashFlow}
             aside={
                 <div className="flex flex-wrap items-center gap-2">
@@ -78,6 +79,7 @@ export default function CashFlow({ range, currency }: Props) {
         >
             <div id={panelId} role="tabpanel" aria-label={COPY.ranges[range]}>
                 <QueryBoundary
+                    flush
                     query={query}
                     isEmpty={(series) => !hasActivity(series)}
                     skeleton={

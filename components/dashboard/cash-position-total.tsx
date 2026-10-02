@@ -1,10 +1,18 @@
 import Link from "next/link";
+import {
+    ArrowDownRight,
+    ArrowUpRight,
+    Subtract,
+    type CarbonIconType,
+} from "@carbon/icons-react";
 import Amount from "@/components/common/amount";
-import AsOf from "@/components/common/as-of";
+import FigureCell from "@/components/common/figure-cell";
+import StatusLabel from "@/components/ui/status-label";
 import TrendLine from "@/components/ui/trend-line";
+import { NOT_AVAILABLE } from "@/lib/constants";
 import { SPARKLINE } from "@/lib/dashboard/constants";
 import { DASHBOARD_COPY } from "@/lib/data/dashboard/copy";
-import type { CashPosition } from "@/lib/types";
+import type { CashPosition, Trend } from "@/lib/types";
 import { plottable, trendOf, trendPercent } from "@/lib/utils/trend";
 import { ACCOUNTS_ROUTE } from "@/lib/workspace/constants";
 
@@ -14,52 +22,81 @@ interface Props {
 }
 
 const COPY = DASHBOARD_COPY.cash;
+const DIVIDED = "border-border border-t lg:border-t-0 lg:border-l";
+
+const DIRECTION: Record<Trend["direction"], CarbonIconType> = {
+    up: ArrowUpRight,
+    down: ArrowDownRight,
+    flat: Subtract,
+};
 
 export default function CashPositionTotal({ position, timeZone }: Props) {
     const { currency, available, current, netToday, includesFrozen } = position;
     const trend = trendOf(position.trend);
     const line = plottable(position.trend);
+    const Direction = trend ? DIRECTION[trend.direction] : null;
 
     return (
-        <div className="flex min-w-0 flex-col gap-2">
-            <Link
-                href={ACCOUNTS_ROUTE}
-                className="text-text-muted hover:text-text w-fit text-xs underline-offset-4 hover:underline"
+        <dl className="border-border grid grid-cols-2 border-t first:border-t-0 lg:grid-cols-[minmax(0,1.6fr)_repeat(3,minmax(0,1fr))]">
+            <FigureCell
+                lead
+                className="col-span-2 lg:col-span-1"
+                label={
+                    <>
+                        <Link
+                            href={ACCOUNTS_ROUTE}
+                            className="hover:text-text underline-offset-4 hover:underline"
+                        >
+                            {COPY.available(currency)}
+                        </Link>
+                        {includesFrozen ? (
+                            <StatusLabel
+                                label={COPY.frozen}
+                                severity="attention"
+                            />
+                        ) : null}
+                    </>
+                }
             >
-                {COPY.available(currency)}
-            </Link>
-            <Amount
-                {...available}
-                className="ledger-figure text-text break-words"
-            />
-            <p className="text-text-secondary text-sm">
-                {COPY.current}{" "}
-                <Amount {...current} className="text-text tabular-nums" />
-            </p>
-            {netToday ? (
-                <p className="text-text-secondary text-sm">
-                    {COPY.netToday}{" "}
-                    <Amount
-                        {...netToday}
-                        display="signed"
-                        className="text-text tabular-nums"
-                    />
-                </p>
-            ) : (
-                <p className="text-text-muted text-sm">{COPY.netUnavailable}</p>
-            )}
-            {trend ? (
-                <div className="flex flex-wrap items-center gap-3">
-                    {line ? <TrendLine values={line} box={SPARKLINE} /> : null}
-                    <p className="text-text-secondary text-xs">
-                        {COPY.trend(trend, trendPercent(trend, COPY.ceiling))}
-                    </p>
-                </div>
-            ) : null}
-            <p className="text-text-muted text-xs">
-                {includesFrozen ? COPY.frozen : COPY.open}
-            </p>
-            <AsOf asOf={position.asOf} timeZone={timeZone} />
-        </div>
+                <Amount {...available} className="break-words" />
+            </FigureCell>
+            <FigureCell label={COPY.current} className={DIVIDED}>
+                <Amount {...current} />
+            </FigureCell>
+            <FigureCell
+                label={COPY.netToday(timeZone)}
+                className={`${DIVIDED} border-l`}
+            >
+                {netToday ? (
+                    <Amount {...netToday} display="signed" />
+                ) : (
+                    <span className="text-text-muted">{NOT_AVAILABLE}</span>
+                )}
+            </FigureCell>
+            <FigureCell
+                label={COPY.trendLabel}
+                className={`${DIVIDED} col-span-2 lg:col-span-1`}
+            >
+                {trend && Direction ? (
+                    <span className="flex items-center justify-between gap-3">
+                        <span className="flex items-center gap-1">
+                            <Direction
+                                aria-hidden
+                                className="text-text-muted size-4"
+                            />
+                            {COPY.trend(
+                                trend,
+                                trendPercent(trend, COPY.ceiling),
+                            )}
+                        </span>
+                        {line ? (
+                            <TrendLine values={line} box={SPARKLINE} />
+                        ) : null}
+                    </span>
+                ) : (
+                    <span className="text-text-muted">{NOT_AVAILABLE}</span>
+                )}
+            </FigureCell>
+        </dl>
     );
 }
