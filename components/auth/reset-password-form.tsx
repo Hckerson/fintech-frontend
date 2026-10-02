@@ -10,10 +10,11 @@ import AuthFormError from "@/components/auth/auth-form-error";
 import AuthFormHeader from "@/components/auth/auth-form-header";
 import AuthSubmit from "@/components/auth/auth-submit";
 import PasswordField from "@/components/auth/password-field";
+import PasswordRules from "@/components/auth/password-rules";
 import { useOnline } from "@/lib/hooks/use-online";
 import { useResetPassword } from "@/lib/hooks/use-reset-password";
 import { retryAfterOf, statusOf } from "@/lib/utils/http-status";
-import { resetFormSchema } from "@/lib/validations/auth";
+import { resetFormSchema, resetSchema } from "@/lib/validations/auth";
 import {
     RESET_COPY,
     RESET_FIELDS,
@@ -111,6 +112,24 @@ export default function ResetPasswordForm({ token, onDone, onInvalid }: Props) {
             <div className="short:gap-4 flex flex-col gap-5">
                 <PasswordField {...field("password")} autoFocus />
                 <PasswordField {...field("confirm")} />
+                <PasswordRules
+                    rules={[
+                        {
+                            id: "length",
+                            label: RESET_COPY.rules.length,
+                            met: resetSchema.shape.password.safeParse(
+                                values.password,
+                            ).success,
+                        },
+                        {
+                            id: "match",
+                            label: RESET_COPY.rules.match,
+                            met:
+                                values.password !== "" &&
+                                values.password === values.confirm,
+                        },
+                    ]}
+                />
             </div>
             <AuthSubmit
                 pending={pending}

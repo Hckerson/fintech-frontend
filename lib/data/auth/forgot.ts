@@ -27,6 +27,7 @@ export const FORGOT_COPY = {
     },
     statement: `A reset link works once, for ${RESET_LINK_TTL_MINUTES} minutes, and only from your inbox.`,
     sent: {
+        tone: "info",
         eyebrow: "Check your email",
         title: "If that email has an account, a link is on its way",
         lead: "We say the same for every address, so nobody can use this page to find out who banks here.",

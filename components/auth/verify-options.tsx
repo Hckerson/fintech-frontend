@@ -1,3 +1,4 @@
+import AuthDivider from "@/components/auth/auth-divider";
 import { ledgerButtonClass } from "@/components/ledgerline/ledger-button";
 import { VERIFY_COPY } from "@/lib/data/auth/verify";
 import type { VerifyMethod } from "@/lib/types";
@@ -24,6 +25,7 @@ export default function VerifyOptions({
 
     return (
         <div className="flex flex-col gap-4">
+            {passkey.supported && <AuthDivider label={VERIFY_COPY.or} />}
             {passkey.supported && (
                 <button
                     type="button"

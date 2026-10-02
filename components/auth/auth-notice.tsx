@@ -1,10 +1,14 @@
 "use client";
 import type { ComponentProps, ReactNode } from "react";
+import { Checkmark } from "@carbon/icons-react";
 import AuthFormFooter from "@/components/auth/auth-form-footer";
 import AuthFormHeader from "@/components/auth/auth-form-header";
+import AuthNoticeMark from "@/components/auth/auth-notice-mark";
 import LedgerButton from "@/components/ledgerline/ledger-button";
+import type { NoticeTone } from "@/lib/types";
 
 interface Props extends ComponentProps<typeof AuthFormHeader> {
+    tone: NoticeTone;
     notes?: readonly string[];
     action: { label: string; href: string };
     footer?: ComponentProps<typeof AuthFormFooter>;
@@ -14,6 +18,7 @@ interface Props extends ComponentProps<typeof AuthFormHeader> {
 const focus = (node: HTMLElement | null) => node?.focus();
 
 export default function AuthNotice({
+    tone,
     notes,
     action,
     footer,
@@ -27,11 +32,21 @@ export default function AuthNotice({
             aria-label={header.title}
             className="short:gap-6 flex flex-col gap-8 focus:outline-none"
         >
+            <AuthNoticeMark tone={tone} />
             <AuthFormHeader {...header} />
             {notes && (
-                <ul className="text-text-secondary flex list-disc flex-col gap-2 pl-5 text-sm">
+                <ul className="border-border-dark divide-border-dark bg-background-alt divide-y rounded-xl border">
                     {notes.map((note) => (
-                        <li key={note}>{note}</li>
+                        <li
+                            key={note}
+                            className="text-text-secondary flex gap-3 px-4 py-3 text-sm"
+                        >
+                            <Checkmark
+                                aria-hidden
+                                className="text-text-muted mt-0.5 size-4 shrink-0"
+                            />
+                            {note}
+                        </li>
                     ))}
                 </ul>
             )}
