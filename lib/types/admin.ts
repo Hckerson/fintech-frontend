@@ -3,7 +3,7 @@ import type {
     PeriodTotalResponseDto,
 } from "@/lib/contract/schemas";
 import type { ChartPoint } from "./chart";
-import type { ShellNavItem } from "./shell";
+import type { Delta, ShellNavItem } from "./shell";
 
 export type PlatformRole = "support" | "compliance" | "admin";
 
@@ -24,6 +24,11 @@ export interface AdminUserSeries extends PeriodSeriesResponseDto {
 
 export interface PlatformOrigin {
     firstUserAt: string;
+}
+
+export interface PeriodRow extends ChartPoint {
+    share: number;
+    delta: Delta | null;
 }
 
 export interface SeriesView {

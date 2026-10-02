@@ -1,6 +1,12 @@
 import { ADMIN_TIME_ZONE } from "@/lib/admin/constants";
 import { DEFAULT_LOCALE } from "@/lib/constants";
-import type { AdminUserSeries, SeriesView, StatsPeriod } from "@/lib/types";
+import type {
+    AdminUserSeries,
+    PeriodRow,
+    SeriesView,
+    StatsPeriod,
+} from "@/lib/types";
+import { periodDelta } from "@/lib/utils/delta";
 import { zonedLabel } from "@/lib/utils/zoned-time";
 
 const BUCKET: Record<StatsPeriod, Intl.DateTimeFormatOptions> = {
@@ -19,11 +25,30 @@ const count = new Intl.NumberFormat(DEFAULT_LOCALE);
 
 export const formatCount = (value: number) => count.format(value);
 
+const average = new Intl.NumberFormat(DEFAULT_LOCALE, {
+    maximumFractionDigits: 1,
+});
+
+export const formatAverage = (total: number, periods: number) =>
+    periods > 0 ? average.format(total / periods) : null;
+
 export const bucketLabel = (period: StatsPeriod, key: string) =>
     zonedLabel(key, ADMIN_TIME_ZONE, BUCKET[period]) ?? key;
 
 export const periodLabel = (period: StatsPeriod, start: string) =>
     zonedLabel(start, ADMIN_TIME_ZONE, PERIOD[period]) ?? start;
+
+export const periodRows = ({ points, total }: SeriesView): PeriodRow[] =>
+    points
+        .map((point, index) => ({
+            ...point,
+            share: total > 0 ? point.value / total : 0,
+            delta:
+                index > 0
+                    ? periodDelta(point.value, points[index - 1].value)
+                    : null,
+        }))
+        .reverse();
 
 export const inProgress = (end: string, asOf: string) =>
     Date.parse(end) > Date.parse(asOf);
@@ -33,7 +58,8 @@ export const seriesView = (
     firstUserAt: string,
     partialDisplay: (value: string) => string,
 ): SeriesView => {
-    const beforeOrigin = (key: string) => key < firstUserAt.slice(0, key.length);
+    const beforeOrigin = (key: string) =>
+        key < firstUserAt.slice(0, key.length);
     const firstKept = series.points.findIndex(
         ({ key, value }) => value > 0 || !beforeOrigin(key),
     );

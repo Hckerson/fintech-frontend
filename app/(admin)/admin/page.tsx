@@ -23,10 +23,9 @@ export default async function AdminOverviewPage({ searchParams }: Props) {
                 eyebrow={ADMIN_OVERVIEW_COPY.eyebrow}
                 title={PAGE_TITLES.adminOverview}
                 lead={ADMIN_OVERVIEW_COPY.lead}
-                actions={<AdminQueueLinks />}
             />
             <SectionErrorBoundary skeleton={<AdminKpiBandSkeleton />}>
-                <AdminKpiBand period={range} />
+                <AdminKpiBand period={range} aside={<AdminQueueLinks />} />
             </SectionErrorBoundary>
         </>
     );
