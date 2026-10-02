@@ -25,8 +25,9 @@ export const EMPTY_STATES = {
     },
     payeesNoMatch: {
         title: (term: string) => `No payee matches “${term}”.`,
-        body: "Your payees are still there — the search is hiding them.",
-        action: "Clear search",
+        filtered: "No payees with this status.",
+        body: "Your payees are still there — the search or filter is hiding them.",
+        action: "Clear filters",
     },
     adminSeries: { title: "No sign-ups in this period." },
     adminSeriesBeforeOrigin: {

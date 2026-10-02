@@ -8,7 +8,7 @@ import {
     renameStoredPayee,
 } from "./payee-store";
 
-const all = () => listStoredPayees({ search: "", cursor: null }).items;
+const all = () => listStoredPayees({ search: "", status: "all", cursor: null }).items;
 
 const NEW_PAYEE = {
     name: "Ada Lovelace Ltd",
@@ -25,9 +25,26 @@ describe("the payee stand-in", () => {
     });
 
     it("narrows by a case-insensitive search", () => {
-        const { items } = listStoredPayees({ search: "TERN", cursor: null });
+        const { items } = listStoredPayees({ search: "TERN", status: "all", cursor: null });
 
         expect(items.map((payee) => payee.id)).toEqual(["pye_tern"]);
+    });
+
+    it("filters by status and reports server-side counts", () => {
+        const page = listStoredPayees({
+            search: "",
+            status: "pending_verification",
+            cursor: null,
+        });
+
+        expect(page.items.map((payee) => payee.id)).toEqual(["pye_sable"]);
+        expect(page.matched).toBe(1);
+        expect(page.summary).toEqual({
+            total: 7,
+            active: 6,
+            pendingVerification: 1,
+            inProgress: 1,
+        });
     });
 
     it("creates one record for a repeated idempotency key", () => {

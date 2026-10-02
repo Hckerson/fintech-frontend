@@ -18,11 +18,47 @@ export const PAYEE_COPY = {
         `Couldn't refresh. Showing payees as of ${asOf}; they may be out of date.`,
     caption: (count: number, more: boolean) =>
         `Payees sorted by name. ${count} shown${more ? ", more available" : ""}.`,
-    columns: { payee: "Payee", history: "Payment history", actions: "Actions" },
+    columns: { payee: "Payee", status: "Status", actions: "Actions" },
+    stats: [
+        { id: "total", label: "Payees", hint: "Saved in this workspace" },
+        { id: "active", label: "Ready to pay", hint: "Details verified" },
+        {
+            id: "pendingVerification",
+            label: "Pending verification",
+            hint: "Not payable yet",
+        },
+        {
+            id: "inProgress",
+            label: "Payments in progress",
+            hint: "Locked from removal",
+        },
+    ],
+    filterLabel: "Filter payees by status",
+    filters: [
+        { id: "all", label: "All" },
+        { id: "active", label: "Ready to pay" },
+        { id: "pending_verification", label: "Pending" },
+    ],
+    showing: (shown: number, matched: number) =>
+        `Showing ${shown} of ${matched}`,
+    destinationColumn: "Destination",
+    summaryPending: " ",
+    summary: (count: number, more: boolean, pending: number) =>
+        [
+            `${count}${more ? "+" : ""} ${count === 1 && !more ? "payee" : "payees"}`,
+            !more && pending > 0 ? `${pending} pending verification` : null,
+        ]
+            .filter(Boolean)
+            .join(" · "),
+    inProgress: "Payment in progress",
+    moreNamed: (name: string) => `More actions for ${name}`,
     destination: (last4: string) => `•• ${last4}`,
     destinationSpoken: (last4: string) => `account ending ${last4}`,
     bankUnknown: "Bank not given",
-    status: { active: "Verified", pending_verification: "Pending verification" },
+    status: {
+        active: "Verified",
+        pending_verification: "Pending verification",
+    },
     lastPaid: "Last paid",
     neverPaid: "Never",
     totalPaid: "Total paid",
@@ -37,6 +73,7 @@ export const PAYEE_COPY = {
         pendingVerification: "Can't be paid until its details are verified.",
         paymentInProgress:
             "Can't be removed while a payment to it is in progress.",
+        offline: "Unavailable while you're offline.",
     },
     loadMore: "Load more payees",
     added: (name: string) =>
@@ -46,7 +83,7 @@ export const PAYEE_COPY = {
         `${name} removed. Past transactions are unchanged.`,
     addDialog: {
         title: "Add a payee",
-        lead: "All fields are required. Once saved, the account details are masked and are never shown in full again — to change them you add a new payee.",
+        lead: "All fields are required. Once saved, the account details are masked for good — to change them you add a new payee.",
         submit: "Add payee",
     },
     fields: {
@@ -54,10 +91,15 @@ export const PAYEE_COPY = {
             label: "Payee name",
             hint: `Up to ${PAYEE_NAME_MAX} characters.`,
         },
-        sortCode: { label: "Sort code", hint: `${SORT_CODE_LENGTH} digits.` },
+        sortCode: {
+            label: "Sort code",
+            hint: `${SORT_CODE_LENGTH} digits.`,
+            placeholder: "00-00-00",
+        },
         accountNumber: {
             label: "Account number",
             hint: `${ACCOUNT_NUMBER_LENGTH} digits.`,
+            placeholder: "00000000",
         },
     },
     fieldErrors: {

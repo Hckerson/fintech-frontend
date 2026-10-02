@@ -14,6 +14,8 @@ export const DESTINATION_VISIBLE_DIGITS = 4;
 
 export const PAYEE_STATUSES = ["active", "pending_verification"] as const;
 
+export const PAYEE_FILTERS = ["all", ...PAYEE_STATUSES] as const;
+
 export const STEP_UP_PURPOSES = [
     "payee_add",
     "payee_rename",

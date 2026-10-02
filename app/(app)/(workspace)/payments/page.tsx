@@ -2,10 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PayeeList from "@/components/payments/payee-list";
 import PayeeListSkeleton from "@/components/payments/payee-list-skeleton";
-import PageHeader from "@/components/shell/page-header";
 import SectionErrorBoundary from "@/components/wrappers/section-error-boundary";
 import { PAGE_TITLES } from "@/lib/constants";
-import { PAYEE_COPY } from "@/lib/data/payments/copy";
 import { serverEnv } from "@/lib/utils/server-env";
 
 export const metadata: Metadata = { title: PAGE_TITLES.payments };
@@ -16,15 +14,8 @@ export default function PaymentsPage() {
     if (!serverEnv.moneyMovement) notFound();
 
     return (
-        <>
-            <PageHeader
-                eyebrow={PAYEE_COPY.eyebrow}
-                title={PAGE_TITLES.payments}
-                lead={PAYEE_COPY.lead}
-            />
-            <SectionErrorBoundary skeleton={<PayeeListSkeleton />}>
-                <PayeeList />
-            </SectionErrorBoundary>
-        </>
+        <SectionErrorBoundary skeleton={<PayeeListSkeleton />}>
+            <PayeeList />
+        </SectionErrorBoundary>
     );
 }

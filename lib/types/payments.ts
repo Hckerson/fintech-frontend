@@ -1,6 +1,7 @@
 import type { z } from "zod";
 import type {
     PAYEE_FIELDS,
+    PAYEE_FILTERS,
     STEP_UP_PURPOSES,
 } from "@/lib/payments/constants";
 import type { ActionError } from "@/lib/utils/action-error";
@@ -34,6 +35,14 @@ export type PayeeRename = z.infer<typeof payeeRenameSchema>;
 export type StepUpPurpose = (typeof STEP_UP_PURPOSES)[number];
 
 export type StepUpRequest = z.infer<typeof stepUpSchema>;
+
+export type PayeeFilter = (typeof PAYEE_FILTERS)[number];
+
+export type PayeeSummary = PayeePage["summary"];
+
+export type PayeeTarget =
+    | { kind: "add" }
+    | { kind: "rename" | "remove"; payee: Payee };
 
 export type PayeeField = (typeof PAYEE_FIELDS)[number];
 
