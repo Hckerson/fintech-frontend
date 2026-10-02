@@ -1,5 +1,6 @@
 "use client";
 import { useId, useRef, useState, type FormEvent } from "react";
+import AuthAssurance from "@/components/auth/auth-assurance";
 import AuthField from "@/components/auth/auth-field";
 import AuthFormError from "@/components/auth/auth-form-error";
 import AuthFormFooter from "@/components/auth/auth-form-footer";
@@ -103,6 +104,7 @@ export default function ForgotPasswordForm() {
                 label={FORGOT_COPY.submit}
                 pendingLabel={FORGOT_COPY.pending}
             />
+            <AuthAssurance text={FORGOT_COPY.assurance} />
             <AuthFormFooter {...FORGOT_COPY.back} />
         </form>
     );

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { local } from "@/lib/api-client";
 import { apiRoutes } from "@/lib/api-routes";
-import { CODE_RESEND_DELAY_MS } from "@/lib/auth/constants";
+import { CODE_RESEND_DELAY_SECONDS } from "@/lib/auth/constants";
 import type { VerifyResult } from "@/lib/types";
 import type { VerifyValues } from "@/lib/validations/auth";
 
@@ -18,14 +18,16 @@ export const useResendCode = () =>
             local.post<unknown>(apiRoutes.challengeResend(), { challenge }),
     });
 
+const TICK_MS = 1_000;
+
 export const useResendDelay = () => {
-    const [ready, setReady] = useState(false);
+    const [wait, setWait] = useState(CODE_RESEND_DELAY_SECONDS);
 
     useEffect(() => {
-        if (ready) return;
-        const timer = setTimeout(() => setReady(true), CODE_RESEND_DELAY_MS);
+        if (wait === 0) return;
+        const timer = setTimeout(() => setWait((left) => left - 1), TICK_MS);
         return () => clearTimeout(timer);
-    }, [ready]);
+    }, [wait]);
 
-    return [ready, () => setReady(false)] as const;
+    return [wait, () => setWait(CODE_RESEND_DELAY_SECONDS)] as const;
 };

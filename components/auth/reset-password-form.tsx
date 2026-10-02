@@ -6,6 +6,7 @@ import {
     type ChangeEvent,
     type FormEvent,
 } from "react";
+import AuthAssurance from "@/components/auth/auth-assurance";
 import AuthFormError from "@/components/auth/auth-form-error";
 import AuthFormHeader from "@/components/auth/auth-form-header";
 import AuthSubmit from "@/components/auth/auth-submit";
@@ -136,6 +137,7 @@ export default function ResetPasswordForm({ token, onDone, onInvalid }: Props) {
                 label={RESET_COPY.submit}
                 pendingLabel={RESET_COPY.pending}
             />
+            <AuthAssurance text={RESET_COPY.assurance} />
         </form>
     );
 }

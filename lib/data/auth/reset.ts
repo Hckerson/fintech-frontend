@@ -42,6 +42,8 @@ export const RESET_COPY = {
     lead: "You'll sign in with it straight after.",
     submit: "Change password",
     pending: "Changing password",
+    assurance:
+        "Choose one you don't use anywhere else. A password manager can create and remember it for you.",
     rules: {
         length: `${PASSWORD_MIN_LENGTH} to ${PASSWORD_MAX_LENGTH} characters`,
         match: "Both passwords match",

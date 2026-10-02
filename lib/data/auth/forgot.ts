@@ -20,6 +20,8 @@ export const FORGOT_COPY = {
     submit: "Send reset link",
     pending: "Sending link",
     invalid: "Enter a valid email address.",
+    assurance:
+        "For your security we never confirm whether an email has an account, and your password stays unchanged until you choose a new one.",
     back: {
         prompt: "Remembered it?",
         label: "Sign in",

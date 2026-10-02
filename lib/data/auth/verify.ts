@@ -50,6 +50,9 @@ export const VERIFY_COPY = {
     passkeyUnused:
         "The passkey wasn't used, and that didn't count as an attempt. You can enter a code instead.",
     resend: "Send a new code",
+    resendIn: (seconds: number) => `Send a new code in ${seconds}s`,
+    assurance:
+        "Ledgerline never asks for this code by phone, email or chat. Only enter it here.",
     resent: "A new code is on its way.",
     switchTo: {
         code: "Use a code instead",

@@ -1,5 +1,6 @@
 "use client";
 import { useId, useRef } from "react";
+import AuthAssurance from "@/components/auth/auth-assurance";
 import AuthField from "@/components/auth/auth-field";
 import AuthFormError from "@/components/auth/auth-form-error";
 import AuthFormFooter from "@/components/auth/auth-form-footer";
@@ -56,6 +57,18 @@ export default function VerifyForm(props: VerifyFlowOptions) {
                     }
                     readOnly={busy}
                     invalid={message !== null}
+                    action={
+                        <button
+                            type="button"
+                            onClick={flow.sendCode}
+                            disabled={busy || flow.resendWait > 0}
+                            className="text-text-muted enabled:hover:text-text text-sm transition-colors enabled:cursor-pointer"
+                        >
+                            {flow.resendWait > 0
+                                ? VERIFY_COPY.resendIn(flow.resendWait)
+                                : VERIFY_COPY.resend}
+                        </button>
+                    }
                 />
             ) : (
                 <AuthField
@@ -81,9 +94,9 @@ export default function VerifyForm(props: VerifyFlowOptions) {
                     pending: flow.passkeyPending,
                     onUse: flow.startPasskey,
                 }}
-                resend={{ ready: flow.resendReady, onSend: flow.sendCode }}
                 onSwitch={flow.switchMethod}
             />
+            <AuthAssurance text={VERIFY_COPY.assurance} />
             <AuthFormFooter {...VERIFY_COPY.cancel} />
         </form>
     );

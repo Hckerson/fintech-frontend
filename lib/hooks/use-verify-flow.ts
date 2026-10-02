@@ -39,7 +39,7 @@ export const useVerifyFlow = (
     const [code, setCode] = useState("");
     const [message, setMessage] = useState<string | null>(null);
     const [note, setNote] = useState<string | null>(null);
-    const [resendReady, restartResendDelay] = useResendDelay();
+    const [resendWait, restartResendDelay] = useResendDelay();
     const busy = verify.isPending || resend.isPending || passkey.isPending;
 
     const report = (text: string) => {
@@ -132,7 +132,7 @@ export const useVerifyFlow = (
         busy,
         verifying: verify.isPending,
         passkeyPending: passkey.isPending,
-        resendReady,
+        resendWait,
         setCode,
         submit,
         startPasskey,

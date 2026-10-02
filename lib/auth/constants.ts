@@ -10,4 +10,4 @@ export const VERIFY_CODE_LENGTH = 6;
 
 export const RECOVERY_CODE_MAX_LENGTH = 64;
 
-export const CODE_RESEND_DELAY_MS = 30_000;
+export const CODE_RESEND_DELAY_SECONDS = 30;

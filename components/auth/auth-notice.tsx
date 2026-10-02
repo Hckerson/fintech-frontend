@@ -1,6 +1,5 @@
 "use client";
 import type { ComponentProps, ReactNode } from "react";
-import { Checkmark } from "@carbon/icons-react";
 import AuthFormFooter from "@/components/auth/auth-form-footer";
 import AuthFormHeader from "@/components/auth/auth-form-header";
 import AuthNoticeMark from "@/components/auth/auth-notice-mark";
@@ -41,9 +40,9 @@ export default function AuthNotice({
                             key={note}
                             className="text-text-secondary flex gap-3 px-4 py-3 text-sm"
                         >
-                            <Checkmark
+                            <span
                                 aria-hidden
-                                className="text-text-muted mt-0.5 size-4 shrink-0"
+                                className="bg-text-muted mt-2 size-1 shrink-0 rounded-full"
                             />
                             {note}
                         </li>
