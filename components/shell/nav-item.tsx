@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import Link from "next/link";
+import CountBadge from "@/components/ui/count-badge";
 import type { ShellNavEntry } from "@/lib/types";
 
 interface Props extends ShellNavEntry {
@@ -19,7 +20,7 @@ export default function NavItem({
             href={href}
             aria-current={current ? "page" : undefined}
             className={clsx(
-                "focus-visible:outline-accent flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors focus-visible:outline-2",
+                "focus-visible:outline-accent flex h-8 items-center gap-2.5 rounded-md px-2 text-sm transition-colors focus-visible:outline-2",
                 current
                     ? "bg-background-muted text-text"
                     : "text-text-secondary hover:bg-background-muted hover:text-text",
@@ -32,14 +33,7 @@ export default function NavItem({
                 {count ? <span className="sr-only">{countLabel}</span> : null}
                 <span aria-hidden={Boolean(count)}>{label}</span>
             </span>
-            {count ? (
-                <span
-                    aria-hidden
-                    className="bg-accent-light text-accent text-caption rounded-full px-2 py-0.5"
-                >
-                    {count}
-                </span>
-            ) : null}
+            {count ? <CountBadge count={count} /> : null}
         </Link>
     );
 }

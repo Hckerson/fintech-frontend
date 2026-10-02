@@ -17,9 +17,9 @@ export default function SidebarNav({
     currentId,
 }: Props) {
     return (
-        <div className="flex h-full flex-col gap-4 overflow-y-auto p-3">
+        <div className="flex h-full flex-col gap-3 overflow-y-auto p-2">
             {header}
-            <nav aria-label={label} className="flex flex-1 flex-col gap-4">
+            <nav aria-label={label} className="flex flex-1 flex-col gap-3">
                 {sections.map((section) => (
                     <div
                         key={section.id}
@@ -31,14 +31,14 @@ export default function SidebarNav({
                         {section.showLabel ? (
                             <p
                                 aria-hidden
-                                className="micro-label text-text-muted px-2.5"
+                                className="micro-label text-text-muted px-2 pt-1"
                             >
                                 {section.label}
                             </p>
                         ) : null}
                         <ul
                             aria-label={section.label}
-                            className="flex flex-col gap-1"
+                            className="flex flex-col gap-0.5"
                         >
                             {section.items.map((item) => (
                                 <li key={item.id}>

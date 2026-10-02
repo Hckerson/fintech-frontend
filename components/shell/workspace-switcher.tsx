@@ -60,7 +60,7 @@ export default function WorkspaceSwitcher() {
             {memberships.length > 1 ? (
                 <Menu
                     label={COPY.trigger(workspace.name)}
-                    triggerClassName="border-border hover:border-border-dark flex w-full items-center justify-between gap-2 rounded-lg border p-2"
+                    triggerClassName="border-border hover:border-border-dark flex w-full items-center justify-between gap-2 rounded-md border p-1.5"
                     trigger={
                         <>
                             {identity}
@@ -80,7 +80,7 @@ export default function WorkspaceSwitcher() {
                     )}
                 </Menu>
             ) : (
-                <div className="border-border rounded-lg border p-2">
+                <div className="border-border rounded-md border p-1.5">
                     <span className="sr-only">{COPY.label}: </span>
                     {identity}
                 </div>

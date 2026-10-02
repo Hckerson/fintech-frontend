@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import SectionCard from "@/components/common/section-card";
+import { buttonClass } from "@/components/ui/button";
 import StatusLabel from "@/components/ui/status-label";
 import { VERIFICATION_STATE_LABELS } from "@/lib/data/status-labels";
 import { VERIFICATION_COPY as COPY } from "@/lib/data/verification";
@@ -19,6 +20,7 @@ const ACTIONABLE: readonly VerificationState[] = [
     "needs_info",
 ];
 const LINK = "text-accent text-sm underline-offset-4 hover:underline";
+const ACTION = buttonClass("accent", "sm", "w-fit");
 
 export default function VerificationNotice({ informational = false }: Props) {
     const query = useVerificationCase();
@@ -34,20 +36,29 @@ export default function VerificationNotice({ informational = false }: Props) {
     return (
         <SectionCard
             title={COPY.title}
+            attention={state !== "submitted"}
             aside={<StatusLabel {...VERIFICATION_STATE_LABELS[state]} />}
         >
             <p className="text-text-secondary measure text-sm">
                 {COPY.states[state]}
             </p>
             {requests.length > 0 ? (
-                <ul
+                <ol
                     aria-label={COPY.requests}
-                    className="text-text flex list-disc flex-col gap-1 pl-5 text-sm"
+                    className="flex flex-col gap-2 text-sm"
                 >
-                    {requests.map((request) => (
-                        <li key={request.id}>{request.message}</li>
+                    {requests.map((request, index) => (
+                        <li key={request.id} className="flex gap-3">
+                            <span
+                                aria-hidden
+                                className="border-warning/40 text-warning text-caption flex size-5 shrink-0 items-center justify-center rounded-full border"
+                            >
+                                {index + 1}
+                            </span>
+                            <span className="text-text">{request.message}</span>
+                        </li>
                     ))}
-                </ul>
+                </ol>
             ) : null}
             {state === "rejected" ? (
                 <p className="text-text-secondary text-sm">
@@ -65,7 +76,7 @@ export default function VerificationNotice({ informational = false }: Props) {
             ) : ACTIONABLE.includes(state) ? (
                 <Link
                     href={onboardingStepRoute(requests[0]?.fieldRef ?? null)}
-                    className={LINK}
+                    className={ACTION}
                 >
                     {state === "needs_info" ? COPY.respond : COPY.continue}
                 </Link>

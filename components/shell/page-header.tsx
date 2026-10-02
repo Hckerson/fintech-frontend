@@ -19,19 +19,21 @@ export default function PageHeader({
 }: Props) {
     return (
         <header className="flex flex-wrap items-end justify-between gap-3">
-            <div className="flex flex-col gap-2">
+            <div className="flex min-w-0 flex-col gap-1">
                 {crumbs ? <Breadcrumbs crumbs={crumbs} /> : null}
                 {eyebrow ? (
                     <p className="micro-label text-text-muted">{eyebrow}</p>
                 ) : null}
                 <h1
                     tabIndex={-1}
-                    className="ledger-title text-text focus:outline-none"
+                    className="text-text text-h5 font-medium tracking-tight focus:outline-none"
                 >
                     {title}
                 </h1>
                 {lead ? (
-                    <p className="text-text-secondary max-w-xl">{lead}</p>
+                    <p className="text-text-secondary max-w-xl text-sm">
+                        {lead}
+                    </p>
                 ) : null}
             </div>
             {actions}
