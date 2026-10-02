@@ -33,14 +33,14 @@ export default function TransactionRow({ transaction, timeZone }: Props) {
 
     return (
         <tr className="hover:bg-background-muted relative">
-            <td className="data-cell text-text-secondary hidden w-px whitespace-nowrap md:table-cell">
+            <td className="data-cell text-text-muted hidden w-px whitespace-nowrap md:table-cell">
                 <time dateTime={postedAt ?? createdAt}>{date}</time>
             </td>
             <td className="data-cell">
                 <span className="flex items-center gap-2">
                     <Link
                         href={transactionRoute(transaction.id)}
-                        className="text-text after:absolute after:inset-0 focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:-outline-offset-2 focus-visible:after:outline-(--colors-accent)"
+                        className="text-text font-medium after:absolute after:inset-0 focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:-outline-offset-2 focus-visible:after:outline-(--colors-accent)"
                     >
                         {counterparty?.name ?? description}
                     </Link>
@@ -65,7 +65,7 @@ export default function TransactionRow({ transaction, timeZone }: Props) {
             <td className="data-cell text-text-secondary hidden lg:table-cell">
                 {transaction.category ?? COPY.uncategorised}
             </td>
-            <td className="data-cell w-px">
+            <td className="data-cell hidden w-px sm:table-cell">
                 <StatusLabel {...status} />
             </td>
             <td className="data-cell text-right whitespace-nowrap">
@@ -81,6 +81,9 @@ export default function TransactionRow({ transaction, timeZone }: Props) {
                               : "text-text",
                     )}
                 />
+                <p className="pt-1 sm:hidden">
+                    <StatusLabel {...status} />
+                </p>
             </td>
         </tr>
     );

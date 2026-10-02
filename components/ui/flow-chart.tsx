@@ -30,8 +30,11 @@ export default function FlowChart({
     const id = useId();
     const legend = [
         { label: labels.inflow, swatch: "bg-accent size-2.5 rounded-sm" },
-        { label: labels.outflow, swatch: "bg-text-muted size-2.5 rounded-sm" },
-        { label: labels.net, swatch: "bg-text h-0.5 w-4" },
+        {
+            label: labels.outflow,
+            swatch: "bg-text-muted/45 size-2.5 rounded-sm",
+        },
+        { label: labels.net, swatch: "bg-text-secondary h-px w-4" },
     ];
 
     return (
@@ -41,7 +44,7 @@ export default function FlowChart({
             </figcaption>
             <ul
                 aria-hidden
-                className="text-text-secondary flex flex-wrap gap-4 text-xs"
+                className="text-text-muted flex flex-wrap justify-end gap-4 text-xs"
             >
                 {legend.map(({ label, swatch }) => (
                     <li key={label} className="flex items-center gap-2">

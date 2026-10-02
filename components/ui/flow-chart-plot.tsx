@@ -20,12 +20,12 @@ interface Props {
 
 const AXIS = {
     stroke: "var(--colors-text-muted)",
-    fontSize: 12,
+    fontSize: 11,
     tickLine: false,
     axisLine: false,
 };
 
-const BAR = { stackId: "flow", isAnimationActive: false, maxBarSize: 18 };
+const BAR = { stackId: "flow", isAnimationActive: false, maxBarSize: 10 };
 
 export default function FlowChartPlot({ points, labels, formatTick }: Props) {
     return (
@@ -36,9 +36,17 @@ export default function FlowChartPlot({ points, labels, formatTick }: Props) {
                 margin={{ top: 8, right: 8, bottom: 0, left: 0 }}
                 accessibilityLayer
             >
-                <CartesianGrid vertical={false} stroke="var(--colors-border)" />
+                <CartesianGrid
+                    vertical={false}
+                    stroke="var(--colors-border-light)"
+                />
                 <XAxis dataKey="label" {...AXIS} minTickGap={24} />
-                <YAxis {...AXIS} width={64} tickFormatter={formatTick} />
+                <YAxis
+                    {...AXIS}
+                    width={56}
+                    tickCount={5}
+                    tickFormatter={formatTick}
+                />
                 <ReferenceLine y={0} stroke="var(--colors-border-dark)" />
                 <Tooltip
                     cursor={{ fill: "var(--colors-background-muted)" }}
@@ -81,14 +89,15 @@ export default function FlowChartPlot({ points, labels, formatTick }: Props) {
                 <Bar
                     dataKey="outflow"
                     fill="var(--colors-text-muted)"
+                    fillOpacity={0.45}
                     radius={[2, 2, 0, 0]}
                     {...BAR}
                 />
                 <Line
                     type="linear"
                     dataKey="net"
-                    stroke="var(--colors-text)"
-                    strokeWidth={1.5}
+                    stroke="var(--colors-text-secondary)"
+                    strokeWidth={1.25}
                     dot={false}
                     isAnimationActive={false}
                 />

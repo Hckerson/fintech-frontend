@@ -18,15 +18,15 @@ export default function FigureCell({
         <div
             className={clsx("flex min-w-0 flex-col gap-1 px-4 py-3", className)}
         >
-            <dt className="text-text-muted flex flex-wrap items-center gap-2 text-xs">
+            <dt className="figure-label flex flex-wrap items-center gap-2">
                 {label}
             </dt>
             <dd
                 className={clsx(
                     "text-text whitespace-nowrap tabular-nums",
                     lead
-                        ? "text-h4 font-medium tracking-tight"
-                        : "text-sm sm:text-base",
+                        ? "text-h5 font-semibold tracking-tight"
+                        : "text-sm font-medium sm:text-base",
                 )}
             >
                 {children}

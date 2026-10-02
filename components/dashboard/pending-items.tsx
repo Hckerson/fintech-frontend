@@ -7,7 +7,10 @@ import PendingItemRow from "@/components/dashboard/pending-item-row";
 import Button from "@/components/ui/button";
 import EmptyState from "@/components/ui/empty-state";
 import ErrorState from "@/components/ui/error-state";
-import { DASHBOARD_PENDING_LIMIT } from "@/lib/dashboard/constants";
+import {
+    DASHBOARD_ACTIVITY_LIMIT,
+    DASHBOARD_PENDING_LIMIT,
+} from "@/lib/dashboard/constants";
 import { DASHBOARD_COPY } from "@/lib/data/dashboard/copy";
 import { EMPTY_STATES } from "@/lib/data/empty-states";
 import { ERROR_COPY } from "@/lib/data/error-messages";
@@ -27,8 +30,7 @@ export default function PendingItems() {
     const withExports = can("manageExports");
     const withVerification = can("manageAlertRules");
     const transactions = useTransactions({
-        limit: DASHBOARD_PENDING_LIMIT,
-        status: "pending",
+        limit: DASHBOARD_ACTIVITY_LIMIT,
     });
     const exports = useExports({ enabled: withExports });
     const verification = useVerificationCase({ enabled: withVerification });

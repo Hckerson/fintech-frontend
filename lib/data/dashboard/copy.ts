@@ -20,10 +20,12 @@ export const DASHBOARD_COPY = {
         pendingItems: "Needs attention",
         cashFlow: "Cash flow",
     } satisfies Record<DashboardSectionKey, string>,
+    export: "New export",
     dropped: (names: string) =>
         `The link had a setting we couldn't use (${names}), so the default is shown.`,
     cash: {
-        available: (currency: string) => `Available balance · ${currency}`,
+        currency: "Currency",
+        available: "Available balance",
         current: "Current balance",
         netToday: (zone: string) => `Net today (${zone})`,
         frozen: "Includes frozen accounts",
@@ -58,6 +60,9 @@ export const DASHBOARD_COPY = {
     },
     activity: {
         all: "All transactions",
+        filterLabel: "Show",
+        filters: { all: "All", pending: "Pending" },
+        nonePending: "Nothing is pending.",
         columns: {
             date: "Date",
             description: "Description",

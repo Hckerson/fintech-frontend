@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {
     ArrowDownRight,
     ArrowUpRight,
@@ -6,7 +5,6 @@ import {
     type CarbonIconType,
 } from "@carbon/icons-react";
 import Amount from "@/components/common/amount";
-import FigureCell from "@/components/common/figure-cell";
 import StatusLabel from "@/components/ui/status-label";
 import TrendLine from "@/components/ui/trend-line";
 import { NOT_AVAILABLE } from "@/lib/constants";
@@ -14,7 +12,6 @@ import { SPARKLINE } from "@/lib/dashboard/constants";
 import { DASHBOARD_COPY } from "@/lib/data/dashboard/copy";
 import type { CashPosition, Trend } from "@/lib/types";
 import { plottable, trendOf, trendPercent } from "@/lib/utils/trend";
-import { ACCOUNTS_ROUTE } from "@/lib/workspace/constants";
 
 interface Props {
     position: CashPosition;
@@ -22,7 +19,9 @@ interface Props {
 }
 
 const COPY = DASHBOARD_COPY.cash;
-const DIVIDED = "border-border border-t lg:border-t-0 lg:border-l";
+const CELL = "data-cell max-md:block max-md:border-b-0 max-md:py-2";
+const LABEL = "figure-label block pb-1 md:hidden";
+const MISSING = <span className="text-text-muted">{NOT_AVAILABLE}</span>;
 
 const DIRECTION: Record<Trend["direction"], CarbonIconType> = {
     up: ArrowUpRight,
@@ -37,49 +36,48 @@ export default function CashPositionTotal({ position, timeZone }: Props) {
     const Direction = trend ? DIRECTION[trend.direction] : null;
 
     return (
-        <dl className="border-border grid grid-cols-2 border-t first:border-t-0 lg:grid-cols-[minmax(0,1.6fr)_repeat(3,minmax(0,1fr))]">
-            <FigureCell
-                lead
-                className="col-span-2 lg:col-span-1"
-                label={
-                    <>
-                        <Link
-                            href={ACCOUNTS_ROUTE}
-                            className="hover:text-text underline-offset-4 hover:underline"
-                        >
-                            {COPY.available(currency)}
-                        </Link>
-                        {includesFrozen ? (
-                            <StatusLabel
-                                label={COPY.frozen}
-                                severity="attention"
-                            />
-                        ) : null}
-                    </>
-                }
+        <tr className="max-md:border-border-light max-md:grid max-md:grid-cols-2 max-md:border-b max-md:py-2">
+            <th
+                scope="row"
+                className={`${CELL} text-left font-normal max-md:col-span-2 md:w-px md:whitespace-nowrap`}
             >
-                <Amount {...available} className="break-words" />
-            </FigureCell>
-            <FigureCell label={COPY.current} className={DIVIDED}>
-                <Amount {...current} />
-            </FigureCell>
-            <FigureCell
-                label={COPY.netToday(timeZone)}
-                className={`${DIVIDED} border-l`}
-            >
+                <span className="flex items-center gap-2">
+                    <span className="border-border-dark text-text text-caption rounded border px-1.5 py-0.5 font-mono font-medium">
+                        {currency}
+                    </span>
+                    {includesFrozen ? (
+                        <StatusLabel label={COPY.frozen} severity="attention" />
+                    ) : null}
+                </span>
+            </th>
+            <td className={`${CELL} max-md:col-span-2`}>
+                <span className={LABEL}>{COPY.available}</span>
+                <Amount
+                    {...available}
+                    className="text-text text-h5 font-semibold tracking-tight break-words tabular-nums"
+                />
+            </td>
+            <td className={`${CELL} md:text-right`}>
+                <span className={LABEL}>{COPY.current}</span>
+                <Amount {...current} className="text-text tabular-nums" />
+            </td>
+            <td className={`${CELL} md:text-right`}>
+                <span className={LABEL}>{COPY.netToday(timeZone)}</span>
                 {netToday ? (
-                    <Amount {...netToday} display="signed" />
+                    <Amount
+                        {...netToday}
+                        display="signed"
+                        className="text-text tabular-nums"
+                    />
                 ) : (
-                    <span className="text-text-muted">{NOT_AVAILABLE}</span>
+                    MISSING
                 )}
-            </FigureCell>
-            <FigureCell
-                label={COPY.trendLabel}
-                className={`${DIVIDED} col-span-2 lg:col-span-1`}
-            >
+            </td>
+            <td className={`${CELL} max-md:col-span-2`}>
+                <span className={LABEL}>{COPY.trendLabel}</span>
                 {trend && Direction ? (
-                    <span className="flex items-center justify-between gap-3">
-                        <span className="flex items-center gap-1">
+                    <span className="flex items-center justify-between gap-3 md:justify-end">
+                        <span className="text-text flex items-center gap-1 tabular-nums">
                             <Direction
                                 aria-hidden
                                 className="text-text-muted size-4"
@@ -94,9 +92,9 @@ export default function CashPositionTotal({ position, timeZone }: Props) {
                         ) : null}
                     </span>
                 ) : (
-                    <span className="text-text-muted">{NOT_AVAILABLE}</span>
+                    MISSING
                 )}
-            </FigureCell>
-        </dl>
+            </td>
+        </tr>
     );
 }

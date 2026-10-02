@@ -37,7 +37,9 @@ export const DASHBOARD_LAYOUT = {
     notice: ["verification", "verificationNotice"],
     band: ["cashPosition"],
     rows: [
-        { main: ["cashFlow"], side: ["pendingItems"] },
-        { main: ["recentActivity"], side: ["accountSummary"] },
+        {
+            main: ["cashFlow", "recentActivity"],
+            side: ["pendingItems", "accountSummary"],
+        },
     ],
 } as const satisfies DashboardLayout;

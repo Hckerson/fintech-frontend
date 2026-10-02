@@ -29,7 +29,9 @@ export default function PendingItemRow({ item }: Props) {
                 )}
             />
             <span className="flex min-w-0 flex-1 flex-col">
-                <span className="text-text text-sm">{item.title}</span>
+                <span className="text-text text-sm font-medium">
+                    {item.title}
+                </span>
                 <span className="text-text-muted text-xs break-words">
                     {item.detail}
                 </span>

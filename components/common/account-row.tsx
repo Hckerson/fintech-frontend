@@ -18,7 +18,7 @@ export default function AccountRow({ account }: Props) {
             <td className="data-cell">
                 <Link
                     href={accountRoute(account.id)}
-                    className="text-text after:absolute after:inset-0 focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:-outline-offset-2 focus-visible:after:outline-(--colors-accent)"
+                    className="text-text font-medium after:absolute after:inset-0 focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:-outline-offset-2 focus-visible:after:outline-(--colors-accent)"
                 >
                     {account.name}
                 </Link>

@@ -1,5 +1,4 @@
 "use client";
-import AsOf from "@/components/common/as-of";
 import SectionCard from "@/components/common/section-card";
 import SectionSkeleton from "@/components/common/section-skeleton";
 import CashPositionTotal from "@/components/dashboard/cash-position-total";
@@ -12,6 +11,8 @@ import { useCashPosition } from "@/lib/hooks/use-cash-position";
 import { useWorkspace } from "@/lib/hooks/use-workspace";
 import { ACCOUNTS_ROUTE, ONBOARDING_ROUTE } from "@/lib/workspace/constants";
 
+const COPY = DASHBOARD_COPY.cash;
+
 export default function CashPosition() {
     const { workspace, can } = useWorkspace();
     const query = useCashPosition();
@@ -21,7 +22,7 @@ export default function CashPosition() {
             flush
             title={DASHBOARD_COPY.sections.cashPosition}
             action={{
-                label: DASHBOARD_COPY.cash.accounts,
+                label: COPY.accounts,
                 href: ACCOUNTS_ROUTE,
             }}
         >
@@ -46,22 +47,53 @@ export default function CashPosition() {
             >
                 {(positions) => (
                     <>
-                        {positions.map((position) => (
-                            <CashPositionTotal
-                                key={position.currency}
-                                position={position}
-                                timeZone={workspace.timeZone}
-                            />
-                        ))}
-                        <div className="border-border text-text-muted flex flex-wrap items-center justify-between gap-2 border-t px-4 py-2 text-xs">
-                            <p>{DASHBOARD_COPY.cash.excluded}</p>
-                            <AsOf
-                                asOf={positions[0].asOf}
-                                timeZone={workspace.timeZone}
-                            />
-                        </div>
+                        <table className="w-full max-md:block">
+                            <caption className="sr-only">
+                                {DASHBOARD_COPY.sections.cashPosition}
+                            </caption>
+                            <thead className="max-md:hidden">
+                                <tr>
+                                    <th scope="col" className="data-head">
+                                        {COPY.currency}
+                                    </th>
+                                    <th scope="col" className="data-head">
+                                        {COPY.available}
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="data-head text-right"
+                                    >
+                                        {COPY.current}
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="data-head text-right"
+                                    >
+                                        {COPY.netToday(workspace.timeZone)}
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="data-head text-right"
+                                    >
+                                        {COPY.trendLabel}
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody className="max-md:block">
+                                {positions.map((position) => (
+                                    <CashPositionTotal
+                                        key={position.currency}
+                                        position={position}
+                                        timeZone={workspace.timeZone}
+                                    />
+                                ))}
+                            </tbody>
+                        </table>
+                        <p className="text-text-muted px-4 py-2 text-xs">
+                            {COPY.excluded}
+                        </p>
                         <p role="status" className="sr-only">
-                            {DASHBOARD_COPY.cash.loaded(positions.length)}
+                            {COPY.loaded(positions.length)}
                         </p>
                     </>
                 )}
