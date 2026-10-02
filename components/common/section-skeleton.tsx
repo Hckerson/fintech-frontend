@@ -13,9 +13,7 @@ export default function SectionSkeleton({
     bare = false,
 }: Props) {
     return (
-        <div
-            className={clsx("flex flex-col gap-3", !bare && "surface-card p-4")}
-        >
+        <div className={clsx("flex flex-col gap-3", !bare && "panel p-4")}>
             {bare ? null : <Skeleton className="h-5 w-32" />}
             {Array.from({ length: rows }, (_, row) => (
                 <Skeleton key={row} className={rowClassName} />

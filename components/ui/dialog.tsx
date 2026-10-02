@@ -50,7 +50,7 @@ export default function Dialog({
         >
             <div className="flex flex-col gap-4 p-4">
                 <header className="flex flex-col gap-2">
-                    <h2 id={`${id}-title`} className="text-h5 text-text">
+                    <h2 id={`${id}-title`} className="text-h6 text-text">
                         {title}
                     </h2>
                     {description ? (

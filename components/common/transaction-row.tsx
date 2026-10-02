@@ -25,55 +25,63 @@ export default function TransactionRow({ transaction, timeZone }: Props) {
         transaction;
     const status =
         TRANSACTION_STATUS_LABELS[transaction.status] ?? UNKNOWN_STATUS;
-    const date = postedAt
-        ? zonedLabel(postedAt, DEFAULT_TIME_ZONE, CALENDAR_DAY)
-        : zonedLabel(createdAt, timeZone, CALENDAR_DAY);
+    const date =
+        (postedAt
+            ? zonedLabel(postedAt, DEFAULT_TIME_ZONE, CALENDAR_DAY)
+            : zonedLabel(createdAt, timeZone, CALENDAR_DAY)) ?? NOT_AVAILABLE;
+    const credit = !amount.amountMinor.startsWith("-");
 
     return (
-        <Link
-            href={transactionRoute(transaction.id)}
-            className="hover:bg-background-muted focus-visible:outline-accent -mx-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 rounded-md px-2 py-2.5 text-sm focus-visible:outline-2"
-        >
-            <span className="flex min-w-0 flex-1 flex-col">
-                <span className="text-text break-words">
-                    {counterparty?.name ?? description}
-                </span>
-                <span className="text-text-muted flex flex-wrap items-center gap-x-2 text-xs">
-                    <time dateTime={postedAt ?? createdAt}>
-                        {date ?? NOT_AVAILABLE}
-                    </time>
-                    {counterparty ? <span>{description}</span> : null}
+        <tr className="hover:bg-background-muted relative">
+            <td className="data-cell text-text-secondary hidden w-px whitespace-nowrap md:table-cell">
+                <time dateTime={postedAt ?? createdAt}>{date}</time>
+            </td>
+            <td className="data-cell">
+                <span className="flex items-center gap-2">
+                    <Link
+                        href={transactionRoute(transaction.id)}
+                        className="text-text after:absolute after:inset-0 focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:-outline-offset-2 focus-visible:after:outline-(--colors-accent)"
+                    >
+                        {counterparty?.name ?? description}
+                    </Link>
                     {transaction.flagged ? (
-                        <span className="text-warning inline-flex items-center gap-1">
-                            <FlagFilled aria-hidden className="size-3" />
-                            {COPY.flagged}
-                        </span>
+                        <FlagFilled
+                            aria-label={COPY.flagged}
+                            className="text-warning size-3 shrink-0"
+                        />
                     ) : null}
                     {transaction.hasAttachments ? (
-                        <span className="inline-flex items-center gap-1">
-                            <Attachment aria-hidden className="size-3" />
-                            <span className="sr-only">{COPY.attachments}</span>
-                        </span>
+                        <Attachment
+                            aria-label={COPY.attachments}
+                            className="text-text-muted size-3 shrink-0"
+                        />
                     ) : null}
                 </span>
-            </span>
-            <span className="flex shrink-0 items-center gap-2">
-                {transaction.status === "posted" ? (
-                    <span className="sr-only">{status.label}</span>
-                ) : (
-                    <StatusLabel {...status} />
-                )}
+                <p className="text-text-muted text-xs">
+                    {counterparty ? description : transaction.reference}
+                    <span className="md:hidden"> · {date}</span>
+                </p>
+            </td>
+            <td className="data-cell text-text-secondary hidden lg:table-cell">
+                {transaction.category ?? COPY.uncategorised}
+            </td>
+            <td className="data-cell w-px">
+                <StatusLabel {...status} />
+            </td>
+            <td className="data-cell text-right whitespace-nowrap">
                 <Amount
                     {...amount}
                     display="signed"
                     className={clsx(
                         "tabular-nums",
-                        amount.amountMinor.startsWith("-")
-                            ? "text-text"
-                            : "text-success",
+                        status.severity === "problem"
+                            ? "text-text-muted"
+                            : credit
+                              ? "text-success"
+                              : "text-text",
                     )}
                 />
-            </span>
-        </Link>
+            </td>
+        </tr>
     );
 }

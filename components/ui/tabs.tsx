@@ -51,7 +51,7 @@ export default function Tabs<TId extends string>({
             role="tablist"
             aria-label={label}
             onKeyDown={onKeyDown}
-            className="bg-background-muted flex max-w-full gap-1 overflow-x-auto rounded-md p-1 text-xs"
+            className="border-border bg-background flex max-w-full gap-0.5 overflow-x-auto rounded-md border p-0.5 text-xs"
         >
             {tabs.map((tab) => {
                 const selected = tab.id === value;
@@ -66,9 +66,9 @@ export default function Tabs<TId extends string>({
                         tabIndex={selected ? 0 : -1}
                         onClick={() => !disabled && onChange(tab.id)}
                         className={clsx(
-                            "focus-visible:outline-accent cursor-pointer rounded px-2.5 py-1 whitespace-nowrap focus-visible:outline-2",
+                            "focus-visible:outline-accent cursor-pointer rounded px-2 py-1 whitespace-nowrap focus-visible:outline-2",
                             selected
-                                ? "bg-background text-text"
+                                ? "bg-background-muted text-text"
                                 : "text-text-muted hover:text-text",
                         )}
                     >

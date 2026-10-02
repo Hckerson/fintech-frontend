@@ -4,20 +4,22 @@ interface Props {
     label: string;
     value: ReactNode;
     delta?: ReactNode;
-    children?: ReactNode;
+    note?: ReactNode;
 }
 
-export default function Metric({ label, value, delta, children }: Props) {
+export default function Metric({ label, value, delta, note }: Props) {
     return (
-        <div className="flex flex-col gap-3">
-            <dl className="flex flex-col gap-2">
-                <dt className="text-text-muted font-mono text-xs tracking-[0.18em] uppercase">
-                    {label}
-                </dt>
-                <dd className="ledger-figure text-text">{value}</dd>
-            </dl>
-            {delta}
-            {children}
-        </div>
+        <dl className="flex min-w-0 flex-col gap-1">
+            <dt className="text-text-muted text-xs">{label}</dt>
+            <dd className="text-text text-h5 font-medium tabular-nums">
+                {value}
+            </dd>
+            {delta || note ? (
+                <dd className="text-text-muted flex flex-wrap items-center gap-x-2 text-xs">
+                    {delta}
+                    {note}
+                </dd>
+            ) : null}
+        </dl>
     );
 }

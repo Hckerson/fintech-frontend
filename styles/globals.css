@@ -178,6 +178,33 @@
     border-radius: var(--radii-xl);
 }
 
+@utility panel {
+    background: var(--colors-background-alt);
+    border: 1px solid var(--colors-border);
+    border-radius: var(--radii-lg);
+}
+
+@utility data-head {
+    padding: 0.5rem 1rem;
+    font-size: var(--font-sizes-caption);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-align: left;
+    white-space: nowrap;
+    color: var(--colors-text-muted);
+    background: var(--colors-background);
+    border-bottom: 1px solid var(--colors-border);
+}
+
+@utility data-cell {
+    padding: 0.625rem 1rem;
+    font-size: var(--font-sizes-sm);
+    line-height: 1.4;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--colors-border-light);
+}
+
 @utility frame-panel {
     padding: 1rem;
     background: var(--colors-background);
