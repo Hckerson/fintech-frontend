@@ -38,7 +38,7 @@ export default function MobileNav({ children }: Props) {
                 className="border-border bg-background-alt text-text backdrop:bg-overlay m-0 h-svh max-h-none w-72 max-w-[85vw] border-r p-0"
             >
                 <div className="flex h-full flex-col">
-                    <div className="flex justify-end px-3 pt-3">
+                    <div className="flex justify-end px-2 pt-2">
                         <button
                             type="button"
                             aria-label={SHELL_COPY.closeNav}
