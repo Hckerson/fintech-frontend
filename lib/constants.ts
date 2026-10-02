@@ -54,6 +54,7 @@ export const PROTECTED_ROUTE_PREFIXES = [
 export const PAGE_TITLES = {
     dashboard: "Dashboard",
     payments: "Payees & bill pay",
+    transfer: "Transfer",
     adminOverview: "Admin overview",
 } as const;
 

@@ -100,6 +100,14 @@ export const addStoredPayee = ({
     return { ok: true, data: payee };
 };
 
+export const findStoredPayee = (id: string) =>
+    payees.find((payee) => payee.id === id);
+
+export const markPayeePaying = (id: string) => {
+    const stored = findStoredPayee(id);
+    if (stored) stored.paymentInProgress = true;
+};
+
 const locate = ({
     id,
     updatedAt,

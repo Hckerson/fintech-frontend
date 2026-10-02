@@ -23,6 +23,11 @@ export const EMPTY_STATES = {
         body: "A payee is a business or person you trust to be paid. Once one is added and verified you can pay it from here.",
         action: "Add your first payee",
     },
+    transfer: {
+        title: "Nothing to transfer between yet.",
+        body: "Add a payee or open a second account to transfer money.",
+        action: "Go to payees",
+    },
     payeesNoMatch: {
         title: (term: string) => `No payee matches “${term}”.`,
         filtered: "No payees with this status.",

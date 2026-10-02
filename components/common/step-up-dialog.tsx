@@ -47,7 +47,11 @@ export default function StepUpDialog({ purpose, onSettle }: Props) {
     return (
         <Dialog
             title={STEP_UP_COPY.title}
-            description={STEP_UP_COPY.lead(STEP_UP_ACTIONS[purpose])}
+            description={
+                purpose === "transfer"
+                    ? STEP_UP_COPY.transferLead
+                    : STEP_UP_COPY.lead(STEP_UP_ACTIONS[purpose])
+            }
             onCancel={() => stepUp.isPending || onSettle(false)}
         >
             <form onSubmit={submit} noValidate className="flex flex-col gap-4">

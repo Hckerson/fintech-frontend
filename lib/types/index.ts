@@ -6,6 +6,7 @@ export * from "./status";
 export * from "./insights";
 export * from "./chart";
 export * from "./payments";
+export * from "./transfers";
 export * from "./shell";
 export * from "./admin";
 export * from "./workspace";

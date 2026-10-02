@@ -43,7 +43,11 @@ export const queryKeys = {
             status,
         ],
     },
+    transfers: {
+        options: (workspaceId: string) => ["transfers", workspaceId, "options"],
+    },
     admin: {
+        notificationCount: () => ["admin", "notifications", "count"],
         userTotal: (period: StatsPeriod) => [
             "admin",
             "stats",

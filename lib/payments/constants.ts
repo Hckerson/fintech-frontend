@@ -20,6 +20,7 @@ export const STEP_UP_PURPOSES = [
     "payee_add",
     "payee_rename",
     "payee_remove",
+    "transfer",
 ] as const;
 
 export const PAYEE_REFUSAL = {

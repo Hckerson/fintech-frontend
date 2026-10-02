@@ -7,6 +7,7 @@ export const WORKSPACE_ROLES = [
 
 export const CAPABILITY_ROLES = {
     managePayees: ["owner", "finance"],
+    transferMoney: ["owner", "finance"],
     viewDashboard: WORKSPACE_ROLES,
     viewAccounts: WORKSPACE_ROLES,
     viewTransactions: WORKSPACE_ROLES,
