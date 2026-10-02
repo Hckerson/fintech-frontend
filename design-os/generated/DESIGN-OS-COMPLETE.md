@@ -159,6 +159,8 @@ BR13–BR20; OD11–OD16; A11–A28; K15, K16; assumptions P2-A1–P2-A14, IA8�
 - **Backend today** corrected: accounts and cash flow are published, alongside auth, users, health and stats.
 - **LD1** (`recharts`) recorded as installed, pending the owner confirming where its approval is recorded.
 - **Phase 9** sharpened 57 existing checks with a threshold, a method and the evidence to keep, and re-checked H-01–H-25 against the current code.
+- Job-based names (2026-10-02, Critical Rules › No Visual Prescription): fourteen Phase 5 section names that still named a container or control (form, list, feed, builder, title) now name the job, and the group "Shell & navigation" is "Navigation & orientation"; Phase 3 §2.1 and §2.3 headings say "route group" where they said "shell". IDs, behaviour, scope and status are unchanged and nothing was removed; every link and mention in Phases 2, 3, 4, 8 and 9 follows. Record: [Phase 5 name table](phase-5-section-blueprints.md#names-in-this-version).
+- Link repair (2026-10-02): the implementation prompt's link to the interaction-contract bootstrap pointed at SETUP §8; it now points at §9, where that section lives.
 
 ### Removed
 

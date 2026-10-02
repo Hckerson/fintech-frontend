@@ -43,7 +43,7 @@ Rules that shape every decision below:
 
 Ledgerline has two signed-in areas. The `(app)` route group serves workspace members (R1–R4); the `(admin)` route group serves internal staff (R5–R7). They never share a navigation set. Why: an internal agent looking at a customer's workspace must always know which side of the glass they are on.
 
-### 2.1 Primary navigation — `(app)` shell (S01 Primary navigation)
+### 2.1 Primary navigation — `(app)` route group (S01 Primary navigation)
 
 | Order | Group | Item | Route | Page | Notes |
 |---|---|---|---|---|---|
@@ -63,7 +63,7 @@ Ledgerline has two signed-in areas. The `(app)` route group serves workspace mem
 
 Each item is a C35 NavItem. Group labels are read by assistive technology as the group names. The nav config (labels, routes, icons, required capability, group) is one typed array in `lib/data/`; S01 filters it by capability. Why: one source feeds the navigation, the command palette's Pages scope ([§10](#10-search-hierarchy)) and the breadcrumb root labels.
 
-**Depth limit.** Primary navigation is two levels deep at most (group → item). Anything deeper — Insights sub-pages, Settings sub-pages, saved views, flagged — is reached from its sibling pages (C23, through S03 Page title & actions) or by in-page links. Why: nested disclosure hides the thing a member came for; keeping sibling pages one step apart does not grow the navigation.
+**Depth limit.** Primary navigation is two levels deep at most (group → item). Anything deeper — Insights sub-pages, Settings sub-pages, saved views, flagged — is reached from its sibling pages (C23, through S03 Page identity & actions) or by in-page links. Why: nested disclosure hides the thing a member came for; keeping sibling pages one step apart does not grow the navigation.
 
 **Transactions sub-navigation** (siblings P11, P13, P14, each reachable from the others): All (`/transactions`) · Saved views (`/transactions/views`) · Flagged (`/transactions/flagged`).
 
@@ -82,7 +82,7 @@ Each item is a C35 NavItem. Group labels are read by assistive technology as the
 
 Reachable from every `(app)` and `(admin)` page: global search (C38 CommandPalette, ⌘K / Ctrl+K, C28) · notifications (C39) · the member's own account — Profile & security, Help, Sign out (C37) · the breadcrumb trail on detail pages (C29, [§13](#13-breadcrumb-strategy)). How they appear is decided at build.
 
-### 2.3 Admin navigation — `(admin)` shell
+### 2.3 Admin navigation — `(admin)` route group
 
 | Order | Item | Route | Page | Reachable by |
 |---|---|---|---|---|
@@ -222,7 +222,7 @@ Flow: [F3](phase-2-experience-maps.md#f3--investigate-a-transaction).
 
 ### P17 — Statements / P18 — Exports
 
-P17: S30 Statement list, grouped by account, newest period first. P18: S31 Export builder and S32 Export jobs. Flow: [F4](phase-2-experience-maps.md#f4--export-and-reconcile).
+P17: S30 Statement downloads, grouped by account, newest period first. P18: S31 Export request and S32 Export jobs. Flow: [F4](phase-2-experience-maps.md#f4--export-and-reconcile).
 
 ### P07 — Onboarding & verification
 
@@ -230,7 +230,7 @@ Sections: S09 Verification progress, S10 Business details, S11 Beneficial owners
 
 ### P23 — Team
 
-Sections: S39 Team members, S40 Invite member form (C21), S41 Role permissions reference.
+Sections: S39 Team members, S40 Member invitation (C21), S41 Role permissions reference.
 
 ### P29 — Admin overview / P32 — Compliance queue
 
@@ -797,7 +797,7 @@ Rules:
 
 ## 13. Breadcrumb strategy
 
-Breadcrumb trails (C29, part of S03 Page title & actions) exist **only on detail pages**. Top-level pages have none. Breadcrumbs follow **ownership, not history**:
+Breadcrumb trails (C29, part of S03 Page identity & actions) exist **only on detail pages**. Top-level pages have none. Breadcrumbs follow **ownership, not history**:
 
 | Page | Trail |
 |---|---|
@@ -965,6 +965,7 @@ Adding an area never renames, moves or removes an existing route. A route that m
 
 - **Retained:** both signed-in areas, every navigation item, sitemap, page index P01–P35, role navigation, capability matrix, enforcement layers, taxonomy, labels, cross-links, search and filter hierarchy (including the filter schema), SEO, breadcrumbs, empty and fallback routes, protected prefixes, expansion strategy.
 - **Changed:** section and contract names updated to 2.0.0; "sidebar", "top bar", "left to right", "focal", group-label styling and the phone navigation pattern rewritten as behaviour; the state "Tone" column renamed "Severity" with non-visual values (positive, attention, problem, information, neutral); the figure typography rule and theme colour metadata dropped as visual.
+- **Changed (2026-10-02, job-based names — Critical Rules › No Visual Prescription):** section names that named a container or control now name the job; IDs, behaviour, scope and status are unchanged and nothing was removed. S03 Page title & actions → Page identity & actions; S30 Statement list → Statement downloads; S31 Export builder → Export request; S40 Invite member form → Member invitation. In this file, the headings of §2.1 and §2.3 say "route group" where they said "shell". The full record is the [Phase 5 name table](phase-5-section-blueprints.md#names-in-this-version).
 - **Added:** §2.5 Public site navigation (S55); note on P01's built location below.
 - **Self-audit (tightened seed: structure and reachability only):** §4 Content hierarchy rewritten from field and component inventories (C40, C41, C42, C51, "Account column", "filter chips", "C21 Dialog") to primary information plus sections by priority; navigation notes ("above all groups", "badge", "sub-tabs inside the page header", "tabs in S03"), "shell" wording, "marketing header", "overlay", "view chip", toolbar order, "on hover", "rows", "hidden button" and breadcrumb placement rewritten as structure or behaviour. Headings kept unchanged so links resolve (two still say "shell"). No page, route, role rule, flow or decision removed.
 
