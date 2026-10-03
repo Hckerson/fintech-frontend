@@ -7,6 +7,11 @@ export const AUTH_SHELL_COPY = {
         { id: "help", label: "Help", href: HELP_ROUTE },
         { id: "back", label: "Back to site", href: HOME_ROUTE },
     ],
+    points: [
+        "Roles decide who can see and who can move money",
+        "A second check before any sensitive action",
+        "Every sign-in recorded for you to review",
+    ],
     showPassword: "Show password",
     hidePassword: "Hide password",
     offline: "You're offline, so nothing was sent. Reconnect, then try again.",

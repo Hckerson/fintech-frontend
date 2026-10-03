@@ -3,7 +3,8 @@ import type { ComponentProps, ReactNode } from "react";
 import AuthFormFooter from "@/components/auth/auth-form-footer";
 import AuthFormHeader from "@/components/auth/auth-form-header";
 import AuthNoticeMark from "@/components/auth/auth-notice-mark";
-import LedgerButton from "@/components/ledgerline/ledger-button";
+import Link from "next/link";
+import { buttonClass } from "@/components/ui/button";
 import type { NoticeTone } from "@/lib/types";
 
 interface Props extends ComponentProps<typeof AuthFormHeader> {
@@ -50,13 +51,12 @@ export default function AuthNotice({
                 </ul>
             )}
             <div className="flex flex-col gap-3">
-                <LedgerButton
+                <Link
                     href={action.href}
-                    tone="accent"
-                    className="w-full"
+                    className={buttonClass("accent", "xl", "w-full")}
                 >
                     {action.label}
-                </LedgerButton>
+                </Link>
                 {children}
             </div>
             {footer && <AuthFormFooter {...footer} />}

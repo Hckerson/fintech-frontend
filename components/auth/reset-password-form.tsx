@@ -48,7 +48,7 @@ export default function ResetPasswordForm({ token, onDone, onInvalid }: Props) {
         rejected === "offline"
             ? AUTH_SHELL_COPY.offline
             : rejected
-              ? RESET_COPY.fieldErrors[rejected]
+              ? null
               : reset.isError
                 ? resetMessage(statusOf(reset.error), retryAfterOf(reset.error))
                 : null;
@@ -95,6 +95,7 @@ export default function ResetPasswordForm({ token, onDone, onInvalid }: Props) {
             })),
         readOnly: pending,
         invalid: rejected === name,
+        error: rejected === name ? RESET_COPY.fieldErrors[name] : undefined,
     });
 
     return (

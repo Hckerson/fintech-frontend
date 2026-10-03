@@ -1,26 +1,44 @@
-import type { ReactNode } from "react";
-import AuthPanelChart from "@/components/auth/auth-panel-chart";
+import { Checkmark } from "@carbon/icons-react";
+import ProductFrame from "@/components/ledgerline/product-frame";
+import { AUTH_SHELL_COPY } from "@/lib/data/auth/shell";
 
 interface Props {
     statement: string;
-    caption: string;
-    visual?: ReactNode;
 }
 
-export default function AuthPanel({ statement, caption, visual }: Props) {
+export default function AuthPanel({ statement }: Props) {
     return (
-        <aside className="border-border bg-background-alt relative hidden h-svh overflow-hidden border-l lg:sticky lg:top-0 lg:flex lg:flex-col lg:gap-8 lg:p-12 xl:p-16">
+        <aside className="border-border bg-background-muted relative hidden h-svh overflow-hidden border-l lg:sticky lg:top-0 lg:flex lg:flex-col lg:gap-12 lg:pt-14 lg:pl-14 xl:pt-20 xl:pl-20">
             <div
                 aria-hidden
-                className="pointer-events-none absolute inset-x-0 top-1/4 h-1/2 bg-[radial-gradient(50%_50%_at_50%_50%,var(--ledger-glow),transparent_72%)]"
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-[radial-gradient(60%_60%_at_60%_60%,var(--ledger-glow),transparent_72%)]"
             />
-            <div className="relative">{visual}</div>
-            <div className="relative -mx-12 min-h-32 flex-1 xl:-mx-16">
-                <AuthPanelChart />
+            <div className="relative flex max-w-xl flex-col gap-6 pr-14">
+                <p className="text-h4 text-text font-medium tracking-tight text-balance">
+                    {statement}
+                </p>
+                <ul className="flex flex-col gap-2.5">
+                    {AUTH_SHELL_COPY.points.map((point) => (
+                        <li
+                            key={point}
+                            className="text-text-secondary flex items-center gap-3 text-sm"
+                        >
+                            <Checkmark
+                                aria-hidden
+                                className="text-accent size-4 shrink-0"
+                            />
+                            {point}
+                        </li>
+                    ))}
+                </ul>
             </div>
-            <div className="relative flex flex-col gap-5">
-                <p className="ledger-title text-text max-w-md">{statement}</p>
-                <p className="text-text-muted font-mono text-xs">{caption}</p>
+            <div className="relative min-h-0 flex-1">
+                <div
+                    aria-hidden
+                    className="product-frame w-5xl max-w-none rounded-xl"
+                >
+                    <ProductFrame />
+                </div>
             </div>
         </aside>
     );

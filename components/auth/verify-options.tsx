@@ -1,5 +1,5 @@
 import AuthDivider from "@/components/auth/auth-divider";
-import { ledgerButtonClass } from "@/components/ledgerline/ledger-button";
+import { buttonClass } from "@/components/ui/button";
 import { VERIFY_COPY } from "@/lib/data/auth/verify";
 import type { VerifyMethod } from "@/lib/types";
 
@@ -10,12 +10,7 @@ interface Props {
     onSwitch: (method: VerifyMethod) => void;
 }
 
-const optionClass = (className: string) =>
-    ledgerButtonClass(
-        "ghost",
-        "lg",
-        `w-full cursor-pointer disabled:opacity-70 ${className}`,
-    );
+const optionClass = buttonClass("quiet", "xl", "w-full");
 
 export default function VerifyOptions({
     method,
@@ -34,7 +29,7 @@ export default function VerifyOptions({
                     onClick={passkey.onUse}
                     disabled={busy}
                     aria-busy={passkey.pending}
-                    className={optionClass("disabled:cursor-wait")}
+                    className={optionClass}
                 >
                     {passkey.pending
                         ? VERIFY_COPY.passkeyPending
@@ -45,7 +40,7 @@ export default function VerifyOptions({
                 type="button"
                 onClick={() => onSwitch(other)}
                 disabled={busy}
-                className={optionClass("disabled:cursor-not-allowed")}
+                className={optionClass}
             >
                 {VERIFY_COPY.switchTo[other]}
             </button>

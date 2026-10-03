@@ -1,5 +1,5 @@
 import { ArrowRight } from "@carbon/icons-react";
-import { ledgerButtonClass } from "@/components/ledgerline/ledger-button";
+import { buttonClass } from "@/components/ui/button";
 
 interface Props {
     pending: boolean;
@@ -13,11 +13,7 @@ export default function AuthSubmit({ pending, label, pendingLabel }: Props) {
             type="submit"
             disabled={pending}
             aria-busy={pending}
-            className={ledgerButtonClass(
-                "accent",
-                "lg",
-                "w-full cursor-pointer disabled:cursor-wait disabled:opacity-70",
-            )}
+            className={buttonClass("accent", "xl", "group w-full")}
         >
             {pending ? pendingLabel : label}
             <ArrowRight

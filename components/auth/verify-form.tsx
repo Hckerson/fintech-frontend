@@ -52,9 +52,7 @@ export default function VerifyForm(props: VerifyFlowOptions) {
                     {...VERIFY_FIELDS.code}
                     length={VERIFY_CODE_LENGTH}
                     value={flow.code}
-                    onChange={(event) =>
-                        flow.setCode(event.target.value.replace(/\D/g, ""))
-                    }
+                    onChange={flow.setCode}
                     readOnly={busy}
                     invalid={message !== null}
                     action={
