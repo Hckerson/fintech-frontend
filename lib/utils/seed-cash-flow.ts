@@ -1,6 +1,7 @@
 import {
     CASH_FLOW_MONTH_SCALE,
     CASH_FLOW_SEED,
+    CASH_FLOW_VARIANCE as VARIANCE,
     CASH_FLOW_WINDOWS,
 } from "@/lib/data/dashboard/cash-flow";
 import type { CashFlowQuery, CashFlowSeries } from "@/lib/types";
@@ -34,7 +35,10 @@ export const seedCashFlow = (
         currency,
     });
     const at = (values: readonly number[], index: number) =>
-        BigInt(values[index % values.length]) * scale;
+        (BigInt(values[index % values.length]) *
+            scale *
+            BigInt(VARIANCE.base + ((index * VARIANCE.step) % VARIANCE.span))) /
+        BigInt(VARIANCE.whole);
 
     const points = Array.from({ length }, (_, index) => {
         const inflow = at(pattern.inflow, index);

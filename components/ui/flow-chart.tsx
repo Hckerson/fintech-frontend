@@ -34,7 +34,6 @@ export default function FlowChart({
             label: labels.outflow,
             swatch: "bg-text-muted/45 size-2.5 rounded-sm",
         },
-        { label: labels.net, swatch: "bg-text-secondary h-px w-4" },
     ];
 
     return (

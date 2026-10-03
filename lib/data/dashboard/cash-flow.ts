@@ -15,11 +15,9 @@ export const CASH_FLOW_SEED: Record<
 > = {
     GBP: {
         inflow: [
-            1840000, 965000, 0, 3124000, 580000, 0, 0, 2407500, 1213000, 760000,
+            1240000, 0, 365000, 0, 1824000, 280000, 0, 0, 907500, 413000, 0,
         ],
-        outflow: [
-            920000, 1412000, 385000, 604000, 2825000, 0, 0, 873000, 526000,
-        ],
+        outflow: [420000, 612000, 185000, 304000, 925000, 0, 0, 373000, 226000],
     },
     EUR: {
         inflow: [42000, 0, 118500, 26400, 0, 0, 73200],
@@ -28,3 +26,10 @@ export const CASH_FLOW_SEED: Record<
 };
 
 export const CASH_FLOW_MONTH_SCALE = 21;
+
+export const CASH_FLOW_VARIANCE = {
+    base: 60,
+    step: 37,
+    span: 80,
+    whole: 100,
+} as const;

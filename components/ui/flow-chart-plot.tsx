@@ -3,7 +3,6 @@ import {
     Bar,
     CartesianGrid,
     ComposedChart,
-    Line,
     ReferenceLine,
     ResponsiveContainer,
     Tooltip,
@@ -25,7 +24,7 @@ const AXIS = {
     axisLine: false,
 };
 
-const BAR = { stackId: "flow", isAnimationActive: false, maxBarSize: 10 };
+const BAR = { stackId: "flow", isAnimationActive: false, maxBarSize: 22 };
 
 export default function FlowChartPlot({ points, labels, formatTick }: Props) {
     return (
@@ -92,14 +91,6 @@ export default function FlowChartPlot({ points, labels, formatTick }: Props) {
                     fillOpacity={0.45}
                     radius={[2, 2, 0, 0]}
                     {...BAR}
-                />
-                <Line
-                    type="linear"
-                    dataKey="net"
-                    stroke="var(--colors-text-secondary)"
-                    strokeWidth={1.25}
-                    dot={false}
-                    isAnimationActive={false}
                 />
             </ComposedChart>
         </ResponsiveContainer>
