@@ -291,7 +291,6 @@
     --ledger-figure: clamp(2rem, 3.6vw, 3rem);
     --ledger-nav: 3.5rem;
     --shell-bar: 3rem;
-    --shell-rail: 22rem;
     --ledger-pill-offset: 1rem;
     --ledger-pill-width: 64rem;
     --ledger-header: calc(var(--ledger-nav) + 2 * var(--ledger-pill-offset));

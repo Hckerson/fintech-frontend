@@ -17,27 +17,19 @@ import {
 import { useWorkspace } from "@/lib/hooks/use-workspace";
 import type { DashboardParams, DashboardSectionKey } from "@/lib/types";
 
-const COLUMN =
-    "flex flex-col px-4 py-4 lg:px-6 [&>section+section]:border-border [&>section+section]:mt-2 [&>section+section]:border-t [&>section+section]:pt-6 gap-4";
+const STACK = "flex min-w-0 flex-col gap-4";
 
 export default function DashboardVariant({
     range,
     currency,
     view,
     dropped,
-    header,
-}: DashboardParams & { header: ReactNode }) {
+}: DashboardParams) {
     const { workspace, can } = useWorkspace();
 
     if (!can("viewDashboard")) {
         return (
-            <>
-                {header}
-                <NotPermitted
-                    page={PAGE_TITLES.dashboard}
-                    offerDashboard={false}
-                />
-            </>
+            <NotPermitted page={PAGE_TITLES.dashboard} offerDashboard={false} />
         );
     }
 
@@ -74,27 +66,32 @@ export default function DashboardVariant({
                 </SectionErrorBoundary>
             ));
 
-    const rail = slot(DASHBOARD_LAYOUT.rail);
+    const main = slot(DASHBOARD_LAYOUT.main);
+    const side = slot(DASHBOARD_LAYOUT.side);
 
     return (
-        <div className="-mx-4 -my-4 flex flex-1 flex-col lg:-mx-6 xl:flex-row">
-            <div className={`${COLUMN} min-w-0 flex-1`}>
-                {header}
-                {dropped.length > 0 ? (
-                    <p role="status" className="text-warning text-xs">
-                        {DASHBOARD_COPY.dropped(dropped.join(", "))}
-                    </p>
-                ) : null}
-                {slot(DASHBOARD_LAYOUT.notice)}
-                {slot(DASHBOARD_LAYOUT.main)}
-            </div>
-            {rail.length > 0 ? (
-                <div
-                    className={`${COLUMN} shell-rail border-border bg-background-alt shrink-0 border-t xl:border-t-0 xl:border-l`}
-                >
-                    {rail}
-                </div>
+        <>
+            {dropped.length > 0 ? (
+                <p role="status" className="text-warning text-xs">
+                    {DASHBOARD_COPY.dropped(dropped.join(", "))}
+                </p>
             ) : null}
-        </div>
+            {slot(DASHBOARD_LAYOUT.notice)}
+            {main.length > 0 && side.length > 0 ? (
+                <div className="grid gap-4 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+                    <div className={STACK}>{main}</div>
+                    <div className={`${STACK} [&>*:last-child]:flex-1`}>
+                        {side}
+                    </div>
+                </div>
+            ) : (
+                <div
+                    className={`grid items-start gap-4 ${main.length + side.length > 1 ? "lg:grid-cols-2" : ""}`}
+                >
+                    {[...main, ...side]}
+                </div>
+            )}
+            {slot(DASHBOARD_LAYOUT.below)}
+        </>
     );
 }

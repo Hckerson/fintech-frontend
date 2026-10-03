@@ -89,7 +89,8 @@ export interface Trend {
 export interface DashboardLayout {
     notice: readonly DashboardSectionKey[];
     main: readonly DashboardSectionKey[];
-    rail: readonly DashboardSectionKey[];
+    side: readonly DashboardSectionKey[];
+    below: readonly DashboardSectionKey[];
 }
 
 export type DashboardView = (typeof DASHBOARD_VIEWS)[number];

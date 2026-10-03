@@ -2,18 +2,15 @@ import SectionSkeleton from "@/components/common/section-skeleton";
 
 export default function DashboardSkeleton() {
     return (
-        <div
-            aria-busy
-            className="grid items-start gap-4 xl:grid-cols-[minmax(0,1fr)_var(--shell-rail)]"
-        >
-            <div className="flex flex-col gap-4">
-                <SectionSkeleton bare rows={1} rowClassName="h-96" />
-                <SectionSkeleton bare rows={6} />
+        <div aria-busy className="flex flex-col gap-4">
+            <div className="grid gap-4 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+                <SectionSkeleton rows={1} rowClassName="h-96" />
+                <div className="flex flex-col gap-4">
+                    <SectionSkeleton rows={4} />
+                    <SectionSkeleton rows={4} />
+                </div>
             </div>
-            <div className="flex flex-col gap-4">
-                <SectionSkeleton bare rows={4} />
-                <SectionSkeleton bare rows={5} rowClassName="h-12" />
-            </div>
+            <SectionSkeleton rows={6} />
         </div>
     );
 }
