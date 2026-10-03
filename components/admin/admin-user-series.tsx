@@ -1,9 +1,8 @@
 "use client";
 import AdminKpiBandSkeleton from "@/components/admin/admin-kpi-band-skeleton";
 import AdminPeriodTable from "@/components/admin/admin-period-table";
-import AdminSeriesStats from "@/components/admin/admin-series-stats";
+import GrowthChart from "@/components/admin/growth-chart";
 import AsOf from "@/components/common/as-of";
-import Chart from "@/components/ui/chart";
 import EmptyState from "@/components/ui/empty-state";
 import QueryBoundary from "@/components/wrappers/query-boundary";
 import { ADMIN_TIME_ZONE } from "@/lib/admin/constants";
@@ -47,34 +46,35 @@ export default function AdminUserSeries({ period }: { period: StatsPeriod }) {
 
                 return (
                     <>
-                        <AdminSeriesStats view={view} period={period} />
-                        <div className="border-border grid gap-4 border-t pt-4 2xl:grid-cols-[minmax(0,1fr)_minmax(0,20rem)]">
-                            {view.points.length > 1 ? (
-                                <Chart
-                                    title={COPY.chart}
-                                    summary={COPY.summary(
-                                        first.label,
-                                        last.label,
-                                        formatCount(view.total),
-                                    )}
-                                    points={view.points}
-                                    formatTick={formatCount}
-                                    wholeTicks
-                                    variant="bar"
-                                />
-                            ) : (
-                                <p className="text-text-muted measure text-xs">
-                                    {COPY.single}
-                                </p>
-                            )}
-                            <AdminPeriodTable view={view} />
-                        </div>
+                        <h3 className="text-text text-sm font-medium">
+                            {COPY.title[period]}
+                        </h3>
+                        {view.points.length > 1 ? (
+                            <GrowthChart
+                                key={period}
+                                title={COPY.title[period]}
+                                summary={COPY.summary(
+                                    first.label,
+                                    last.label,
+                                    formatCount(view.total),
+                                )}
+                                hint={COPY.hint}
+                                points={view.points}
+                            />
+                        ) : (
+                            <p className="text-text-muted measure text-xs">
+                                {COPY.single}
+                            </p>
+                        )}
                         <div className="border-border text-text-muted flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-t pt-3 text-xs">
                             <p>{notesOf(view).join(" ")}</p>
                             <AsOf
                                 asOf={series.asOf}
                                 timeZone={ADMIN_TIME_ZONE}
                             />
+                        </div>
+                        <div className="sr-only">
+                            <AdminPeriodTable view={view} />
                         </div>
                         <p role="status" className="sr-only">
                             {COPY.announce(formatCount(view.total))}

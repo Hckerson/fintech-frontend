@@ -1,7 +1,13 @@
+import type { z } from "zod";
 import type {
     PeriodSeriesResponseDto,
     PeriodTotalResponseDto,
+    UserResponseDto,
 } from "@/lib/contract/schemas";
+import type {
+    adminUsersSearchParamsSchema,
+    createUserFormSchema,
+} from "@/lib/validations/admin-users";
 import type { ChartPoint } from "./chart";
 import type { Delta, ShellNavItem } from "./shell";
 
@@ -28,6 +34,8 @@ export interface PlatformOrigin {
 
 export interface PeriodRow extends ChartPoint {
     share: number;
+    scale: number;
+    partial: boolean;
     delta: Delta | null;
 }
 
@@ -37,4 +45,18 @@ export interface SeriesView {
     peak: ChartPoint | undefined;
     partial: string | undefined;
     omitted: number;
+}
+
+export type AdminUser = UserResponseDto;
+
+export type AdminUserFilters = z.infer<typeof adminUsersSearchParamsSchema>;
+
+export type CreateUserForm = z.infer<typeof createUserFormSchema>;
+
+export type CreateUserField = keyof CreateUserForm;
+
+export interface AdminUserList {
+    items: AdminUser[];
+    total: number;
+    asOf: string;
 }

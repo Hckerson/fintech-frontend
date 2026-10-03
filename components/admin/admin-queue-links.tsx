@@ -1,13 +1,13 @@
 import Link from "next/link";
-import { ChevronRight } from "@carbon/icons-react";
+import { ArrowRight } from "@carbon/icons-react";
 import AdminNavIcon from "@/components/admin/admin-nav-icon";
-import SectionCard from "@/components/common/section-card";
 import { ADMIN_ROUTE } from "@/lib/constants";
 import { ADMIN_OVERVIEW_COPY } from "@/lib/data/admin/overview";
 import { adminNavFor, platformRoleOf } from "@/lib/utils/platform-role";
 import { getSession } from "@/lib/utils/session";
 
 const COPY = ADMIN_OVERVIEW_COPY.queues;
+const TITLE_ID = "admin-queues-title";
 
 export default async function AdminQueueLinks() {
     const role = platformRoleOf(await getSession());
@@ -18,15 +18,18 @@ export default async function AdminQueueLinks() {
     if (queues.length === 0) return null;
 
     return (
-        <SectionCard title={COPY.title}>
-            <ul className="divide-border -my-1 flex flex-col divide-y">
+        <section aria-labelledby={TITLE_ID} className="flex flex-col gap-3">
+            <h2 id={TITLE_ID} className="text-text text-base font-medium">
+                {COPY.title}
+            </h2>
+            <ul className="grid gap-3 md:grid-cols-3">
                 {queues.map((queue) => (
                     <li key={queue.id}>
                         <Link
                             href={queue.href}
-                            className="group focus-visible:outline-accent flex items-center gap-3 rounded-md py-3 focus-visible:outline-2"
+                            className="group surface-card hover:border-border-dark focus-visible:outline-accent flex h-full items-center gap-3 p-4 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
                         >
-                            <span className="bg-accent-light text-accent flex size-8 shrink-0 items-center justify-center rounded-lg">
+                            <span className="bg-accent-light text-accent flex size-9 shrink-0 items-center justify-center rounded-lg">
                                 <AdminNavIcon icon={queue.icon} />
                             </span>
                             <span className="flex min-w-0 flex-1 flex-col">
@@ -41,14 +44,14 @@ export default async function AdminQueueLinks() {
                                     }
                                 </span>
                             </span>
-                            <ChevronRight
+                            <ArrowRight
                                 aria-hidden
-                                className="text-text-muted group-hover:text-text size-4 shrink-0"
+                                className="text-text-muted group-hover:text-accent size-4 shrink-0 transition-transform group-hover:translate-x-0.5"
                             />
                         </Link>
                     </li>
                 ))}
             </ul>
-        </SectionCard>
+        </section>
     );
 }

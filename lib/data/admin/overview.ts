@@ -29,6 +29,7 @@ export const ADMIN_OVERVIEW_COPY = {
     },
     total: {
         title: "New users",
+        figures: "New-user figures",
         basis: {
             day: "Change is against all of yesterday.",
             month: "Change is against all of last month.",
@@ -40,9 +41,9 @@ export const ADMIN_OVERVIEW_COPY = {
             year: "This year",
         },
         comparison: {
-            day: "versus all of yesterday",
-            month: "versus all of last month",
-            year: "versus all of last year",
+            day: "vs all of yesterday",
+            month: "vs all of last month",
+            year: "vs all of last year",
         },
         previous: { day: "Yesterday", month: "Last month", year: "Last year" },
         period: "Period",
@@ -58,6 +59,12 @@ export const ADMIN_OVERVIEW_COPY = {
             year: "Sign-ups per year",
         },
         chart: "Trend",
+        hint: "Use the left and right arrow keys to read each period.",
+        tooltip: {
+            comparison: "on the period before",
+            partial: "In progress",
+            first: "First period shown",
+        },
         partialValue: (value: string) => `${value} so far`,
         summary: (first: string, last: string, total: string) =>
             `${first} to ${last}. Sign-ups in total: ${total}.`,
@@ -69,8 +76,8 @@ export const ADMIN_OVERVIEW_COPY = {
             caption: "Sign-ups by period, newest first",
             period: "Period (UTC)",
             signUps: "Sign-ups",
-            share: "Share of range",
-            change: "Change on prior period",
+            change: "Change",
+            partial: "In progress",
             shareLabel: (share: string) => `${share} of the range`,
         },
         stats: {
@@ -82,11 +89,6 @@ export const ADMIN_OVERVIEW_COPY = {
                 month: "Average per month",
                 year: "Average per year",
             },
-        },
-        table: {
-            x: "Period (UTC)",
-            y: "Sign-ups",
-            toggle: "Show the figures as a table",
         },
         announce: (value: string) => `Sign-up series loaded. Total: ${value}.`,
     },

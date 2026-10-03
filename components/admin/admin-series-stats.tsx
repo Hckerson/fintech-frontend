@@ -1,5 +1,4 @@
-import Metric from "@/components/common/metric";
-import NumberDisplay from "@/components/ui/number-display";
+import { NOT_AVAILABLE } from "@/lib/constants";
 import { ADMIN_OVERVIEW_COPY } from "@/lib/data/admin/overview";
 import type { SeriesView, StatsPeriod } from "@/lib/types";
 import { formatAverage, formatCount } from "@/lib/utils/admin-stats";
@@ -13,33 +12,37 @@ const COPY = ADMIN_OVERVIEW_COPY.series.stats;
 
 export default function AdminSeriesStats({ view, period }: Props) {
     const stats = [
-        { label: COPY.total, text: formatCount(view.total), note: undefined },
+        { term: COPY.total, detail: formatCount(view.total), note: null },
         {
-            label: COPY.peak,
-            text: view.peak ? formatCount(view.peak.value) : null,
-            note: view.peak?.label,
+            term: COPY.peak,
+            detail: view.peak ? formatCount(view.peak.value) : null,
+            note: view.peak?.label ?? null,
         },
         {
-            label: COPY.average[period],
-            text: formatAverage(view.total, view.points.length),
-            note: undefined,
+            term: COPY.average[period],
+            detail: formatAverage(view.total, view.points.length),
+            note: null,
         },
     ];
 
     return (
-        <div
-            role="group"
-            aria-label={COPY.label}
-            className="divide-border grid grid-cols-3 divide-x [&>*+*]:pl-4"
-        >
-            {stats.map(({ label, text, note }) => (
-                <Metric
-                    key={label}
-                    label={label}
-                    value={<NumberDisplay text={text} />}
-                    note={note}
-                />
+        <dl aria-label={COPY.label} className="flex flex-col text-sm">
+            {stats.map(({ term, detail, note }) => (
+                <div
+                    key={term}
+                    className="border-border flex items-baseline justify-between gap-3 border-b py-2"
+                >
+                    <dt className="text-text-muted">{term}</dt>
+                    <dd className="text-text flex items-baseline gap-2 font-medium tabular-nums">
+                        {note ? (
+                            <span className="text-text-muted text-xs font-normal">
+                                {note}
+                            </span>
+                        ) : null}
+                        {detail ?? NOT_AVAILABLE}
+                    </dd>
+                </div>
             ))}
-        </div>
+        </dl>
     );
 }

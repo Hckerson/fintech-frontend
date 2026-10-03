@@ -1,9 +1,9 @@
 "use client";
 import { usePathname } from "next/navigation";
 import { useId, useState, type ReactNode } from "react";
+import AdminSeriesFigures from "@/components/admin/admin-series-figures";
 import AdminUserSeries from "@/components/admin/admin-user-series";
 import AdminUserTotal from "@/components/admin/admin-user-total";
-import SectionCard from "@/components/common/section-card";
 import Tabs from "@/components/ui/tabs";
 import { ADMIN_RANGE_PARAM } from "@/lib/admin/constants";
 import { ADMIN_OVERVIEW_COPY } from "@/lib/data/admin/overview";
@@ -15,7 +15,7 @@ interface Props {
     aside?: ReactNode;
 }
 
-const COPY = ADMIN_OVERVIEW_COPY;
+const COPY = ADMIN_OVERVIEW_COPY.growth;
 
 export default function AdminKpiBand({ period: initial, aside }: Props) {
     const pathname = usePathname();
@@ -33,43 +33,49 @@ export default function AdminKpiBand({ period: initial, aside }: Props) {
     };
 
     return (
-        <section aria-labelledby={titleId} className="flex flex-col gap-3">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-wrap items-baseline gap-x-3">
-                    <h2
-                        id={titleId}
-                        className="text-text text-base font-medium"
-                    >
-                        {COPY.growth.title}
-                    </h2>
-                    <p className="text-text-muted text-xs">
-                        {COPY.growth.zone}
-                    </p>
-                </div>
-                <Tabs
-                    label={COPY.growth.periodLabel}
-                    tabs={COPY.growth.periods}
-                    value={period}
-                    onChange={select}
-                    panelId={panelId}
-                />
-            </div>
-            <div
-                id={panelId}
-                role="tabpanel"
+        <>
+            <section
                 aria-labelledby={titleId}
-                className="grid items-start gap-3 xl:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]"
+                className="surface-card relative overflow-hidden"
             >
-                <div className="flex min-w-0 flex-col gap-3">
-                    <SectionCard title={COPY.total.title}>
-                        <AdminUserTotal period={period} />
-                    </SectionCard>
-                    {aside}
+                <div
+                    aria-hidden
+                    className="pointer-events-none absolute -top-32 -left-32 size-96 bg-[radial-gradient(50%_50%_at_50%_50%,var(--ledger-glow),transparent_72%)]"
+                />
+                <div className="border-border relative flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3 lg:px-6">
+                    <div className="flex flex-wrap items-baseline gap-x-3">
+                        <h2
+                            id={titleId}
+                            className="text-text text-base font-medium"
+                        >
+                            {COPY.title}
+                        </h2>
+                        <p className="text-text-muted text-xs">{COPY.zone}</p>
+                    </div>
+                    <Tabs
+                        label={COPY.periodLabel}
+                        tabs={COPY.periods}
+                        value={period}
+                        onChange={select}
+                        panelId={panelId}
+                    />
                 </div>
-                <SectionCard title={COPY.series.title[period]}>
-                    <AdminUserSeries period={period} />
-                </SectionCard>
-            </div>
-        </section>
+                <div
+                    id={panelId}
+                    role="tabpanel"
+                    aria-labelledby={titleId}
+                    className="divide-border relative grid divide-y lg:grid-cols-[minmax(0,19rem)_minmax(0,1fr)] lg:divide-x lg:divide-y-0"
+                >
+                    <div className="flex min-w-0 flex-col gap-3 p-4 lg:px-6 lg:py-6">
+                        <AdminUserTotal period={period} />
+                        <AdminSeriesFigures period={period} />
+                    </div>
+                    <div className="min-w-0 p-4 lg:px-6 lg:py-6">
+                        <AdminUserSeries period={period} />
+                    </div>
+                </div>
+            </section>
+            {aside}
+        </>
     );
 }

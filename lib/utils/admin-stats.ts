@@ -15,6 +15,12 @@ const BUCKET: Record<StatsPeriod, Intl.DateTimeFormatOptions> = {
     year: { year: "numeric" },
 };
 
+const TICK: Record<StatsPeriod, Intl.DateTimeFormatOptions> = {
+    day: { weekday: "short", day: "numeric" },
+    month: { month: "short" },
+    year: { year: "numeric" },
+};
+
 const PERIOD: Record<StatsPeriod, Intl.DateTimeFormatOptions> = {
     day: { day: "numeric", month: "long", year: "numeric" },
     month: { month: "long", year: "numeric" },
@@ -38,16 +44,28 @@ export const bucketLabel = (period: StatsPeriod, key: string) =>
 export const periodLabel = (period: StatsPeriod, start: string) =>
     zonedLabel(start, ADMIN_TIME_ZONE, PERIOD[period]) ?? start;
 
-export const periodRows = ({ points, total }: SeriesView): PeriodRow[] =>
+export const periodRows = ({
+    points,
+    total,
+    peak,
+    partial,
+}: SeriesView): PeriodRow[] =>
     points
-        .map((point, index) => ({
-            ...point,
-            share: total > 0 ? point.value / total : 0,
-            delta:
-                index > 0
-                    ? periodDelta(point.value, points[index - 1].value)
-                    : null,
-        }))
+        .map((point, index) => {
+            const open = point.label === partial;
+
+            return {
+                ...point,
+                display: formatCount(point.value),
+                share: total > 0 ? point.value / total : 0,
+                scale: peak && peak.value > 0 ? point.value / peak.value : 0,
+                partial: open,
+                delta:
+                    index > 0 && !open
+                        ? periodDelta(point.value, points[index - 1].value)
+                        : null,
+            };
+        })
         .reverse();
 
 export const inProgress = (end: string, asOf: string) =>
@@ -73,6 +91,8 @@ export const seriesView = (
 
         return {
             label: bucketLabel(series.period, key),
+            tick: zonedLabel(key, ADMIN_TIME_ZONE, TICK[series.period]) ?? key,
+            partial,
             value,
             display: partial ? partialDisplay(display) : display,
         };

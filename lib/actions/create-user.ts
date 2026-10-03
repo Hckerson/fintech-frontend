@@ -2,6 +2,7 @@
 import { z } from "zod";
 import { backendFetch, readJson } from "@/lib/api-server";
 import { INVALID_REQUEST, REQUEST_FAILED } from "@/lib/constants";
+import { IDEMPOTENCY_KEY_HEADER } from "@/lib/query/constants";
 import { routes } from "@/lib/contract/routes";
 import {
     apiEnvelopeDtoSchema,
@@ -30,6 +31,7 @@ const refusalMessage = (body: unknown): string => {
 
 export const createUser = async (
     input: CreateUserDto,
+    idempotencyKey?: string,
 ): Promise<ActionResult<UserResponseDto>> => {
     const parsed = createUserDtoSchema.safeParse(input);
     if (!parsed.success) {
@@ -38,6 +40,9 @@ export const createUser = async (
 
     const upstream = await backendFetch(routes.usersCreate(), {
         method: "POST",
+        headers: idempotencyKey
+            ? { [IDEMPOTENCY_KEY_HEADER]: idempotencyKey }
+            : undefined,
         body: JSON.stringify(parsed.data),
     });
     const body = await readJson(upstream);
