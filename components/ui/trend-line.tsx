@@ -12,7 +12,7 @@ export default function TrendLine({ values, box }: Props) {
             aria-hidden
             viewBox={`0 0 ${box.width} ${box.height}`}
             preserveAspectRatio="none"
-            className="h-8 w-24 shrink-0"
+            className="h-9 w-24 shrink-0"
         >
             <path
                 d={linePath(values, box)}

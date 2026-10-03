@@ -76,6 +76,8 @@
     --text-sm: var(--font-sizes-sm);
     --text-sm--line-height: var(--line-heights-sm);
     --text-sm--font-weight: var(--font-weights-sm);
+    --text-compact: var(--font-sizes-compact);
+    --text-compact--line-height: var(--line-heights-compact);
     --text-xs: var(--font-sizes-xs);
     --text-xs--line-height: var(--line-heights-xs);
     --text-xs--font-weight: var(--font-weights-xs);
@@ -136,6 +138,16 @@
 @utility ledger-shell {
     width: min(100% - 2 * var(--ledger-gutter), var(--ledger-shell));
     margin-inline: auto;
+}
+
+@utility shell-rail {
+    @media (width >= 80rem) {
+        position: sticky;
+        top: var(--shell-bar);
+        width: var(--shell-rail);
+        height: calc(100svh - var(--shell-bar));
+        overflow-y: auto;
+    }
 }
 
 @utility ledger-section {
@@ -207,8 +219,8 @@
 
 @utility data-cell {
     padding: 0.5rem 1rem;
-    font-size: var(--font-sizes-sm);
-    line-height: 1.4;
+    font-size: var(--font-sizes-compact);
+    line-height: var(--line-heights-compact);
     vertical-align: middle;
     border-bottom: 1px solid var(--colors-border-light);
 }

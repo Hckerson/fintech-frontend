@@ -5,6 +5,7 @@ import RouteFocus from "@/components/shell/route-focus";
 import SessionSync from "@/components/shell/session-sync";
 import { MAIN_CONTENT_ID } from "@/lib/constants";
 import { SHELL_COPY } from "@/lib/data/shell";
+import { appMono, appSans } from "@/public/fonts/font";
 
 interface Props {
     sidebar: ReactNode;
@@ -14,7 +15,9 @@ interface Props {
 
 export default function AppShell({ sidebar, utilities, children }: Props) {
     return (
-        <div className="flex min-h-svh">
+        <div
+            className={`${appSans.variable} ${appMono.variable} theme-app font-body flex min-h-svh`}
+        >
             <a
                 href={`#${MAIN_CONTENT_ID}`}
                 className="bg-accent text-text-inverse sr-only z-(--z-indices-tooltip) rounded-md px-3 py-2 text-sm focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
@@ -25,7 +28,7 @@ export default function AppShell({ sidebar, utilities, children }: Props) {
                 {sidebar}
             </aside>
             <div className="flex min-w-0 flex-1 flex-col">
-                <header className="border-border bg-background sticky top-0 z-(--z-indices-sticky) flex h-12 items-center gap-3 border-b px-4 lg:px-6">
+                <header className="border-border bg-background sticky top-0 z-(--z-indices-sticky) flex h-(--shell-bar) items-center gap-3 border-b px-4 lg:px-6">
                     <MobileNav>{sidebar}</MobileNav>
                     {utilities}
                 </header>

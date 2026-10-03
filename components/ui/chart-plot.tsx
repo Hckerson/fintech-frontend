@@ -18,6 +18,7 @@ interface Props {
     formatTick: (value: number) => string;
     wholeTicks?: boolean;
     variant?: "area" | "bar";
+    fitted?: boolean;
 }
 
 const AXIS = {
@@ -33,6 +34,7 @@ export default function ChartPlot({
     formatTick,
     wholeTicks = false,
     variant = "area",
+    fitted = false,
 }: Props) {
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -62,6 +64,7 @@ export default function ChartPlot({
                     width={64}
                     tickFormatter={formatTick}
                     allowDecimals={!wholeTicks}
+                    domain={fitted ? ["auto", "auto"] : undefined}
                 />
                 <Tooltip
                     cursor={

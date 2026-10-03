@@ -20,7 +20,7 @@ export default function NavItem({
             href={href}
             aria-current={current ? "page" : undefined}
             className={clsx(
-                "focus-visible:outline-accent relative flex h-8 items-center gap-2.5 rounded-md px-2 text-sm transition-colors focus-visible:outline-2",
+                "focus-visible:outline-accent text-compact relative flex h-8 items-center gap-2.5 rounded-md px-2 transition-colors focus-visible:outline-2",
                 current
                     ? "bg-background-muted text-text before:bg-accent font-medium before:absolute before:inset-y-2 before:-left-2 before:w-0.5 before:rounded-full"
                     : "text-text-secondary hover:bg-background-muted hover:text-text",

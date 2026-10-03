@@ -19,7 +19,13 @@ const amountOf = (tenths: number) => {
     return percent.format(deltaRatio(tenths));
 };
 
-export const deltaText = (delta: Delta, comparison = "") =>
-    delta.direction === "flat"
+export const deltaText = (delta: Delta, comparison?: string) => {
+    if (comparison === undefined) {
+        return delta.direction === "flat"
+            ? DELTA_COPY.flat("")
+            : amountOf(delta.tenths);
+    }
+    return delta.direction === "flat"
         ? DELTA_COPY.flat(comparison)
         : DELTA_COPY[delta.direction](amountOf(delta.tenths), comparison);
+};

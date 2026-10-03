@@ -33,7 +33,7 @@ export default function FlowChartPlot({ points, labels, formatTick }: Props) {
             <ComposedChart
                 data={points}
                 stackOffset="sign"
-                margin={{ top: 8, right: 8, bottom: 0, left: 0 }}
+                margin={{ top: 8, right: 24, bottom: 0, left: 0 }}
                 accessibilityLayer
             >
                 <CartesianGrid

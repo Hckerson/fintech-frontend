@@ -2,6 +2,8 @@ export interface ChartPoint {
     label: string;
     value: number;
     display: string;
+    tick?: string;
+    partial?: boolean;
 }
 
 export interface ChartMarker {

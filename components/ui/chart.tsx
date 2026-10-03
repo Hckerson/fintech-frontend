@@ -18,6 +18,8 @@ interface Props {
     formatTick: (value: number) => string;
     wholeTicks?: boolean;
     variant?: "area" | "bar";
+    fitted?: boolean;
+    captionHidden?: boolean;
     table?: { x: string; y: string; toggle: string };
 }
 
@@ -29,13 +31,17 @@ export default function Chart({
     formatTick,
     wholeTicks,
     variant,
+    fitted,
+    captionHidden = false,
     table,
 }: Props) {
     const id = useId();
 
     return (
         <figure aria-labelledby={id} className="flex flex-col gap-4">
-            <figcaption className="flex flex-col gap-1">
+            <figcaption
+                className={captionHidden ? "sr-only" : "flex flex-col gap-1"}
+            >
                 <span id={id} className="text-text text-sm font-medium">
                     {title}
                 </span>
@@ -48,6 +54,7 @@ export default function Chart({
                     formatTick={formatTick}
                     wholeTicks={wholeTicks}
                     variant={variant}
+                    fitted={fitted}
                 />
             </div>
             {table ? (
