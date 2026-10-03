@@ -26,7 +26,7 @@ export default function TransactionRow({ transaction }: Props) {
 
     return (
         <tr className="hover:bg-background-muted relative">
-            <td className="data-cell pl-0">
+            <td className="data-cell">
                 <span className="flex items-center gap-2">
                     <Link
                         href={transactionRoute(transaction.id)}
@@ -61,7 +61,7 @@ export default function TransactionRow({ transaction }: Props) {
                     <StatusLabel {...status} />
                 )}
             </td>
-            <td className="data-cell pr-0 text-right whitespace-nowrap">
+            <td className="data-cell text-right whitespace-nowrap">
                 <Amount
                     {...amount}
                     display="signed"

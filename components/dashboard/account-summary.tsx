@@ -1,5 +1,5 @@
 "use client";
-import OpenSection from "@/components/common/open-section";
+import SectionCard from "@/components/common/section-card";
 import SectionSkeleton from "@/components/common/section-skeleton";
 import AccountLine from "@/components/dashboard/account-line";
 import EmptyState from "@/components/ui/empty-state";
@@ -21,7 +21,8 @@ export default function AccountSummary() {
     const notShared = <EmptyState {...EMPTY_STATES.accountsNotShared} />;
 
     return (
-        <OpenSection
+        <SectionCard
+            flush
             title={DASHBOARD_COPY.sections.accountSummary}
             action={{ label: COPY.all, href: ACCOUNTS_ROUTE }}
             count={
@@ -29,6 +30,7 @@ export default function AccountSummary() {
             }
         >
             <QueryBoundary
+                flush
                 query={query}
                 isEmpty={({ items }) => heldAccounts(items).length === 0}
                 skeleton={<SectionSkeleton bare rows={4} rowClassName="h-12" />}
@@ -48,7 +50,7 @@ export default function AccountSummary() {
                     );
                     return (
                         <>
-                            <ul className="border-border flex flex-col border-t">
+                            <ul className="flex flex-col">
                                 {listed.map((account) => (
                                     <li
                                         key={account.id}
@@ -59,7 +61,7 @@ export default function AccountSummary() {
                                 ))}
                             </ul>
                             {hidden > 0 ? (
-                                <p className="text-text-muted text-xs">
+                                <p className="text-text-muted px-4 py-3 text-xs">
                                     {COPY.more(hidden)}
                                 </p>
                             ) : null}
@@ -70,6 +72,6 @@ export default function AccountSummary() {
                     );
                 }}
             </QueryBoundary>
-        </OpenSection>
+        </SectionCard>
     );
 }

@@ -1,6 +1,6 @@
 "use client";
 import { useId, useState } from "react";
-import OpenSection from "@/components/common/open-section";
+import SectionCard from "@/components/common/section-card";
 import SectionSkeleton from "@/components/common/section-skeleton";
 import TransactionRow from "@/components/common/transaction-row";
 import EmptyState from "@/components/ui/empty-state";
@@ -22,6 +22,13 @@ const FILTERS = [
     { id: "pending", label: COPY.filters.pending },
 ] as const;
 
+const HEADS = [
+    { id: "description", className: "" },
+    { id: "category", className: "hidden lg:table-cell" },
+    { id: "status", className: "hidden sm:table-cell" },
+    { id: "amount", className: "text-right" },
+] as const;
+
 type Filter = (typeof FILTERS)[number]["id"];
 
 export default function RecentActivity() {
@@ -32,7 +39,8 @@ export default function RecentActivity() {
     const notShared = <EmptyState {...EMPTY_STATES.accountsNotShared} />;
 
     return (
-        <OpenSection
+        <SectionCard
+            flush
             title={DASHBOARD_COPY.sections.recentActivity}
             action={{ label: COPY.all, href: TRANSACTIONS_ROUTE }}
             aside={
@@ -47,6 +55,7 @@ export default function RecentActivity() {
         >
             <div id={panelId} role="tabpanel" aria-label={COPY.filters[filter]}>
                 <QueryBoundary
+                    flush
                     query={query}
                     isEmpty={({ items }) => items.length === 0}
                     skeleton={<SectionSkeleton bare rows={6} />}
@@ -66,7 +75,7 @@ export default function RecentActivity() {
                         );
 
                         return shown.length === 0 ? (
-                            <p className="text-text-secondary text-sm">
+                            <p className="text-text-secondary px-4 py-4 text-sm">
                                 {COPY.nonePending}
                             </p>
                         ) : (
@@ -75,6 +84,19 @@ export default function RecentActivity() {
                                     <caption className="sr-only">
                                         {DASHBOARD_COPY.sections.recentActivity}
                                     </caption>
+                                    <thead>
+                                        <tr>
+                                            {HEADS.map(({ id, className }) => (
+                                                <th
+                                                    key={id}
+                                                    scope="col"
+                                                    className={`data-head ${className}`}
+                                                >
+                                                    {COPY.columns[id]}
+                                                </th>
+                                            ))}
+                                        </tr>
+                                    </thead>
                                     {activityDays(
                                         shown,
                                         workspace.timeZone,
@@ -84,7 +106,7 @@ export default function RecentActivity() {
                                                 <th
                                                     scope="rowgroup"
                                                     colSpan={4}
-                                                    className="figure-label border-border border-b pt-3 pb-2 text-left"
+                                                    className="figure-label bg-background-muted border-border-light border-b px-4 py-1.5 text-left"
                                                 >
                                                     <time dateTime={day.date}>
                                                         {day.label}
@@ -103,7 +125,7 @@ export default function RecentActivity() {
                                 {shown.some(
                                     ({ status }) => status === "pending",
                                 ) ? (
-                                    <p className="text-text-muted text-xs">
+                                    <p className="text-text-muted px-4 py-3 text-xs">
                                         {COPY.provisional}
                                     </p>
                                 ) : null}
@@ -115,6 +137,6 @@ export default function RecentActivity() {
                     }}
                 </QueryBoundary>
             </div>
-        </OpenSection>
+        </SectionCard>
     );
 }

@@ -24,7 +24,7 @@ export default function OpenSection({
         <section aria-labelledby={id} className="flex min-w-0 flex-col gap-3">
             <div className="flex min-h-8 flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
-                    <h2 id={id} className="text-text text-base font-medium">
+                    <h2 id={id} className="text-text text-sm font-medium">
                         {title}
                     </h2>
                     {count ? <CountBadge count={count} /> : null}
