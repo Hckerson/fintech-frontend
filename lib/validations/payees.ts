@@ -3,8 +3,11 @@ import {
     ACCOUNT_NUMBER_LENGTH,
     DESTINATION_VISIBLE_DIGITS,
     MINOR_UNITS_PATTERN,
+    PAYEE_FILTERS,
     PAYEE_NAME_MAX,
+    PAYEE_PAYMENT_STATUSES,
     PAYEE_SEARCH_MAX,
+    PAYEE_SORTS,
     PAYEE_STATUSES,
     SORT_CODE_LENGTH,
     STEP_UP_PURPOSES,
@@ -18,6 +21,8 @@ const digits = (length: number) =>
         .pipe(z.string().regex(new RegExp(`^\\d{${length}}$`)));
 
 const id = z.string().min(1);
+
+const count = z.number().int().nonnegative();
 
 const name = z.string().trim().min(1).max(PAYEE_NAME_MAX);
 
@@ -42,11 +47,36 @@ export const payeePageSchema = z.object({
     items: z.array(payeeSchema),
     nextCursor: z.string().nullable(),
     asOf: z.iso.datetime(),
+    matched: count,
+    summary: z.object({
+        total: count,
+        active: count,
+        pendingVerification: count,
+        inProgress: count,
+    }),
 });
 
 export const payeeQuerySchema = z.object({
     search: z.string().trim().max(PAYEE_SEARCH_MAX),
+    status: z.enum(PAYEE_FILTERS),
+    sort: z.enum(PAYEE_SORTS),
     cursor: z.string().nullable(),
+});
+
+export const payeeIdSchema = id;
+
+export const payeeActivitySchema = z.object({
+    items: z.array(
+        z.object({
+            id,
+            paidAt: z.iso.datetime(),
+            amountMinor: z.string().regex(MINOR_UNITS_PATTERN),
+            currency: z.string().length(3),
+            reference: z.string(),
+            status: z.enum(PAYEE_PAYMENT_STATUSES),
+        }),
+    ),
+    asOf: z.iso.datetime(),
 });
 
 export const payeeInputSchema = z.object({

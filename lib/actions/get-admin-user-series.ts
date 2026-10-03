@@ -1,9 +1,12 @@
 "use server";
+import { guardPlatform } from "@/lib/admin/guard";
+import { seedSeries } from "@/lib/admin/stats-store";
 import { readStamped } from "@/lib/api-server";
 import { HTTP_STATUS, INVALID_REQUEST } from "@/lib/constants";
 import { routes } from "@/lib/contract/routes";
 import type { ActionResult, AdminUserSeries, StatsPeriod } from "@/lib/types";
 import { refusal } from "@/lib/utils/action-error";
+import { serverEnv } from "@/lib/utils/server-env";
 import {
     adminUserSeriesSchema,
     statsPeriodSchema,
@@ -15,6 +18,11 @@ export const getAdminUserSeries = async (
     const period = statsPeriodSchema.safeParse(input);
     if (!period.success) {
         return refusal(HTTP_STATUS.badRequest, INVALID_REQUEST);
+    }
+
+    if (!serverEnv.liveData) {
+        const refused = await guardPlatform();
+        return refused ?? { ok: true, data: seedSeries(period.data) };
     }
 
     const result = await readStamped(

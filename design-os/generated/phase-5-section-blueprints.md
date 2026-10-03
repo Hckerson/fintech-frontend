@@ -9,7 +9,7 @@ Previous: [Phase 4 — Page Blueprints](phase-4-page-blueprints.md) · Next: [Ph
 - [How to read this file](#how-to-read-this-file)
 - [Names in this version](#names-in-this-version)
 - [Section contract](#section-contract)
-- [Shell & navigation](#shell--navigation) — S01–S03
+- [Navigation & orientation](#navigation--orientation) — S01–S03
 - [Marketing (specified)](#marketing-specified) — S04–S07
 - [Marketing (built in 2.0.0)](#marketing-built-in-200) — S55–S64
 - [Authentication](#authentication) — S08
@@ -75,6 +75,26 @@ Renamed in 2.0.0 because the earlier names described a layout (Critical Rules �
 | S49 | Admin users table | Platform user directory |
 | S54 | Status page body | Status explanation |
 
+Renamed again on 2026-10-02 because these names still named a container or a control (a form, a list, a feed, a builder, a title, a shell) rather than the job the section does. IDs, anchors' ID prefix, behaviour, scope and build status are unchanged; nothing was removed. Phase 7 file names are not affected.
+
+| ID | 2.0.0 / 2.1.0 name | Name from 2026-10-02 |
+|---|---|---|
+| S03 | Page title & actions | Page identity & actions |
+| S10 | Business details form | Business details |
+| S11 | Beneficial owners form | Beneficial owners |
+| S19 | Account list | Account directory |
+| S27 | Saved views list | Saved view management |
+| S30 | Statement list | Statement downloads |
+| S31 | Export builder | Export request |
+| S34 | Notification feed | Notification history |
+| S36 | Thread list | Support threads |
+| S38 | Workspace general form | Workspace display settings |
+| S40 | Invite member form | Member invitation |
+| S42 | Profile form | Profile details |
+| S44 | Transfer form | Money transfer |
+| S45 | Payee list | Payee management |
+| S01–S03 (group) | Shell & navigation | Navigation & orientation |
+
 ## Section contract
 
 Binds all 64 sections. A blueprint that breaks a rule says so with a "Why".
@@ -138,7 +158,7 @@ Each section conveys one primary piece of information (DP2), named in its Purpos
 
 File locations, names and size limits for every section are code organisation and live in [Phase 7](phase-7-frontend-architecture.md) (OD4), including the 1.0.0 file names of renamed sections.
 
-## Shell & navigation
+## Navigation & orientation
 
 S01 and S02 are mounted once in the group layouts; each page uses S03 itself.
 
@@ -174,7 +194,7 @@ Pages: every `(app)` and `(admin)` page · Contracts: [C38](phase-6-interaction-
 - **Reuse** — every `(app)` and `(admin)` page.
 - **Technical notes** — Palette sources typed in `lib/data/command-sources.ts`.
 
-### S03 — Page title & actions
+### S03 — Page identity & actions
 
 Pages: P08–P25, P29–P33 · Contracts: [C29](phase-6-interaction-contracts.md#c29--breadcrumbs) [C01](phase-6-interaction-contracts.md#c01--button) [C20](phase-6-interaction-contracts.md#c20--menu)
 
@@ -438,7 +458,7 @@ Pages: P07 · Contracts: [C50](phase-6-interaction-contracts.md#c50--stepper)
 - **Reuse** — P07; C50 read-only in S52.
 - **Technical notes** — The progress function is pure and property-tested. Submission is recorded with actor and time and appears in the case history (S52).
 
-### S10 — Business details form
+### S10 — Business details
 
 Pages: P07 · Contracts: [C10](phase-6-interaction-contracts.md#c10--field) [C04](phase-6-interaction-contracts.md#c04--input) [C06](phase-6-interaction-contracts.md#c06--select) [C01](phase-6-interaction-contracts.md#c01--button)
 
@@ -454,7 +474,7 @@ Pages: P07 · Contracts: [C10](phase-6-interaction-contracts.md#c10--field) [C04
 - **Reuse** — P07; read-only summary shared with S52.
 - **Technical notes** — none beyond the data requirements. Registration numbers are regulated data: never in a URL, log, analytics event or device storage. Every saved change is added to the case history with actor and time.
 
-### S11 — Beneficial owners form
+### S11 — Beneficial owners
 
 Pages: P07 · Contracts: [C10](phase-6-interaction-contracts.md#c10--field) [C04](phase-6-interaction-contracts.md#c04--input) [C02](phase-6-interaction-contracts.md#c02--iconbutton) [C52](phase-6-interaction-contracts.md#c52--confirmdialog) [C26](phase-6-interaction-contracts.md#c26--meter)
 
@@ -586,7 +606,7 @@ Pages: P08 · Contracts: [C30](phase-6-interaction-contracts.md#c30--chart) [C23
 
 ## Accounts & ledger
 
-### S19 — Account list
+### S19 — Account directory
 
 Pages: P09 · Contracts: [C43](phase-6-interaction-contracts.md#c43--accountrow) [C15](phase-6-interaction-contracts.md#c15--table-family) [C42](phase-6-interaction-contracts.md#c42--maskedaccountnumber) [C40](phase-6-interaction-contracts.md#c40--amount) [C13](phase-6-interaction-contracts.md#c13--status-indicator)
 
@@ -717,7 +737,7 @@ Pages: P12 · Contracts: [C05](phase-6-interaction-contracts.md#c05--textarea) [
 - **Reuse** — P12.
 - **Technical notes** — Optimistic updates limited to category and flag; rollback restores the cached `TransactionDetail`. Must hold: no annotation write can alter an amount, status, date or counterparty.
 
-### S27 — Saved views list
+### S27 — Saved view management
 
 Pages: P13 · Contracts: [C15](phase-6-interaction-contracts.md#c15--table-family) [C20](phase-6-interaction-contracts.md#c20--menu) [C52](phase-6-interaction-contracts.md#c52--confirmdialog)
 
@@ -769,7 +789,7 @@ Pages: P16 · Contracts: [C04](phase-6-interaction-contracts.md#c04--input) [C10
 
 ## Documents
 
-### S30 — Statement list
+### S30 — Statement downloads
 
 Pages: P17 · Contracts: [C15](phase-6-interaction-contracts.md#c15--table-family) [C06](phase-6-interaction-contracts.md#c06--select) [C01](phase-6-interaction-contracts.md#c01--button) [C12](phase-6-interaction-contracts.md#c12--status-label)
 
@@ -785,7 +805,7 @@ Pages: P17 · Contracts: [C15](phase-6-interaction-contracts.md#c15--table-famil
 - **Reuse** — P17.
 - **Technical notes** — Download URL hook pending (Q2).
 
-### S31 — Export builder
+### S31 — Export request
 
 Pages: P18 · Contracts: [C48](phase-6-interaction-contracts.md#c48--daterangefield) [C06](phase-6-interaction-contracts.md#c06--select) [C07](phase-6-interaction-contracts.md#c07--checkbox) [C08](phase-6-interaction-contracts.md#c08--radiogroup) [C01](phase-6-interaction-contracts.md#c01--button)
 
@@ -837,7 +857,7 @@ Pages: P19 · Contracts: [C18](phase-6-interaction-contracts.md#c18--avatar) [C4
 
 ## Inbox
 
-### S34 — Notification feed
+### S34 — Notification history
 
 Pages: P20 · Contracts: [C13](phase-6-interaction-contracts.md#c13--status-indicator) [C03](phase-6-interaction-contracts.md#c03--textlink) [C25](phase-6-interaction-contracts.md#c25--pagination) [C32](phase-6-interaction-contracts.md#c32--emptystate)
 
@@ -869,7 +889,7 @@ Pages: P22 · Contracts: [C09](phase-6-interaction-contracts.md#c09--switch) [C0
 - **Reuse** — P22.
 - **Technical notes** — Validation through `lib/validations/alert-rule.ts`.
 
-### S36 — Thread list
+### S36 — Support threads
 
 Pages: P21 · Contracts: [C18](phase-6-interaction-contracts.md#c18--avatar) [C13](phase-6-interaction-contracts.md#c13--status-indicator) [C11](phase-6-interaction-contracts.md#c11--searchinput)
 
@@ -903,7 +923,7 @@ Pages: P21 · Contracts: [C05](phase-6-interaction-contracts.md#c05--textarea) [
 
 ## Settings & team
 
-### S38 — Workspace general form
+### S38 — Workspace display settings
 
 Pages: P22 · Contracts: [C10](phase-6-interaction-contracts.md#c10--field) [C04](phase-6-interaction-contracts.md#c04--input) [C06](phase-6-interaction-contracts.md#c06--select) [C01](phase-6-interaction-contracts.md#c01--button)
 
@@ -935,7 +955,7 @@ Pages: P23 · Contracts: [C15](phase-6-interaction-contracts.md#c15--table-famil
 - **Reuse** — P23.
 - **Technical notes** — Role, removal and invitation hooks pending (Q2).
 
-### S40 — Invite member form
+### S40 — Member invitation
 
 Pages: P23 · Contracts: [C21](phase-6-interaction-contracts.md#c21--dialog) [C10](phase-6-interaction-contracts.md#c10--field) [C04](phase-6-interaction-contracts.md#c04--input) [C06](phase-6-interaction-contracts.md#c06--select) [C01](phase-6-interaction-contracts.md#c01--button)
 
@@ -966,7 +986,7 @@ Pages: P23, P24 · Contracts: [C15](phase-6-interaction-contracts.md#c15--table-
 - **Reuse** — P23, P24.
 - **Technical notes** — Rendered on the server. The same `PermissionMatrix` drives C59. Why: the reference members read and the rules the UI applies cannot disagree. The backend remains the authority (BR9): when it publishes its policy, a contract test fails if `PermissionMatrix` disagrees (Q1).
 
-### S42 — Profile form
+### S42 — Profile details
 
 Pages: P25 (edit), P24 (read) · Contracts: [C18](phase-6-interaction-contracts.md#c18--avatar) [C10](phase-6-interaction-contracts.md#c10--field) [C04](phase-6-interaction-contracts.md#c04--input) [C05](phase-6-interaction-contracts.md#c05--textarea) [C01](phase-6-interaction-contracts.md#c01--button)
 
@@ -1002,7 +1022,7 @@ Pages: P25 · Contracts: [C09](phase-6-interaction-contracts.md#c09--switch) [C1
 
 Specified, Deferred (OD3). **OD9** may bring payments and approvals into scope.
 
-### S44 — Transfer form
+### S44 — Money transfer
 
 Pages: P26 · Contracts: [C10](phase-6-interaction-contracts.md#c10--field) [C04](phase-6-interaction-contracts.md#c04--input) [C06](phase-6-interaction-contracts.md#c06--select) [C40](phase-6-interaction-contracts.md#c40--amount) [C52](phase-6-interaction-contracts.md#c52--confirmdialog)
 
@@ -1018,7 +1038,7 @@ Pages: P26 · Contracts: [C10](phase-6-interaction-contracts.md#c10--field) [C04
 - **Reuse** — P26 (and P27 via payee preselection).
 - **Technical notes** — Idempotency key generated once per review (nanoid). Must hold: one idempotency key yields at most one transfer, whatever the number of submissions, tabs or retries.
 
-### S45 — Payee list
+### S45 — Payee management
 
 Pages: P27 · Contracts: [C15](phase-6-interaction-contracts.md#c15--table-family) [C20](phase-6-interaction-contracts.md#c20--menu) [C01](phase-6-interaction-contracts.md#c01--button)
 
@@ -1228,6 +1248,7 @@ Every value in A16–A24 is a product decision made in the enterprise audit of 2
 
 - **Retained:** S01–S54 with purpose, responsibilities, data, interaction, device needs, accessibility, loading, error, empty, reuse and technical notes; the four-state rule; shared data conventions; accessibility floor; file discipline (now a pointer to Phase 7); Q1–Q4.
 - **Changed:** 22 sections renamed (table above); "Hierarchy" folded into primary information (now named in Purpose); "Responsive behavior" replaced by Device needs; **Skeleton states** and **Animation behavior** headings removed (visual) — loading still reserves space; the depth floor, density rules (row heights, type sizes, spacing caps, accent use, hover), motion defaults and the styled example section removed; `tone` fields renamed `severity` (S17, S47, S52); S31 `includePending` made explicit; A13 and A14 withdrawn.
+- **Changed (2026-10-02, job-based names — Critical Rules › No Visual Prescription):** section names that named a container or control now name the job; IDs, behaviour, scope and status are unchanged and nothing was removed. S03 Page title & actions → Page identity & actions; S10 Business details form → Business details; S11 Beneficial owners form → Beneficial owners; S19 Account list → Account directory; S27 Saved views list → Saved view management; S30 Statement list → Statement downloads; S31 Export builder → Export request; S34 Notification feed → Notification history; S36 Thread list → Support threads; S38 Workspace general form → Workspace display settings; S40 Invite member form → Member invitation; S42 Profile form → Profile details; S44 Transfer form → Money transfer; S45 Payee list → Payee management. The full record is the [Phase 5 name table](phase-5-section-blueprints.md#names-in-this-version).
 - **Added:** S55 Public site navigation, S56 Headline figures, S57 Accounts capability, S58 Payments & approvals capability, S59 Cards capability, S60 Treasury forecast capability, S61 Reconciliation capability, S62 Pricing plans, S63 Frequently asked questions, S64 Get-started enquiry — all from the built home page, each with its OD9/OD10 facet; built-state notes on S04–S07; Q5, Q6; A10.
 - **Self-audit (No Visual Prescription, tightened seed):** removed Content model and Controls from all 64 sections. Relocated first: types, schemas and copy constants → Data requirements; primary information → Purpose, then dropped as a second inventory (the Purpose now names the section's job only); behavioural rules from Controls (S08 numeric codes and password show/hide, S39 C52 before removal, S40 C07 viewer accounts, S42 email read-only) → Interaction model; sample/illustrative labelling (S56–S61) → Interaction model; S56 built values and S41 `PermissionMatrix`→C59 rule → Technical notes. Rewrote placement wording in states and fields (top, above, below, inline, row, overlay, menu, block) and the S12/S32 empty copy that pointed to position. Technical notes keep data, validation and dependencies only; component file names (incl. 1.0.0 names) now live in Phase 7; build status kept. File discipline reduced to a pointer to Phase 7.
 - **Enterprise audit (2026-10-01):** no section, ID, name or field added or removed. The four-state rule now separates first load, refresh and load-more; none yet, none match and not permitted; retryable, non-retryable and offline — each error with a quotable reference. The section contract gained the read rules (schema parsing, partial results, 401/403/404), five write rules (idempotent creation, no silent overwrite, no automatic retry, session expiry, offline) and shared conventions for money correctness, pending and posted, freshness, time, limits, privacy, audit and locale; the accessibility floor gained keyboard path, focus after an outcome and announcements. Every data-bound section (S01–S03, S08–S54) now states freshness, paging and ordering, limits, role denial, conflict and double submission, session expiry, focus destinations and error kinds; S04–S07 and S55–S64 state their release checks and sample-data rules. S35 corrected to the Phase 1 matrix and P22 (accountants do not read alert rules). Added Q7–Q15 and A16–A24; owners named on Q1–Q6. **Reconciled** with Phase 1 BR19 and the canonical decisions: ledger page 50, palette 5 results per scope, help search ceiling 200, support results 50, unread count every 60 s, exact counts to 10,000, search pause 300 ms, saved views per member; constants renamed to the Phase 7 names (`EXPORT_POLL_INTERVAL`, `EXPORT_POLL_MAX_MS`, `EXPORT_RETENTION_DAYS`, `EXPORT_ACTIVE_JOB_LIMIT`, `DOWNLOAD_LINK_TTL`, `RESET_LINK_TTL`, `STEP_UP_GRANT_SECONDS`, `UPLOAD_MAX_FILES`, `HELP_ARTICLE_LIMIT`, `OWNER_LIMIT`, `DEFAULT_LOCALE`, `MUTATION_TIMEOUT_MS`); no last-write-wins (toggles and S26 annotations, notes append-only); interrupted writes re-submitted by the member; S21 parameters follow Phase 3 §11.1, now with `direction`, `category` and `attachment` and a `q` of 2–100 characters; export jobs are the member's own (R1 and R2 see all), a support thread is readable by its opener and the owners, alert rules are per member, drafts are kept in the open tab's memory only, the switcher is searchable beyond 10 memberships, every error carries a required reference, and `PENDING_ITEMS_LIMIT` is named `DASHBOARD_PENDING_LIMIT`; OD11–OD13 referenced.
@@ -1236,7 +1257,7 @@ Every value in A16–A24 is a product decision made in the enterprise audit of 2
 
 | Section group | Sections | Pages | Flows |
 |---|---|---|---|
-| Shell & navigation | S01–S03 | all `(app)` and `(admin)` | F1–F4, X3, X7 |
+| Navigation & orientation | S01–S03 | all `(app)` and `(admin)` | F1–F4, X3, X7 |
 | Marketing (specified) | S04–S07 | P01, P28 | acquisition, X1, X2 |
 | Marketing (built) | S55–S64 | P01 | acquisition, X11 (OD9, OD10) |
 | Authentication | S08 | P02–P06 | X1, X2, X4, X5 |

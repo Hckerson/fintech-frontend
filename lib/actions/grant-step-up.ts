@@ -1,9 +1,10 @@
 "use server";
-import { backendFetch } from "@/lib/api-server";
-import { HTTP_STATUS, INVALID_REQUEST, REQUEST_FAILED } from "@/lib/constants";
-import { routes } from "@/lib/contract/routes";
+import { HTTP_STATUS, INVALID_REQUEST } from "@/lib/constants";
+import { SEED_STEP_UP_PASSWORD } from "@/lib/data/payments/accounts";
 import { STEP_UP_COPY } from "@/lib/data/step-up";
 import { STEP_UP_REJECTED } from "@/lib/payments/constants";
+import { REVEAL_PURPOSE } from "@/lib/ledger/constants";
+import { guardReveal } from "@/lib/ledger/guard";
 import { guardPayees } from "@/lib/payments/guard";
 import {
     attemptsLeft,
@@ -19,7 +20,10 @@ const locked = () => refusal(HTTP_STATUS.locked, STEP_UP_COPY.locked);
 export const grantStepUp = async (
     input: StepUpRequest,
 ): Promise<ActionResult<null>> => {
-    const session = await guardPayees();
+    const session =
+        input.purpose === REVEAL_PURPOSE
+            ? await guardReveal()
+            : await guardPayees();
     if ("ok" in session) return session;
 
     const parsed = stepUpSchema.safeParse(input);
@@ -28,21 +32,7 @@ export const grantStepUp = async (
     }
     if (attemptsLeft(session.sub) <= 0) return locked();
 
-    const upstream = await backendFetch(routes.authLogin(), {
-        method: "POST",
-        body: JSON.stringify({
-            email: session.email,
-            password: parsed.data.password,
-        }),
-    }).catch(() => null);
-
-    if (!upstream || upstream.status >= HTTP_STATUS.serverError) {
-        return refusal(HTTP_STATUS.unavailable, REQUEST_FAILED);
-    }
-    if (upstream.status === HTTP_STATUS.tooManyRequests) {
-        return refusal(HTTP_STATUS.tooManyRequests, REQUEST_FAILED);
-    }
-    if (!upstream.ok) {
+    if (parsed.data.password !== SEED_STEP_UP_PASSWORD) {
         const left = recordFailure(session.sub);
         return left > 0
             ? refusal(

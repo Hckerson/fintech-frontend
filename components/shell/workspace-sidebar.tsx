@@ -47,6 +47,8 @@ const ICONS: Record<WorkspaceNavIcon, CarbonIconType> = {
 
 const GROUPS = Object.keys(WORKSPACE_NAV_GROUPS) as WorkspaceNavGroup[];
 
+const PINNED: readonly WorkspaceNavGroup[] = ["settings", "secondary"];
+
 export default function WorkspaceSidebar() {
     const pathname = usePathname();
     const { workspace, moneyMovement } = useWorkspace();
@@ -60,8 +62,8 @@ export default function WorkspaceSidebar() {
         return {
             id: group,
             label,
-            showLabel: members.some((item) => item.label !== label),
-            pinned: group === "secondary",
+            showLabel: members.length > 1,
+            pinned: PINNED.includes(group),
             items: members.map((item) => {
                 const Icon = ICONS[item.id];
                 const count = item.counted ? unreadBadge(unread) : undefined;
@@ -86,12 +88,8 @@ export default function WorkspaceSidebar() {
             label={SHELL_COPY.primaryNav}
             currentId={currentNavItem(pathname, items)?.id}
             sections={sections}
-            header={
-                <div className="flex flex-col gap-3">
-                    <ShellBrand name={APP_NAME} href={DASHBOARD_ROUTE} />
-                    <WorkspaceSwitcher />
-                </div>
-            }
+            header={<WorkspaceSwitcher />}
+            footer={<ShellBrand quiet name={APP_NAME} href={DASHBOARD_ROUTE} />}
         />
     );
 }

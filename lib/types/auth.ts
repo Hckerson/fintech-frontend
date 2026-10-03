@@ -5,3 +5,5 @@ export type VerifyMethod = "code" | "recovery";
 export interface VerifyResult {
     recoveryCodesRemaining?: number;
 }
+
+export type NoticeTone = "success" | "info" | "warning" | "error";

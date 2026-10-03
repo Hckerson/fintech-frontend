@@ -1,11 +1,23 @@
 import { ADMIN_TIME_ZONE } from "@/lib/admin/constants";
 import { DEFAULT_LOCALE } from "@/lib/constants";
-import type { AdminUserSeries, SeriesView, StatsPeriod } from "@/lib/types";
+import type {
+    AdminUserSeries,
+    PeriodRow,
+    SeriesView,
+    StatsPeriod,
+} from "@/lib/types";
+import { periodDelta } from "@/lib/utils/delta";
 import { zonedLabel } from "@/lib/utils/zoned-time";
 
 const BUCKET: Record<StatsPeriod, Intl.DateTimeFormatOptions> = {
     day: { day: "numeric", month: "short" },
     month: { month: "short", year: "numeric" },
+    year: { year: "numeric" },
+};
+
+const TICK: Record<StatsPeriod, Intl.DateTimeFormatOptions> = {
+    day: { weekday: "short", day: "numeric" },
+    month: { month: "short" },
     year: { year: "numeric" },
 };
 
@@ -19,11 +31,42 @@ const count = new Intl.NumberFormat(DEFAULT_LOCALE);
 
 export const formatCount = (value: number) => count.format(value);
 
+const average = new Intl.NumberFormat(DEFAULT_LOCALE, {
+    maximumFractionDigits: 1,
+});
+
+export const formatAverage = (total: number, periods: number) =>
+    periods > 0 ? average.format(total / periods) : null;
+
 export const bucketLabel = (period: StatsPeriod, key: string) =>
     zonedLabel(key, ADMIN_TIME_ZONE, BUCKET[period]) ?? key;
 
 export const periodLabel = (period: StatsPeriod, start: string) =>
     zonedLabel(start, ADMIN_TIME_ZONE, PERIOD[period]) ?? start;
+
+export const periodRows = ({
+    points,
+    total,
+    peak,
+    partial,
+}: SeriesView): PeriodRow[] =>
+    points
+        .map((point, index) => {
+            const open = point.label === partial;
+
+            return {
+                ...point,
+                display: formatCount(point.value),
+                share: total > 0 ? point.value / total : 0,
+                scale: peak && peak.value > 0 ? point.value / peak.value : 0,
+                partial: open,
+                delta:
+                    index > 0 && !open
+                        ? periodDelta(point.value, points[index - 1].value)
+                        : null,
+            };
+        })
+        .reverse();
 
 export const inProgress = (end: string, asOf: string) =>
     Date.parse(end) > Date.parse(asOf);
@@ -33,7 +76,8 @@ export const seriesView = (
     firstUserAt: string,
     partialDisplay: (value: string) => string,
 ): SeriesView => {
-    const beforeOrigin = (key: string) => key < firstUserAt.slice(0, key.length);
+    const beforeOrigin = (key: string) =>
+        key < firstUserAt.slice(0, key.length);
     const firstKept = series.points.findIndex(
         ({ key, value }) => value > 0 || !beforeOrigin(key),
     );
@@ -47,6 +91,8 @@ export const seriesView = (
 
         return {
             label: bucketLabel(series.period, key),
+            tick: zonedLabel(key, ADMIN_TIME_ZONE, TICK[series.period]) ?? key,
+            partial,
             value,
             display: partial ? partialDisplay(display) : display,
         };

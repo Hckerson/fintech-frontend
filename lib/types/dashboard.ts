@@ -4,7 +4,10 @@ import type {
     CashFlowSeriesResponseDto,
     MoneyDto,
 } from "@/lib/contract/schemas";
-import type { DASHBOARD_PARAMS } from "@/lib/dashboard/constants";
+import type {
+    DASHBOARD_PARAMS,
+    DASHBOARD_VIEWS,
+} from "@/lib/dashboard/constants";
 import type {
     accountListSchema,
     cashFlowQuerySchema,
@@ -81,4 +84,19 @@ export type PendingSource = "transactions" | "exports" | "verification";
 export interface Trend {
     direction: "up" | "down" | "flat";
     ratio: number | null;
+}
+
+export interface DashboardLayout {
+    notice: readonly DashboardSectionKey[];
+    main: readonly DashboardSectionKey[];
+    side: readonly DashboardSectionKey[];
+    below: readonly DashboardSectionKey[];
+}
+
+export type DashboardView = (typeof DASHBOARD_VIEWS)[number];
+
+export interface ActivityDay {
+    date: string;
+    label: string;
+    items: Transaction[];
 }

@@ -20,6 +20,8 @@ export const FORGOT_COPY = {
     submit: "Send reset link",
     pending: "Sending link",
     invalid: "Enter a valid email address.",
+    assurance:
+        "For your security we never confirm whether an email has an account, and your password stays unchanged until you choose a new one.",
     back: {
         prompt: "Remembered it?",
         label: "Sign in",
@@ -27,6 +29,7 @@ export const FORGOT_COPY = {
     },
     statement: `A reset link works once, for ${RESET_LINK_TTL_MINUTES} minutes, and only from your inbox.`,
     sent: {
+        tone: "info",
         eyebrow: "Check your email",
         title: "If that email has an account, a link is on its way",
         lead: "We say the same for every address, so nobody can use this page to find out who banks here.",

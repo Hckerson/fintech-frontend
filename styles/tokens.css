@@ -111,6 +111,9 @@
     --line-heights-sm: 1.6;
     --font-weights-sm: 400;
 
+    --font-sizes-compact: 0.8125rem;
+    --line-heights-compact: 1.45;
+
     --font-sizes-xs: 0.75rem;
     --line-heights-xs: 1.5;
     --font-weights-xs: 400;
@@ -239,8 +242,10 @@
 }
 
 .theme-ledgerline {
-    --fonts-display: var(--nf-ledger-body), system-ui, -apple-system, "Segoe UI", sans-serif;
-    --fonts-body: var(--nf-ledger-body), system-ui, -apple-system, "Segoe UI", sans-serif;
+    --fonts-display:
+        var(--nf-ledger-body), system-ui, -apple-system, "Segoe UI", sans-serif;
+    --fonts-body:
+        var(--nf-ledger-body), system-ui, -apple-system, "Segoe UI", sans-serif;
     --fonts-mono: var(--nf-mono), ui-monospace, monospace;
 
     --colors-background: #07090d;
@@ -285,9 +290,23 @@
     --ledger-title: clamp(2rem, 3.8vw, 3.25rem);
     --ledger-figure: clamp(2rem, 3.6vw, 3rem);
     --ledger-nav: 3.5rem;
+    --shell-bar: 3rem;
     --ledger-pill-offset: 1rem;
     --ledger-pill-width: 64rem;
     --ledger-header: calc(var(--ledger-nav) + 2 * var(--ledger-pill-offset));
     --ledger-ease: cubic-bezier(0.16, 1, 0.3, 1);
-    --ledger-frame-shadow: 0 40px 120px -40px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.06);
+    --ledger-frame-shadow:
+        0 40px 120px -40px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.theme-app {
+    --fonts-display:
+        var(--nf-app), system-ui, -apple-system, "Segoe UI", sans-serif;
+    --fonts-body:
+        var(--nf-app), system-ui, -apple-system, "Segoe UI", sans-serif;
+    --fonts-mono: var(--nf-app-mono), ui-monospace, monospace;
+    --font-display: var(--fonts-display);
+    --font-body: var(--fonts-body);
+    --font-mono: var(--fonts-mono);
 }

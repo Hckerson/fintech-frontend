@@ -6,7 +6,7 @@ import type { Account, CashFlowSeries, CashPosition, Money } from "@/lib/types";
 
 const ZERO = BigInt(0);
 
-const closings = (
+export const closingBalances = (
     { points, currency }: CashFlowSeries,
     current: bigint,
 ): CashPosition["trend"] => {
@@ -55,7 +55,7 @@ export const cashPositions = (
                 },
                 current: { currency, amountMinor: current.toString() },
                 netToday: flow?.points.at(-1)?.net ?? null,
-                trend: flow ? closings(flow, current) : [],
+                trend: flow ? closingBalances(flow, current) : [],
                 asOf,
                 includesFrozen: inCurrency.some(
                     ({ state }) => state === FROZEN_ACCOUNT_STATE,

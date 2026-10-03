@@ -62,7 +62,7 @@ export default function CommandTrigger({
                     setOpen(true);
                     onOpenChange?.(true);
                 }}
-                className="bg-background-muted text-text-muted hover:text-text focus-visible:outline-accent flex h-9 max-w-sm min-w-0 flex-1 cursor-pointer items-center gap-2 rounded-md px-3 text-xs focus-visible:outline-2"
+                className="border-border bg-background-alt text-text-muted hover:border-border-dark hover:text-text focus-visible:outline-accent flex h-8 max-w-sm min-w-0 flex-1 cursor-pointer items-center gap-2 rounded-md border px-3 text-xs focus-visible:outline-2"
             >
                 <Search aria-hidden className="size-4 shrink-0" />
                 <span className="flex-1 truncate text-left">

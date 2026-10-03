@@ -76,6 +76,8 @@
     --text-sm: var(--font-sizes-sm);
     --text-sm--line-height: var(--line-heights-sm);
     --text-sm--font-weight: var(--font-weights-sm);
+    --text-compact: var(--font-sizes-compact);
+    --text-compact--line-height: var(--line-heights-compact);
     --text-xs: var(--font-sizes-xs);
     --text-xs--line-height: var(--line-heights-xs);
     --text-xs--font-weight: var(--font-weights-xs);
@@ -172,10 +174,53 @@
     font-variant-numeric: tabular-nums;
 }
 
+@utility figure-hero {
+    font-size: var(--ledger-figure);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+}
+
 @utility surface-card {
     background: var(--colors-background-alt);
     border: 1px solid var(--colors-border);
     border-radius: var(--radii-xl);
+}
+
+@utility panel {
+    background: var(--colors-background-alt);
+    border: 1px solid var(--colors-border);
+    border-radius: var(--radii-lg);
+}
+
+@utility figure-label {
+    font-size: var(--font-sizes-caption);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--colors-text-muted);
+}
+
+@utility data-head {
+    padding: 0.5rem 1rem;
+    font-size: var(--font-sizes-caption);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-align: left;
+    white-space: nowrap;
+    color: var(--colors-text-muted);
+    background: var(--colors-background);
+    border-bottom: 1px solid var(--colors-border);
+}
+
+@utility data-cell {
+    padding: 0.5rem 1rem;
+    font-size: var(--font-sizes-compact);
+    line-height: var(--line-heights-compact);
+    vertical-align: middle;
+    border-bottom: 1px solid var(--colors-border-light);
 }
 
 @utility frame-panel {

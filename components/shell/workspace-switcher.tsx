@@ -42,13 +42,13 @@ export default function WorkspaceSwitcher() {
     };
 
     const identity = (
-        <span className="flex min-w-0 items-center gap-2.5 text-left">
+        <span className="flex min-w-0 flex-1 items-center gap-2 text-left">
             <Avatar name={workspace.name} className="rounded-md" />
             <span className="flex min-w-0 flex-1 flex-col">
-                <span className="text-text truncate text-sm font-medium">
+                <span className="text-text truncate text-sm leading-tight font-medium">
                     {workspace.name}
                 </span>
-                <span className="text-text-muted text-xs">
+                <span className="text-text-muted text-caption leading-tight">
                     {ROLE_LABELS[workspace.role]}
                 </span>
             </span>
@@ -56,11 +56,12 @@ export default function WorkspaceSwitcher() {
     );
 
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
             {memberships.length > 1 ? (
                 <Menu
+                    fill
                     label={COPY.trigger(workspace.name)}
-                    triggerClassName="border-border hover:border-border-dark flex w-full items-center justify-between gap-2 rounded-lg border p-2"
+                    triggerClassName="hover:bg-background-muted flex w-full items-center gap-2 rounded-md p-1"
                     trigger={
                         <>
                             {identity}
@@ -80,7 +81,7 @@ export default function WorkspaceSwitcher() {
                     )}
                 </Menu>
             ) : (
-                <div className="border-border rounded-lg border p-2">
+                <div className="flex items-center p-1">
                     <span className="sr-only">{COPY.label}: </span>
                     {identity}
                 </div>

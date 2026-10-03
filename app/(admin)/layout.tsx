@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
+import AdminNotificationEntry from "@/components/admin/admin-notification-entry";
 import AdminSidebar from "@/components/admin/admin-sidebar";
 import AppShell from "@/components/shell/app-shell";
 import UtilityBar from "@/components/shell/utility-bar";
@@ -27,6 +28,7 @@ export default async function AdminLayout({
                 <UtilityBar
                     commands={adminCommands(role)}
                     email={session?.email ?? ""}
+                    notifications={<AdminNotificationEntry />}
                 />
             }
         >

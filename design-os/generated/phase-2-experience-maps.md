@@ -98,7 +98,7 @@ Behaviour every map inherits (a map restates one of these only where its handlin
 - **Trigger:** start of day; a customer says they paid; a payroll date approaches; a low-balance alert (X7).
 - **Entry points:** sign-in redirect to P08 Dashboard `/dashboard`; S01 Primary navigation; C38 CommandPalette "Dashboard"; X7 alert link.
 - **Journey:**
-  1. P08 loads within the `(app)` layout (S01 Primary navigation, S02 Global utilities); S03 Page title & actions names the workspace.
+  1. P08 loads within the `(app)` layout (S01 Primary navigation, S02 Global utilities); S03 Page identity & actions names the workspace.
   2. S14 Cash position tells the user total cash per currency (one figure per currency) and today's net movement (C41), each with its "as of" time. Available and current balance are distinguished in words wherever both are given.
   3. S15 Account summary gives each account's balance, names any non-`active` state in words (C12), and reaches P10.
   4. S16 Recent activity gives the latest transactions; `pending` ones are identified as pending in words.
@@ -137,7 +137,7 @@ Behaviour every map inherits (a map restates one of these only where its handlin
 - **Trigger:** month-end; a question about an account; clicking an account on P08.
 - **Entry points:** P09 Accounts `/accounts`; S15 on P08; C38 CommandPalette account search; direct link `/accounts/[accountId]` with filters in URL.
 - **Journey:**
-  1. On P09, S19 Account list lets the user identify each account (masked, C42) and see its balance and state.
+  1. On P09, S19 Account directory lets the user identify each account (masked, C42) and see its balance and state.
   2. Selecting an account opens P10 Account ledger `/accounts/[accountId]`.
   3. S20 Account overview gives balance and state; the masked number can be copied (C51) and the full number revealed after step-up (X4).
   4. S21 Ledger filters narrows by date range (C48), type, direction, status, category, amount range, flagged and attachment (C46, C47); filters write to URL params. With no date range the ledger reads newest first and pages back by cursor without limit.
@@ -226,8 +226,8 @@ Behaviour every map inherits (a map restates one of these only where its handlin
 - **Trigger:** month-end close; auditor request; "statement ready" or "export ready" notification (X7).
 - **Entry points:** P17 Statements `/statements`; P18 Exports `/exports`; export action on P10 carrying current filters; P15 Compare periods `/insights/compare`; X7 notification.
 - **Journey:**
-  1. On P17, S30 Statement list offers a PDF statement per account per month.
-  2. On P18, S31 Export builder: the user chooses accounts, period (C48), format (CSV or OFX-style) and which data to include.
+  1. On P17, S30 Statement downloads offers a PDF statement per account per month.
+  2. On P18, S31 Export request: the user chooses accounts, period (C48), format (CSV or OFX-style) and which data to include.
   3. Submitting creates a job; S32 Export jobs reports it `queued` → `running` → `ready`.
   4. The user downloads the file when `ready`; an X7 notification also arrives if they left.
   5. Optionally P15 S28 Period comparison compares the period against the previous one to spot anomalies before closing.
@@ -277,8 +277,8 @@ Behaviour every map inherits (a map restates one of these only where its handlin
 - **Journey:**
   1. X2 Register creates the user and session; the user creates a workspace.
   2. On P07, S09 Verification progress takes the user through four steps: business details, beneficial owners, documents, review.
-  3. S10 Business details form collects the business's identity (legal name, registration number, address; exact data set by OD1).
-  4. S11 Beneficial owners form: add each owner; removal confirmed first (C52).
+  3. S10 Business details collects the business's identity (legal name, registration number, address; exact data set by OD1).
+  4. S11 Beneficial owners: add each owner; removal confirmed first (C52).
   5. S12 Document upload: registration documents and owner IDs (C49), with upload progress reported (C26).
   6. Review and submit; the case moves to `submitted`; S13 reports the state on P08.
   7. R6 reviews on P32 (D6); outcome `approved`, `rejected` or `needs_info` returns to R1 via X7 and S13.
@@ -325,7 +325,7 @@ v1 read-only; see [Phase 8](phase-8-implementation-roadmap.md). Fully mapped so 
 - **Trigger:** supplier due; moving cash between operating and reserve accounts.
 - **Entry points:** P26 Transfer `/payments/transfer`; S20 Account overview action; C38 CommandPalette.
 - **Journey:**
-  1. S44 Transfer form: from account (balance shown with C40), to account or payee, amount, reference, date.
+  1. S44 Money transfer: from account (balance shown with C40), to account or payee, amount, reference, date.
   2. Review screen summarises amounts in minor-unit-exact formatting.
   3. Step-up re-authentication (X4) before submission; each transfer confirmation asks for its own grant, and a grant issued for any other purpose never authorises it.
   4. Submission returns a transfer that appears as a `pending` transaction in F2 and F3.
@@ -367,7 +367,7 @@ v1 read-only; see [Phase 8](phase-8-implementation-roadmap.md). Fully mapped so 
 - **Trigger:** invoice received; recurring bill due.
 - **Entry points:** P27 Payees & bill pay `/payments`; counterparty page P19 "pay this counterparty".
 - **Journey:**
-  1. S45 Payee list: search and select a payee, or add one.
+  1. S45 Payee management: search and select a payee, or add one.
   2. Continue into the F6 transfer form pre-filled with the payee.
   3. Step-up (X4) with a grant issued for this payment, submit, confirmation.
 - **Decision points:** existing vs new payee; pay now vs schedule. By role: R1 and R2 only, as F6; who may add or change a payee, and whether a new payee needs a second person, belong to OD3.
@@ -467,7 +467,7 @@ D1–D4 are one page, P08 Dashboard `/dashboard`, composed by workspace role fro
 - **Journey:**
   1. C36 WorkspaceSwitcher lists every workspace the accountant belongs to; select one.
   2. P08 reloads for that workspace: S14, S17 (flagged and pending), S16.
-  3. S03 Page title & actions names the workspace unmistakably.
+  3. S03 Page identity & actions names the workspace unmistakably.
   4. Shortcuts lead to P17 Statements, P18 Exports and P14 Flagged transactions.
 - **Decision points:** which client workspace; statements vs exports first. The accountant's role is per workspace: the same person may be `accountant` in one and `viewer` in another, and each workspace offers only what that membership allows.
 - **Emotional state:** context-switching fatigue across many clients; the workspace name must be unmistakable, because an export or a note filed against the wrong client is a professional failure, not an inconvenience.
@@ -825,7 +825,7 @@ D1–D4 are one page, P08 Dashboard `/dashboard`, composed by workspace role fro
 - **Entry points:** P23 Team `/settings/team`; P24 Team member profile `/settings/team/[memberId]`; D1 empty-team hint.
 - **Journey:**
   1. On P23, S39 Team members gives members, roles and pending invitations.
-  2. Inviting starts S40 Invite member form (C21): who, which role, and which accounts a viewer may see.
+  2. Inviting starts S40 Member invitation (C21): who, which role, and which accounts a viewer may see.
   3. The invitation is listed as pending in S39.
   4. S41 Role permissions reference explains what each role can do.
   5. Role change or removal from S39 (C20), confirmed first (C52).
@@ -870,7 +870,7 @@ D1–D4 are one page, P08 Dashboard `/dashboard`, composed by workspace role fro
 - **Entry points:** C39 Notification entry point in S02; P20 Notifications `/notifications`; S35 Alert rules on P22 Workspace settings `/settings`.
 - **Journey:**
   1. C39 shows the unread count.
-  2. P20 S34 Notification feed lists items newest first.
+  2. P20 S34 Notification history lists items newest first.
   3. Each item links to its subject: P12, P17, P18 or P07.
   4. Opening an item marks it read.
   5. R1 and R2 each set thresholds in their own alert rules in S35 Alert rules.
@@ -911,7 +911,7 @@ D1–D4 are one page, P08 Dashboard `/dashboard`, composed by workspace role fro
 - **Trigger:** name change; security review; unrecognised session.
 - **Entry points:** C37 UserMenu → P25 Profile & security `/settings/profile`.
 - **Journey:**
-  1. S42 Profile form: name, avatar.
+  1. S42 Profile details: name, avatar.
   2. S43 Security settings: change password.
   3. Enrol two-step (OD6).
   4. View active sessions and revoke one, confirmed with C52.
@@ -952,7 +952,7 @@ D1–D4 are one page, P08 Dashboard `/dashboard`, composed by workspace role fro
 - **Journey:**
   1. P28 S46 Help search & categories.
   2. S47 Help article.
-  3. "Still need help" leads to P21 S36 Thread list.
+  3. "Still need help" leads to P21 S36 Support threads.
   4. S37 Conversation: write a message, attach a file.
 - **Decision points:** self-serve vs message support. By role: R1–R3 message support; R4 and signed-out visitors (R8) read help only; a thread belongs to the member who opened it and is readable by that member and the workspace's owners (R1) only — other R2 and R3 members do not read it — and this is stated when the thread is started (P2-A14).
 - **Emotional state:** frustrated, sometimes frightened (a frozen account, a payment they cannot find); wants a human without re-explaining, and needs to know when to expect an answer.
@@ -1110,6 +1110,7 @@ Numbered phase-local assumptions (added by the enterprise audit of 2026-10-01). 
 
 - **Retained:** F1–F7, D1–D7, X1–X10 with every step, failure and recovery path.
 - **Changed:** section and contract names updated to the 2.0.0 names; "drawer" wording replaced by "overlay" (the route slot keeps its code name `@drawer`); visual wording (tones, "visibly distinct", "placed first") rewritten as behaviour; phase links renumbered to the 9-phase set.
+- **Changed (2026-10-02, job-based names — Critical Rules › No Visual Prescription):** section names that named a container or control now name the job; IDs, behaviour, scope and status are unchanged and nothing was removed. S03 Page title & actions → Page identity & actions; S10 Business details form → Business details; S11 Beneficial owners form → Beneficial owners; S19 Account list → Account directory; S30 Statement list → Statement downloads; S31 Export builder → Export request; S34 Notification feed → Notification history; S36 Thread list → Support threads; S40 Invite member form → Member invitation; S42 Profile form → Profile details; S44 Transfer form → Money transfer; S45 Payee list → Payee management. The full record is the [Phase 5 name table](phase-5-section-blueprints.md#names-in-this-version).
 - **Added:** X11 Get-started enquiry; R8 in the flow index; enquiry intake in the dependency summary; OD9 and OD10 notes.
 - **Self-audit (tightened seed, No Visual Prescription):** journey steps that listed what a section shows (fields such as "name, C42, balance, state"; "badge"; "DeltaChip"; "CopyButton"; "row menu"; "Dialog"; "overlay"; "toast"; "skeletons"; "stepper highlights"; "shell") rewritten as what the user learns or does, keeping contract IDs for traceability. No flow, step, failure or recovery path removed.
 - **2.1.0 — enterprise audit and reconciliation (2026-10-01):** every map deepened (inherited conventions, role branches, failure and recovery paths, timing, audit, testable completion criteria, backend capabilities; assumptions P2-A1–P2-A14) with no flow, ID, heading, step or path removed or renamed; then reconciled to the canonical decisions, with Phase 1 BR19 as the authority for every limit and Phase 7 §10 for constant names. Behaviour settled: a stale write is refused and the member keeps their text; an interrupted write is never replayed and a different user's re-authentication drops drafts; writes are refused offline, never queued; a page-level denial is the not-permitted state (C32); reveal belongs to R1–R3 only; R3 and R4 get the not-permitted state for alert rules; `GET /api/accounts` and `GET /api/cash-flow` are recorded as existing. Open questions now carry OD11, OD12, OD13 and OD15. Residual decisions then applied: export jobs visible to their requester and to R1 and R2; support threads readable by their author and owners; alert rules per member; a step-up grant never authorising money movement unless issued for it; drafts kept in the open tab's memory only; freshness tiers named.

@@ -8,6 +8,7 @@ interface Props {
     consequence: string;
     confirmLabel: string;
     cancelLabel: string;
+    confirmTone?: "danger" | "accent";
     pending: boolean;
     blocked?: boolean;
     onConfirm: () => void;
@@ -20,6 +21,7 @@ export default function ConfirmDialog({
     consequence,
     confirmLabel,
     cancelLabel,
+    confirmTone = "danger",
     pending,
     blocked = false,
     onConfirm,
@@ -44,7 +46,7 @@ export default function ConfirmDialog({
                     {cancelLabel}
                 </Button>
                 <Button
-                    tone="danger"
+                    tone={confirmTone}
                     size="lg"
                     isLoading={pending}
                     disabled={pending || blocked}

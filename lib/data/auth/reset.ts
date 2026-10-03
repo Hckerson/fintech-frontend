@@ -25,7 +25,6 @@ export const RESET_FIELDS = {
         type: "password",
         autoComplete: "new-password",
         inputMode: "text",
-        hint: PASSWORD_RULE,
     },
     confirm: {
         name: "confirm",
@@ -43,12 +42,19 @@ export const RESET_COPY = {
     lead: "You'll sign in with it straight after.",
     submit: "Change password",
     pending: "Changing password",
+    assurance:
+        "Choose one you don't use anywhere else. A password manager can create and remember it for you.",
+    rules: {
+        length: `${PASSWORD_MIN_LENGTH} to ${PASSWORD_MAX_LENGTH} characters`,
+        match: "Both passwords match",
+    },
     fieldErrors: {
         password: PASSWORD_RULE,
         confirm: "Both passwords must match.",
     },
     statement: "Changing your password signs out every other session.",
     invalid: {
+        tone: "warning",
         eyebrow: "Link not usable",
         title: "This reset link can't be used",
         lead: "It has expired, been used already, or been replaced by a newer one.",
@@ -60,12 +66,14 @@ export const RESET_COPY = {
         footer: SIGN_IN,
     },
     unchecked: {
+        tone: "warning",
         eyebrow: "Try again shortly",
         title: "We couldn't check your link",
         lead: "Your password has not been changed. Open the link from your email again in a few minutes.",
         action: { label: "Back to sign in", href: LOGIN_ROUTE },
     },
     done: {
+        tone: "success",
         eyebrow: "Password changed",
         title: "Sign in with your new password",
         lead: "Every other session on this account has been signed out.",

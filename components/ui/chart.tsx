@@ -17,7 +17,10 @@ interface Props {
     marker?: ChartMarker;
     formatTick: (value: number) => string;
     wholeTicks?: boolean;
-    table: { x: string; y: string; toggle: string };
+    variant?: "area" | "bar";
+    fitted?: boolean;
+    captionHidden?: boolean;
+    table?: { x: string; y: string; toggle: string };
 }
 
 export default function Chart({
@@ -27,13 +30,18 @@ export default function Chart({
     marker,
     formatTick,
     wholeTicks,
+    variant,
+    fitted,
+    captionHidden = false,
     table,
 }: Props) {
     const id = useId();
 
     return (
         <figure aria-labelledby={id} className="flex flex-col gap-4">
-            <figcaption className="flex flex-col gap-1">
+            <figcaption
+                className={captionHidden ? "sr-only" : "flex flex-col gap-1"}
+            >
                 <span id={id} className="text-text text-sm font-medium">
                     {title}
                 </span>
@@ -45,48 +53,55 @@ export default function Chart({
                     marker={marker}
                     formatTick={formatTick}
                     wholeTicks={wholeTicks}
+                    variant={variant}
+                    fitted={fitted}
                 />
             </div>
-            <details className="group text-sm">
-                <summary className="text-text-secondary hover:text-text w-fit cursor-pointer">
-                    {table.toggle}
-                </summary>
-                <div className="mt-3 max-h-72 overflow-auto">
-                    <table className="w-full text-left">
-                        <thead className="text-text-muted text-xs">
-                            <tr>
-                                <th scope="col" className="py-2 font-medium">
-                                    {table.x}
-                                </th>
-                                <th
-                                    scope="col"
-                                    className="py-2 text-right font-medium"
-                                >
-                                    {table.y}
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {points.map((point) => (
-                                <tr
-                                    key={point.label}
-                                    className="border-border border-t"
-                                >
+            {table ? (
+                <details className="group text-sm">
+                    <summary className="text-text-secondary hover:text-text w-fit cursor-pointer">
+                        {table.toggle}
+                    </summary>
+                    <div className="mt-3 max-h-72 overflow-auto">
+                        <table className="w-full text-left">
+                            <thead className="text-text-muted text-xs">
+                                <tr>
                                     <th
-                                        scope="row"
-                                        className="text-text-secondary py-2 font-normal"
+                                        scope="col"
+                                        className="py-2 font-medium"
                                     >
-                                        {point.label}
+                                        {table.x}
                                     </th>
-                                    <td className="text-text py-2 text-right font-mono tabular-nums">
-                                        {point.display}
-                                    </td>
+                                    <th
+                                        scope="col"
+                                        className="py-2 text-right font-medium"
+                                    >
+                                        {table.y}
+                                    </th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </details>
+                            </thead>
+                            <tbody>
+                                {points.map((point) => (
+                                    <tr
+                                        key={point.label}
+                                        className="border-border border-t"
+                                    >
+                                        <th
+                                            scope="row"
+                                            className="text-text-secondary py-2 font-normal"
+                                        >
+                                            {point.label}
+                                        </th>
+                                        <td className="text-text py-2 text-right font-mono tabular-nums">
+                                            {point.display}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
+            ) : null}
         </figure>
     );
 }

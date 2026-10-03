@@ -1,26 +1,13 @@
 "use client";
 import { usePathname } from "next/navigation";
-import {
-    Dashboard,
-    Headset,
-    Policy,
-    UserMultiple,
-    type CarbonIconType,
-} from "@carbon/icons-react";
+import AdminNavIcon from "@/components/admin/admin-nav-icon";
 import ShellBrand from "@/components/shell/shell-brand";
 import SidebarNav from "@/components/shell/sidebar-nav";
 import { ADMIN_ROUTE } from "@/lib/constants";
 import { ADMIN_AREA } from "@/lib/data/admin-nav";
-import type { NavIcon, PlatformRole } from "@/lib/types";
+import type { PlatformRole } from "@/lib/types";
 import { currentNavId } from "@/lib/utils/navigation";
 import { adminNavFor } from "@/lib/utils/platform-role";
-
-const ICONS: Record<NavIcon, CarbonIconType> = {
-    overview: Dashboard,
-    users: UserMultiple,
-    compliance: Policy,
-    support: Headset,
-};
 
 export default function AdminSidebar({ role }: { role: PlatformRole }) {
     const pathname = usePathname();
@@ -36,15 +23,12 @@ export default function AdminSidebar({ role }: { role: PlatformRole }) {
                     id: "internal",
                     label: ADMIN_AREA.navLabel,
                     showLabel: true,
-                    items: items.map(({ id, label, href, icon }) => {
-                        const Icon = ICONS[icon];
-                        return {
-                            id,
-                            label,
-                            href,
-                            icon: <Icon className="size-4" />,
-                        };
-                    }),
+                    items: items.map(({ id, label, href, icon }) => ({
+                        id,
+                        label,
+                        href,
+                        icon: <AdminNavIcon icon={icon} />,
+                    })),
                 },
             ]}
         />

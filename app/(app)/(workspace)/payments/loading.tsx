@@ -1,4 +1,5 @@
 import PayeeListSkeleton from "@/components/payments/payee-list-skeleton";
+import PayeeSummary from "@/components/payments/payee-summary";
 import PageHeader from "@/components/shell/page-header";
 import { PAGE_TITLES } from "@/lib/constants";
 import { PAYEE_COPY } from "@/lib/data/payments/copy";
@@ -9,9 +10,11 @@ export default function PaymentsLoading() {
             <PageHeader
                 eyebrow={PAYEE_COPY.eyebrow}
                 title={PAGE_TITLES.payments}
-                lead={PAYEE_COPY.lead}
             />
-            <PayeeListSkeleton />
+            <PayeeSummary />
+            <div className="surface-card">
+                <PayeeListSkeleton />
+            </div>
         </>
     );
 }

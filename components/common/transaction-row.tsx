@@ -3,77 +3,83 @@ import Link from "next/link";
 import { Attachment, FlagFilled } from "@carbon/icons-react";
 import Amount from "@/components/common/amount";
 import StatusLabel from "@/components/ui/status-label";
-import { NOT_AVAILABLE } from "@/lib/constants";
 import { DASHBOARD_COPY } from "@/lib/data/dashboard/copy";
 import {
     TRANSACTION_STATUS_LABELS,
     UNKNOWN_STATUS,
 } from "@/lib/data/status-labels";
 import type { Transaction } from "@/lib/types";
-import { CALENDAR_DAY, zonedLabel } from "@/lib/utils/zoned-time";
-import { DEFAULT_TIME_ZONE, transactionRoute } from "@/lib/workspace/constants";
+import { transactionRoute } from "@/lib/workspace/constants";
 
 interface Props {
     transaction: Transaction;
-    timeZone: string;
 }
 
 const COPY = DASHBOARD_COPY.activity;
 
-export default function TransactionRow({ transaction, timeZone }: Props) {
-    const { postedAt, createdAt, counterparty, description, amount } =
-        transaction;
+export default function TransactionRow({ transaction }: Props) {
+    const { counterparty, description, amount } = transaction;
     const status =
         TRANSACTION_STATUS_LABELS[transaction.status] ?? UNKNOWN_STATUS;
-    const date = postedAt
-        ? zonedLabel(postedAt, DEFAULT_TIME_ZONE, CALENDAR_DAY)
-        : zonedLabel(createdAt, timeZone, CALENDAR_DAY);
+    const credit = !amount.amountMinor.startsWith("-");
+    const settled = transaction.status === "posted";
 
     return (
-        <Link
-            href={transactionRoute(transaction.id)}
-            className="hover:bg-background-muted focus-visible:outline-accent -mx-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 rounded-md px-2 py-2.5 text-sm focus-visible:outline-2"
-        >
-            <span className="flex min-w-0 flex-1 flex-col">
-                <span className="text-text break-words">
-                    {counterparty?.name ?? description}
-                </span>
-                <span className="text-text-muted flex flex-wrap items-center gap-x-2 text-xs">
-                    <time dateTime={postedAt ?? createdAt}>
-                        {date ?? NOT_AVAILABLE}
-                    </time>
-                    {counterparty ? <span>{description}</span> : null}
+        <tr className="hover:bg-background-muted relative">
+            <td className="data-cell">
+                <span className="flex items-center gap-2">
+                    <Link
+                        href={transactionRoute(transaction.id)}
+                        className="text-text font-medium after:absolute after:inset-0 focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:-outline-offset-2 focus-visible:after:outline-(--colors-accent)"
+                    >
+                        {counterparty?.name ?? description}
+                    </Link>
                     {transaction.flagged ? (
-                        <span className="text-warning inline-flex items-center gap-1">
-                            <FlagFilled aria-hidden className="size-3" />
-                            {COPY.flagged}
-                        </span>
+                        <FlagFilled
+                            aria-label={COPY.flagged}
+                            className="text-warning size-3 shrink-0"
+                        />
                     ) : null}
                     {transaction.hasAttachments ? (
-                        <span className="inline-flex items-center gap-1">
-                            <Attachment aria-hidden className="size-3" />
-                            <span className="sr-only">{COPY.attachments}</span>
-                        </span>
+                        <Attachment
+                            aria-label={COPY.attachments}
+                            className="text-text-muted size-3 shrink-0"
+                        />
                     ) : null}
                 </span>
-            </span>
-            <span className="flex shrink-0 items-center gap-2">
-                {transaction.status === "posted" ? (
-                    <span className="sr-only">{status.label}</span>
+                <p className="text-text-muted text-xs">
+                    {counterparty ? description : transaction.reference}
+                </p>
+            </td>
+            <td className="data-cell text-text-secondary hidden lg:table-cell">
+                {transaction.category ?? COPY.uncategorised}
+            </td>
+            <td className="data-cell hidden w-px whitespace-nowrap sm:table-cell">
+                {settled ? (
+                    <span className="text-text-muted">{status.label}</span>
                 ) : (
                     <StatusLabel {...status} />
                 )}
+            </td>
+            <td className="data-cell text-right whitespace-nowrap">
                 <Amount
                     {...amount}
                     display="signed"
                     className={clsx(
                         "tabular-nums",
-                        amount.amountMinor.startsWith("-")
-                            ? "text-text"
-                            : "text-success",
+                        status.severity === "problem"
+                            ? "text-text-muted"
+                            : credit
+                              ? "text-success"
+                              : "text-text",
                     )}
                 />
-            </span>
-        </Link>
+                {settled ? null : (
+                    <p className="pt-1 sm:hidden">
+                        <StatusLabel {...status} />
+                    </p>
+                )}
+            </td>
+        </tr>
     );
 }

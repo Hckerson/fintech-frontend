@@ -1,6 +1,7 @@
 "use client";
 import { nanoid } from "nanoid";
 import { useState } from "react";
+import PayeeDigitsField from "@/components/payments/payee-digits-field";
 import PayeeFormDialog from "@/components/payments/payee-form-dialog";
 import Field from "@/components/ui/field";
 import TextInput from "@/components/ui/text-input";
@@ -15,6 +16,8 @@ interface Props {
     onClose: () => void;
     onAdded: (payee: Payee) => void;
 }
+
+const DIGIT_FIELDS = ["sortCode", "accountNumber"] as const;
 
 const EMPTY: PayeeInput = { name: "", sortCode: "", accountNumber: "" };
 
@@ -39,7 +42,9 @@ export default function PayeeAddDialog({ onClose, onAdded }: Props) {
         setRejected(
             input.success
                 ? []
-                : input.error.issues.map((issue) => issue.path[0] as PayeeField),
+                : input.error.issues.map(
+                      (issue) => issue.path[0] as PayeeField,
+                  ),
         );
         if (input.success) {
             write.submit({ input: input.data, idempotencyKey }, onAdded);
@@ -65,27 +70,35 @@ export default function PayeeAddDialog({ onClose, onAdded }: Props) {
             onSubmit={submit}
             onClose={onClose}
         >
-            {PAYEE_FIELDS.map((field) => (
-                <Field
-                    key={field}
-                    {...PAYEE_COPY.fields[field]}
-                    error={errorOf(field)}
-                >
-                    {(control) => (
-                        <TextInput
-                            {...control}
-                            name={field}
-                            autoComplete="off"
-                            inputMode={field === "name" ? "text" : "numeric"}
-                            value={values[field]}
-                            onChange={(event) =>
-                                change(field, event.target.value)
-                            }
-                            readOnly={write.pending}
-                        />
-                    )}
-                </Field>
-            ))}
+            <Field
+                label={PAYEE_COPY.fields.name.label}
+                hint={errorOf("name") ? undefined : PAYEE_COPY.fields.name.hint}
+                error={errorOf("name")}
+            >
+                {(control) => (
+                    <TextInput
+                        {...control}
+                        name="name"
+                        autoComplete="off"
+                        value={values.name}
+                        onChange={(event) => change("name", event.target.value)}
+                        readOnly={write.pending}
+                    />
+                )}
+            </Field>
+            <div className="grid grid-cols-[2fr_3fr] items-start gap-3">
+                {DIGIT_FIELDS.map((field) => (
+                    <PayeeDigitsField
+                        key={field}
+                        {...PAYEE_COPY.fields[field]}
+                        name={field}
+                        error={errorOf(field)}
+                        value={values[field]}
+                        readOnly={write.pending}
+                        onChange={(value) => change(field, value)}
+                    />
+                ))}
+            </div>
         </PayeeFormDialog>
     );
 }

@@ -13,10 +13,15 @@ import {
     QUERY_RETRY_LIMIT,
     QUERY_RETRY_MAX_MS,
 } from "@/lib/query/constants";
-import type { PayeePage } from "@/lib/types";
+import type { PayeeFilter, PayeePage, PayeeSort } from "@/lib/types";
 import type { ActionError } from "@/lib/utils/action-error";
 
-export const usePayees = (search: string, enabled: boolean) => {
+export const usePayees = (
+    search: string,
+    status: PayeeFilter,
+    sort: PayeeSort,
+    enabled: boolean,
+) => {
     const { workspace } = useWorkspace();
 
     return useInfiniteQuery<
@@ -26,11 +31,15 @@ export const usePayees = (search: string, enabled: boolean) => {
         readonly unknown[],
         string | null
     >({
-        queryKey: queryKeys.payees.list(workspace.id, search),
+        queryKey: queryKeys.payees.list(
+            workspace.id,
+            search,
+            `${status}:${sort}`,
+        ),
         enabled,
         queryFn: ({ pageParam }) =>
             settle(
-                listPayees({ search, cursor: pageParam }),
+                listPayees({ search, status, sort, cursor: pageParam }),
                 REQUEST_TIMEOUT_MS,
                 "unavailable",
             ),

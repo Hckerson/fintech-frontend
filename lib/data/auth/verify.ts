@@ -18,9 +18,6 @@ export const VERIFY_FIELDS = {
     code: {
         name: "code",
         label: `${VERIFY_CODE_LENGTH}-digit code`,
-        type: "text",
-        autoComplete: "one-time-code",
-        inputMode: "numeric",
         hint: `A code stops working after ${CHALLENGE_TTL_MINUTES} minutes. You can always ask for a new one.`,
     },
     recovery: {
@@ -53,6 +50,9 @@ export const VERIFY_COPY = {
     passkeyUnused:
         "The passkey wasn't used, and that didn't count as an attempt. You can enter a code instead.",
     resend: "Send a new code",
+    resendIn: (seconds: number) => `Send a new code in ${seconds}s`,
+    assurance:
+        "Ledgerline never asks for this code by phone, email or chat. Only enter it here.",
     resent: "A new code is on its way.",
     switchTo: {
         code: "Use a code instead",
@@ -61,7 +61,9 @@ export const VERIFY_COPY = {
     cancel: CANCEL,
     statement:
         "A second step stands between a stolen password and your balances.",
+    or: "or",
     expired: {
+        tone: "warning",
         eyebrow: "Check expired",
         title: "Start again",
         lead: `This check is no longer active. One lasts ${CHALLENGE_TTL_MINUTES} minutes and only works in the browser that began it.`,
@@ -71,6 +73,7 @@ export const VERIFY_COPY = {
 
 export const verifyLocked = (retryAfter: number | undefined) =>
     ({
+        tone: "error",
         eyebrow: "Verification locked",
         title: "Too many incorrect codes",
         lead: `To protect the account, no more codes are accepted for now. Try again ${retryWait(retryAfter)}.`,
@@ -80,6 +83,7 @@ export const verifyLocked = (retryAfter: number | undefined) =>
 
 export const verifyRecovered = (remaining: number | undefined, next: string) =>
     ({
+        tone: "success",
         eyebrow: "Recovery code accepted",
         title: "You're verified",
         lead:

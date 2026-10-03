@@ -1,8 +1,9 @@
 "use client";
 import {
     Area,
-    AreaChart,
+    Bar,
     CartesianGrid,
+    ComposedChart,
     ReferenceLine,
     ResponsiveContainer,
     Tooltip,
@@ -16,6 +17,8 @@ interface Props {
     marker?: ChartMarker;
     formatTick: (value: number) => string;
     wholeTicks?: boolean;
+    variant?: "area" | "bar";
+    fitted?: boolean;
 }
 
 const AXIS = {
@@ -30,10 +33,12 @@ export default function ChartPlot({
     marker,
     formatTick,
     wholeTicks = false,
+    variant = "area",
+    fitted = false,
 }: Props) {
     return (
         <ResponsiveContainer width="100%" height="100%">
-            <AreaChart
+            <ComposedChart
                 data={points}
                 margin={{ top: 8, right: 8, bottom: 0, left: 0 }}
                 accessibilityLayer
@@ -59,9 +64,14 @@ export default function ChartPlot({
                     width={64}
                     tickFormatter={formatTick}
                     allowDecimals={!wholeTicks}
+                    domain={fitted ? ["auto", "auto"] : undefined}
                 />
                 <Tooltip
-                    cursor={{ stroke: "var(--colors-border-dark)" }}
+                    cursor={
+                        variant === "bar"
+                            ? { fill: "var(--colors-background-muted)" }
+                            : { stroke: "var(--colors-border-dark)" }
+                    }
                     content={({ active, payload }) =>
                         active && payload?.[0] ? (
                             <div className="border-border bg-background-alt rounded-lg border px-3 py-2 text-xs">
@@ -88,15 +98,26 @@ export default function ChartPlot({
                         }}
                     />
                 ) : null}
-                <Area
-                    type="monotone"
-                    dataKey="value"
-                    stroke="var(--colors-accent)"
-                    strokeWidth={2}
-                    fill="url(#chart-fill)"
-                    isAnimationActive={false}
-                />
-            </AreaChart>
+                {variant === "bar" ? (
+                    <Bar
+                        dataKey="value"
+                        fill="var(--colors-accent)"
+                        fillOpacity={0.85}
+                        radius={[3, 3, 0, 0]}
+                        maxBarSize={36}
+                        isAnimationActive={false}
+                    />
+                ) : (
+                    <Area
+                        type="monotone"
+                        dataKey="value"
+                        stroke="var(--colors-accent)"
+                        strokeWidth={2}
+                        fill="url(#chart-fill)"
+                        isAnimationActive={false}
+                    />
+                )}
+            </ComposedChart>
         </ResponsiveContainer>
     );
 }

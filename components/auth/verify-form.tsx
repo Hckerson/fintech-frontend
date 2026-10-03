@@ -1,10 +1,12 @@
 "use client";
 import { useId, useRef } from "react";
+import AuthAssurance from "@/components/auth/auth-assurance";
 import AuthField from "@/components/auth/auth-field";
 import AuthFormError from "@/components/auth/auth-form-error";
 import AuthFormFooter from "@/components/auth/auth-form-footer";
 import AuthFormHeader from "@/components/auth/auth-form-header";
 import AuthSubmit from "@/components/auth/auth-submit";
+import CodeField from "@/components/auth/code-field";
 import VerifyOptions from "@/components/auth/verify-options";
 import { VERIFY_CODE_LENGTH } from "@/lib/auth/constants";
 import { usePasskeySupport } from "@/lib/hooks/use-passkey";
@@ -44,24 +46,39 @@ export default function VerifyForm(props: VerifyFlowOptions) {
             >
                 {note ?? ""}
             </p>
-            <AuthField
-                key={method}
-                id={`${baseId}-${method}`}
-                {...VERIFY_FIELDS[method]}
-                value={flow.code}
-                onChange={(event) =>
-                    flow.setCode(
-                        method === "code"
-                            ? event.target.value
-                                  .replace(/\D/g, "")
-                                  .slice(0, VERIFY_CODE_LENGTH)
-                            : event.target.value,
-                    )
-                }
-                readOnly={busy}
-                invalid={message !== null}
-                autoFocus
-            />
+            {method === "code" ? (
+                <CodeField
+                    id={`${baseId}-code`}
+                    {...VERIFY_FIELDS.code}
+                    length={VERIFY_CODE_LENGTH}
+                    value={flow.code}
+                    onChange={flow.setCode}
+                    readOnly={busy}
+                    invalid={message !== null}
+                    action={
+                        <button
+                            type="button"
+                            onClick={flow.sendCode}
+                            disabled={busy || flow.resendWait > 0}
+                            className="text-text-muted enabled:hover:text-text text-sm transition-colors enabled:cursor-pointer"
+                        >
+                            {flow.resendWait > 0
+                                ? VERIFY_COPY.resendIn(flow.resendWait)
+                                : VERIFY_COPY.resend}
+                        </button>
+                    }
+                />
+            ) : (
+                <AuthField
+                    id={`${baseId}-recovery`}
+                    {...VERIFY_FIELDS.recovery}
+                    value={flow.code}
+                    onChange={(event) => flow.setCode(event.target.value)}
+                    readOnly={busy}
+                    invalid={message !== null}
+                    autoFocus
+                />
+            )}
             <AuthSubmit
                 pending={flow.verifying}
                 label={VERIFY_COPY.submit}
@@ -75,9 +92,9 @@ export default function VerifyForm(props: VerifyFlowOptions) {
                     pending: flow.passkeyPending,
                     onUse: flow.startPasskey,
                 }}
-                resend={{ ready: flow.resendReady, onSend: flow.sendCode }}
                 onSwitch={flow.switchMethod}
             />
+            <AuthAssurance text={VERIFY_COPY.assurance} />
             <AuthFormFooter {...VERIFY_COPY.cancel} />
         </form>
     );

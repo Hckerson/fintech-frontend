@@ -9,7 +9,10 @@ import {
     TRANSACTION_STATUSES,
     VERIFICATION_STATES,
 } from "@/lib/enums/ledger";
-import { DEFAULT_CASH_FLOW_RANGE } from "@/lib/dashboard/constants";
+import {
+    DASHBOARD_VIEWS,
+    DEFAULT_CASH_FLOW_RANGE,
+} from "@/lib/dashboard/constants";
 
 const id = z.string().min(1);
 
@@ -22,6 +25,7 @@ export const cashFlowQuerySchema = z.object({
 
 export const dashboardSearchParamsSchema = z.object({
     range: cashFlowRangeSchema.catch(DEFAULT_CASH_FLOW_RANGE),
+    view: z.enum(DASHBOARD_VIEWS).catch(DASHBOARD_VIEWS[0]),
     currency: z
         .string()
         .regex(/^[A-Z]{3}$/)

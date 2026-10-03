@@ -62,17 +62,23 @@ export const pendingItems = ({
     const owner = roleCan(role, "completeVerification");
     const informed = owner || roleCan(role, "manageAlertRules");
 
+    const open =
+        verification?.state === "needs_info" ? verification.requests : [];
     const requests: PendingItem[] =
-        informed && verification?.state === "needs_info"
-            ? verification.requests.map((request) => ({
-                  id: request.id,
-                  kind: "verification_request",
-                  title: COPY.verification,
-                  detail: request.message,
-                  href: owner ? onboardingStepRoute(request.fieldRef) : null,
-                  severity: "attention",
-                  at: request.createdAt,
-              }))
+        informed && verification && open.length > 0
+            ? [
+                  {
+                      id: verification.id,
+                      kind: "verification_request",
+                      title: COPY.verification,
+                      detail: COPY.requests(open.length),
+                      href: owner
+                          ? onboardingStepRoute(open[0].fieldRef)
+                          : null,
+                      severity: "attention",
+                      at: open[0].createdAt,
+                  },
+              ]
             : [];
 
     const transactions: PendingItem[] = groups.map((group) => ({

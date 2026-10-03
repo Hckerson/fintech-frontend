@@ -218,7 +218,7 @@ Build C18, C20, C29 in Sprint 1; C11, C41, C45, C52 in Sprint 2; base C05, C07, 
 
 ### 6.3 Sprint 1 — Foundations (weeks 1–2)
 
-- **Build:** FD04 route groups (move P01/P02 only after the owner commits), FD06 prefixes + admin guard, FD11 host fixes, FD12 CI, FD03 only if a colour-scheme preference is offered; P34, P35; S01, S02, S03, S54; contracts in [SETUP §8](SETUP-CHECKLIST.md#8-interaction-contract-bootstrap); `use-me`, `use-workspace`.
+- **Build:** FD04 route groups (move P01/P02 only after the owner commits), FD06 prefixes + admin guard, FD11 host fixes, FD12 CI, FD03 only if a colour-scheme preference is offered; P34, P35; S01, S02, S03, S54; contracts in [SETUP §9](SETUP-CHECKLIST.md#9-interaction-contract-bootstrap); `use-me`, `use-workspace`.
 - **Request:** LD1–LD5, OD4, OD9, OD10.
 - **Exit:** signed-out requests to every protected prefix redirect; `USER` cannot open `/admin`; P34/P35 render within each group layout; host S1 findings closed.
 

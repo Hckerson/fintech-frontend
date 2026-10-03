@@ -11,12 +11,15 @@ export default function TrendLine({ values, box }: Props) {
         <svg
             aria-hidden
             viewBox={`0 0 ${box.width} ${box.height}`}
-            className="h-10 w-40 shrink-0"
+            preserveAspectRatio="none"
+            className="h-9 w-24 shrink-0"
         >
             <path
                 d={linePath(values, box)}
-                className="signature-line"
+                fill="none"
+                className="stroke-accent"
                 strokeWidth={1.5}
+                strokeLinecap="round"
                 vectorEffect="non-scaling-stroke"
             />
         </svg>

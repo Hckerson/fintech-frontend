@@ -14,6 +14,7 @@ interface Props {
     trigger: ReactNode;
     align?: "start" | "end";
     triggerClassName?: string;
+    fill?: boolean;
     children: (close: () => void) => ReactNode;
 }
 
@@ -32,6 +33,7 @@ export default function Menu({
     trigger,
     align = "start",
     triggerClassName,
+    fill = false,
     children,
 }: Props) {
     const [open, setOpen] = useState(false);
@@ -102,9 +104,10 @@ export default function Menu({
                     role="menu"
                     aria-label={label}
                     className={clsx(
-                        "border-border-dark bg-background-alt absolute top-full z-(--z-indices-dropdown) mt-2 flex max-h-80 w-64 flex-col gap-1 overflow-y-auto rounded-lg border p-1 shadow-(--shadows-xl)",
+                        "border-border-dark bg-background-alt absolute top-full z-(--z-indices-dropdown) mt-2 flex max-h-80 flex-col gap-1 overflow-y-auto rounded-lg border p-1 shadow-(--shadows-xl)",
                         "[&_[role^=menuitem]]:text-text-secondary [&_[role^=menuitem]]:hover:bg-background-muted [&_[role^=menuitem]]:hover:text-text [&_[role^=menuitem]]:focus-visible:bg-background-muted [&_[role^=menuitem]]:focus-visible:text-text [&_[role^=menuitem]]:flex [&_[role^=menuitem]]:w-full [&_[role^=menuitem]]:cursor-pointer [&_[role^=menuitem]]:items-center [&_[role^=menuitem]]:gap-2 [&_[role^=menuitem]]:rounded-md [&_[role^=menuitem]]:px-2.5 [&_[role^=menuitem]]:py-2 [&_[role^=menuitem]]:text-left [&_[role^=menuitem]]:text-sm [&_[role^=menuitem]]:focus-visible:outline-none",
                         align === "end" ? "right-0" : "left-0",
+                        fill ? "w-full" : "w-64",
                     )}
                 >
                     {children(close)}

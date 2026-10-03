@@ -1,6 +1,6 @@
 import "server-only";
 import { nanoid } from "nanoid";
-import { DEFAULT_LOCALE, HTTP_STATUS, REQUEST_FAILED } from "@/lib/constants";
+import { HTTP_STATUS, REQUEST_FAILED } from "@/lib/constants";
 import { PAYEE_COPY } from "@/lib/data/payments/copy";
 import { SEED_PAYEES } from "@/lib/data/payments/payees";
 import {
@@ -9,6 +9,7 @@ import {
     PAYEE_PAGE_SIZE,
     PAYEE_REFUSAL,
 } from "@/lib/payments/constants";
+import { matchPayees, summarisePayees } from "@/lib/payments/payee-query";
 import type {
     ActionFailure,
     ActionResult,
@@ -30,21 +31,13 @@ const created = new Map<
     { fingerprint: string; payee: Payee; at: number }
 >();
 
-const collator = new Intl.Collator(DEFAULT_LOCALE, { sensitivity: "base" });
-
-const fold = (text: string) => text.toLocaleLowerCase(DEFAULT_LOCALE);
-
 const stamp = () => new Date().toISOString();
 
 const publish = (stored: StoredPayee): Payee => payeeSchema.parse(stored);
 
-export const listStoredPayees = ({ search, cursor }: PayeeQuery): PayeePage => {
-    const matches = payees
-        .filter((payee) => fold(payee.name).includes(fold(search)))
-        .sort(
-            (a, b) =>
-                collator.compare(a.name, b.name) || a.id.localeCompare(b.id),
-        );
+export const listStoredPayees = (query: PayeeQuery): PayeePage => {
+    const { cursor } = query;
+    const matches = matchPayees(payees, query);
     const start = cursor
         ? matches.findIndex((payee) => payee.id === cursor) + 1
         : 0;
@@ -55,6 +48,8 @@ export const listStoredPayees = ({ search, cursor }: PayeeQuery): PayeePage => {
         items,
         nextCursor: more ? (items.at(-1)?.id ?? null) : null,
         asOf: stamp(),
+        matched: matches.length,
+        summary: summarisePayees(payees),
     });
 };
 
@@ -103,6 +98,14 @@ export const addStoredPayee = ({
     const payee = publish(stored);
     created.set(idempotencyKey, { fingerprint, payee, at });
     return { ok: true, data: payee };
+};
+
+export const findStoredPayee = (id: string) =>
+    payees.find((payee) => payee.id === id);
+
+export const markPayeePaying = (id: string) => {
+    const stored = findStoredPayee(id);
+    if (stored) stored.paymentInProgress = true;
 };
 
 const locate = ({

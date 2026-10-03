@@ -53,8 +53,11 @@ export const PROTECTED_ROUTE_PREFIXES = [
 
 export const PAGE_TITLES = {
     dashboard: "Dashboard",
+    accounts: "Accounts",
     payments: "Payees & bill pay",
+    transfer: "Transfer",
     adminOverview: "Admin overview",
+    adminUsers: "Admin users",
 } as const;
 
 export const NO_INDEX = { index: false, follow: false } as const;

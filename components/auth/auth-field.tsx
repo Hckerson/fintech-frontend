@@ -15,6 +15,7 @@ interface Props {
     action?: ReactNode;
     trailing?: ReactNode;
     hint?: string;
+    error?: string;
 }
 
 export default function AuthField({
@@ -32,16 +33,15 @@ export default function AuthField({
     action,
     trailing,
     hint,
+    error,
 }: Props) {
-    const hintId = `${id}-hint`;
+    const note = error ?? hint;
+    const noteId = `${id}-note`;
 
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1.5">
             <div className="flex items-baseline justify-between gap-4">
-                <label
-                    htmlFor={id}
-                    className="text-text-secondary text-sm font-medium"
-                >
+                <label htmlFor={id} className="text-text text-sm font-medium">
                     {label}
                 </label>
                 {action}
@@ -57,16 +57,21 @@ export default function AuthField({
                     onChange={onChange}
                     readOnly={readOnly}
                     aria-invalid={invalid}
-                    aria-describedby={hint ? hintId : undefined}
+                    aria-describedby={note ? noteId : undefined}
                     autoFocus={autoFocus}
                     required
-                    className="border-border-dark bg-background text-text placeholder:text-text-muted focus:border-accent focus:ring-accent/25 aria-invalid:border-error h-12 w-full rounded-xl border px-4 text-base transition-colors read-only:opacity-70 focus:ring-4 focus:outline-none"
+                    className="border-border-dark bg-background-alt text-text placeholder:text-text-muted hover:border-text-muted focus:border-accent focus:ring-accent/25 aria-invalid:border-error h-11 w-full rounded-lg border px-3.5 text-base transition-colors read-only:opacity-70 focus:ring-4 focus:outline-none"
                 />
                 {trailing}
             </div>
-            {hint ? (
-                <p id={hintId} className="text-text-muted text-sm">
-                    {hint}
+            {note ? (
+                <p
+                    id={noteId}
+                    className={
+                        error ? "text-error text-sm" : "text-text-muted text-sm"
+                    }
+                >
+                    {note}
                 </p>
             ) : null}
         </div>

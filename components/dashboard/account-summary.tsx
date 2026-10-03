@@ -1,8 +1,7 @@
 "use client";
-import AccountRow from "@/components/common/account-row";
-import AsOf from "@/components/common/as-of";
 import SectionCard from "@/components/common/section-card";
 import SectionSkeleton from "@/components/common/section-skeleton";
+import AccountLine from "@/components/dashboard/account-line";
 import EmptyState from "@/components/ui/empty-state";
 import QueryBoundary from "@/components/wrappers/query-boundary";
 import { DASHBOARD_ACCOUNT_LIMIT } from "@/lib/dashboard/constants";
@@ -19,27 +18,32 @@ const COPY = DASHBOARD_COPY.accounts;
 export default function AccountSummary() {
     const { workspace } = useWorkspace();
     const query = useAccounts();
-    const empty = (
-        <EmptyState
-            {...(seesPermittedOnly(workspace.role)
-                ? EMPTY_STATES.accountsNotShared
-                : EMPTY_STATES.accounts)}
-        />
-    );
+    const notShared = <EmptyState {...EMPTY_STATES.accountsNotShared} />;
 
     return (
         <SectionCard
+            flush
             title={DASHBOARD_COPY.sections.accountSummary}
             action={{ label: COPY.all, href: ACCOUNTS_ROUTE }}
+            count={
+                query.data ? heldAccounts(query.data.items).length : undefined
+            }
         >
             <QueryBoundary
+                flush
                 query={query}
                 isEmpty={({ items }) => heldAccounts(items).length === 0}
-                skeleton={<SectionSkeleton bare rows={4} />}
-                empty={empty}
-                denied={<EmptyState {...EMPTY_STATES.accountsNotShared} />}
+                skeleton={<SectionSkeleton bare rows={4} rowClassName="h-12" />}
+                empty={
+                    seesPermittedOnly(workspace.role) ? (
+                        notShared
+                    ) : (
+                        <EmptyState {...EMPTY_STATES.accounts} />
+                    )
+                }
+                denied={notShared}
             >
-                {({ items, asOf }) => {
+                {({ items }) => {
                     const { listed, hidden } = listedAccounts(
                         items,
                         DASHBOARD_ACCOUNT_LIMIT,
@@ -50,18 +54,17 @@ export default function AccountSummary() {
                                 {listed.map((account) => (
                                     <li
                                         key={account.id}
-                                        className="border-border-light border-t first:border-t-0"
+                                        className="border-border-light border-b last:border-b-0"
                                     >
-                                        <AccountRow account={account} />
+                                        <AccountLine account={account} />
                                     </li>
                                 ))}
                             </ul>
                             {hidden > 0 ? (
-                                <p className="text-text-secondary text-xs">
+                                <p className="text-text-muted px-4 py-3 text-xs">
                                     {COPY.more(hidden)}
                                 </p>
                             ) : null}
-                            <AsOf asOf={asOf} timeZone={workspace.timeZone} />
                             <p role="status" className="sr-only">
                                 {COPY.loaded(listed.length + hidden)}
                             </p>

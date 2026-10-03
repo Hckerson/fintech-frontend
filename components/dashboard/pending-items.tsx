@@ -7,7 +7,10 @@ import PendingItemRow from "@/components/dashboard/pending-item-row";
 import Button from "@/components/ui/button";
 import EmptyState from "@/components/ui/empty-state";
 import ErrorState from "@/components/ui/error-state";
-import { DASHBOARD_PENDING_LIMIT } from "@/lib/dashboard/constants";
+import {
+    DASHBOARD_ACTIVITY_LIMIT,
+    DASHBOARD_PENDING_LIMIT,
+} from "@/lib/dashboard/constants";
 import { DASHBOARD_COPY } from "@/lib/data/dashboard/copy";
 import { EMPTY_STATES } from "@/lib/data/empty-states";
 import { ERROR_COPY } from "@/lib/data/error-messages";
@@ -27,8 +30,7 @@ export default function PendingItems() {
     const withExports = can("manageExports");
     const withVerification = can("manageAlertRules");
     const transactions = useTransactions({
-        limit: DASHBOARD_PENDING_LIMIT,
-        status: "pending",
+        limit: DASHBOARD_ACTIVITY_LIMIT,
     });
     const exports = useExports({ enabled: withExports });
     const verification = useVerificationCase({ enabled: withVerification });
@@ -61,25 +63,35 @@ export default function PendingItems() {
     const listed = items.slice(0, DASHBOARD_PENDING_LIMIT);
 
     return (
-        <SectionCard title={DASHBOARD_COPY.sections.pendingItems}>
+        <SectionCard
+            flush
+            title={DASHBOARD_COPY.overview.desk}
+            count={loading ? undefined : items.length}
+        >
             {loading ? (
-                <div aria-busy>
+                <div aria-busy className="p-4">
                     <SectionSkeleton bare rows={3} />
                 </div>
             ) : failed.length === sources.length ? (
-                <ErrorState
-                    kind="retryable"
-                    message={ERROR_COPY.loadFailed}
-                    reference={
-                        referenceOf(failed[0]?.query.error) ?? deviceReference
-                    }
-                    onRetry={retry}
-                    retrying={retrying}
-                />
+                <div className="p-4">
+                    <ErrorState
+                        kind="retryable"
+                        message={ERROR_COPY.loadFailed}
+                        reference={
+                            referenceOf(failed[0]?.query.error) ??
+                            deviceReference
+                        }
+                        onRetry={retry}
+                        retrying={retrying}
+                    />
+                </div>
             ) : (
                 <>
                     {failed.length > 0 ? (
-                        <div role="status" className="flex flex-col gap-2">
+                        <div
+                            role="status"
+                            className="border-border flex flex-col gap-2 border-b px-4 py-3"
+                        >
                             <p className="text-warning text-xs">
                                 {COPY.partial}{" "}
                                 {failed
@@ -102,17 +114,19 @@ export default function PendingItems() {
                             {listed.map((item) => (
                                 <li
                                     key={item.id}
-                                    className="border-border-light border-t first:border-t-0"
+                                    className="border-border-light border-b last:border-b-0"
                                 >
                                     <PendingItemRow item={item} />
                                 </li>
                             ))}
                         </ul>
                     ) : failed.length === 0 ? (
-                        <EmptyState {...EMPTY_STATES.pendingItems} />
+                        <div className="p-4">
+                            <EmptyState {...EMPTY_STATES.pendingItems} />
+                        </div>
                     ) : null}
                     {items.length > listed.length ? (
-                        <p className="text-text-secondary text-xs">
+                        <p className="text-text-secondary px-4 py-3 text-xs">
                             {COPY.more(items.length - listed.length)}
                         </p>
                     ) : null}

@@ -25,6 +25,12 @@ const recentFailures = (userId: string) =>
 export const hasGrant = (userId: string, purpose: StepUpPurpose) =>
     (grants.get(grantKey(userId, purpose)) ?? 0) > now();
 
+export const takeGrant = (userId: string, purpose: StepUpPurpose) => {
+    const granted = hasGrant(userId, purpose);
+    grants.delete(grantKey(userId, purpose));
+    return granted;
+};
+
 export const giveGrant = (userId: string, purpose: StepUpPurpose) => {
     grants.set(
         grantKey(userId, purpose),

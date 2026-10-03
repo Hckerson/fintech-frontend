@@ -35,14 +35,21 @@ export const queryKeys = {
     },
     payees: {
         all: (workspaceId: string) => ["payees", workspaceId],
-        list: (workspaceId: string, search: string) => [
+        list: (workspaceId: string, search: string, status = "all") => [
             "payees",
             workspaceId,
             "list",
             search,
+            status,
         ],
     },
+    transfers: {
+        options: (workspaceId: string) => ["transfers", workspaceId, "options"],
+    },
     admin: {
+        users: () => ["admin", "users"],
+        stats: () => ["admin", "stats"],
+        notificationCount: () => ["admin", "notifications", "count"],
         userTotal: (period: StatsPeriod) => [
             "admin",
             "stats",

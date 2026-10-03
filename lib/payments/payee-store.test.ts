@@ -8,7 +8,13 @@ import {
     renameStoredPayee,
 } from "./payee-store";
 
-const all = () => listStoredPayees({ search: "", cursor: null }).items;
+const all = () =>
+    listStoredPayees({
+        search: "",
+        status: "all",
+        sort: "name_asc",
+        cursor: null,
+    }).items;
 
 const NEW_PAYEE = {
     name: "Ada Lovelace Ltd",
@@ -25,15 +31,56 @@ describe("the payee stand-in", () => {
     });
 
     it("narrows by a case-insensitive search", () => {
-        const { items } = listStoredPayees({ search: "TERN", cursor: null });
+        const { items } = listStoredPayees({
+            search: "TERN",
+            status: "all",
+            sort: "name_asc",
+            cursor: null,
+        });
 
         expect(items.map((payee) => payee.id)).toEqual(["pye_tern"]);
     });
 
+    it("sorts by most recently paid, never-paid last", () => {
+        const { items } = listStoredPayees({
+            search: "",
+            status: "all",
+            sort: "last_paid_desc",
+            cursor: null,
+        });
+
+        expect(items[0].id).toBe("pye_northgate");
+        expect(items.at(-1)?.lastPaidAt).toBeNull();
+    });
+
+    it("filters by status and reports server-side counts", () => {
+        const page = listStoredPayees({
+            search: "",
+            status: "pending_verification",
+            sort: "name_asc",
+            cursor: null,
+        });
+
+        expect(page.items.map((payee) => payee.id)).toEqual(["pye_sable"]);
+        expect(page.matched).toBe(1);
+        expect(page.summary).toEqual({
+            total: 7,
+            active: 6,
+            pendingVerification: 1,
+            inProgress: 1,
+        });
+    });
+
     it("creates one record for a repeated idempotency key", () => {
         const before = all().length;
-        const first = addStoredPayee({ input: NEW_PAYEE, idempotencyKey: "k1" });
-        const again = addStoredPayee({ input: NEW_PAYEE, idempotencyKey: "k1" });
+        const first = addStoredPayee({
+            input: NEW_PAYEE,
+            idempotencyKey: "k1",
+        });
+        const again = addStoredPayee({
+            input: NEW_PAYEE,
+            idempotencyKey: "k1",
+        });
 
         expect(first).toEqual(again);
         expect(first.ok && first.data.status).toBe("pending_verification");

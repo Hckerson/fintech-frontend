@@ -7,18 +7,18 @@ interface Props {
 }
 
 const tones: Record<Severity, string> = {
-    neutral: "border-border text-text-secondary",
-    positive: "border-success/30 text-success",
-    attention: "border-warning/30 text-warning",
-    problem: "border-error/30 text-error",
-    information: "border-border-dark text-text",
+    neutral: "bg-background-muted text-text-secondary",
+    positive: "bg-success-light text-success",
+    attention: "bg-warning-light text-warning",
+    problem: "bg-error-light text-error",
+    information: "bg-accent-light text-accent",
 };
 
 export default function StatusLabel({ label, severity }: Props) {
     return (
         <span
             className={clsx(
-                "text-caption inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 whitespace-nowrap",
+                "text-caption inline-flex shrink-0 items-center rounded px-1.5 py-0.5 font-medium whitespace-nowrap",
                 tones[severity],
             )}
         >

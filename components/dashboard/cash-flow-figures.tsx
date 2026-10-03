@@ -1,5 +1,6 @@
 import Amount from "@/components/common/amount";
-import Chart from "@/components/ui/chart";
+import FigureCell from "@/components/common/figure-cell";
+import FlowChart from "@/components/ui/flow-chart";
 import { DEFAULT_LOCALE } from "@/lib/constants";
 import { DASHBOARD_COPY } from "@/lib/data/dashboard/copy";
 import type { CashFlowSeries } from "@/lib/types";
@@ -22,67 +23,56 @@ export default function CashFlowFigures({ series }: Props) {
     });
 
     return (
-        <div className="flex flex-col gap-4">
-            <dl className="grid gap-3 sm:grid-cols-3">
-                <div className="flex flex-col gap-1">
-                    <dt className="text-text-muted text-xs">{COPY.net}</dt>
-                    <dd>
-                        <Amount
-                            {...totals.net}
-                            display="signed"
-                            className="text-text text-h6 tabular-nums"
-                        />
-                    </dd>
-                </div>
-                <div className="flex flex-col gap-1">
-                    <dt className="text-text-muted text-xs">{COPY.moneyIn}</dt>
-                    <dd>
-                        <Amount
-                            {...totals.inflow}
-                            className="text-text-secondary tabular-nums"
-                        />
-                    </dd>
-                </div>
-                <div className="flex flex-col gap-1">
-                    <dt className="text-text-muted text-xs">{COPY.moneyOut}</dt>
-                    <dd>
-                        <Amount
-                            {...totals.outflow}
-                            className="text-text-secondary tabular-nums"
-                        />
-                    </dd>
-                </div>
+        <>
+            <div className="flex flex-col gap-3 px-4 py-4">
+                {plottable ? (
+                    <FlowChart
+                        title={COPY.chartTitle(currency)}
+                        summary={summary}
+                        points={points}
+                        formatTick={(value) => compact.format(value)}
+                        labels={{
+                            period: COPY.period,
+                            inflow: COPY.moneyIn,
+                            outflow: COPY.moneyOut,
+                            net: COPY.net,
+                            toggle: COPY.toggle,
+                        }}
+                    />
+                ) : (
+                    <>
+                        <p className="text-text-secondary text-sm">
+                            {COPY.unplottable}
+                        </p>
+                        <ul className="flex flex-col gap-1 text-xs">
+                            {points.map(({ label, display }) => (
+                                <li key={label} className="text-text-secondary">
+                                    {label}: {display.inflow} ·{" "}
+                                    {display.outflow} ·{" "}
+                                    <span className="text-text">
+                                        {display.net}
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+                    </>
+                )}
+                <p className="text-text-muted text-xs">{COPY.basis}</p>
+            </div>
+            <dl className="border-border divide-border grid divide-y border-t sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+                <FigureCell label={COPY.net}>
+                    <Amount {...totals.net} display="signed" />
+                </FigureCell>
+                <FigureCell label={COPY.moneyIn}>
+                    <Amount {...totals.inflow} />
+                </FigureCell>
+                <FigureCell label={COPY.moneyOut}>
+                    <Amount {...totals.outflow} />
+                </FigureCell>
             </dl>
-            {plottable ? (
-                <Chart
-                    title={COPY.chartTitle(currency)}
-                    summary={summary}
-                    points={points}
-                    formatTick={(value) => compact.format(value)}
-                    table={COPY.table}
-                />
-            ) : (
-                <>
-                    <p className="text-text-secondary text-sm">
-                        {summary} {COPY.unplottable}
-                    </p>
-                    <ul className="flex flex-col gap-1 text-sm">
-                        {points.map((point) => (
-                            <li key={point.label}>
-                                <span className="text-text-secondary">
-                                    {point.label}:
-                                </span>{" "}
-                                <span className="text-text tabular-nums">
-                                    {point.display}
-                                </span>
-                            </li>
-                        ))}
-                    </ul>
-                </>
-            )}
             <p role="status" className="sr-only">
                 {summary}
             </p>
-        </div>
+        </>
     );
 }

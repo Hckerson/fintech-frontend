@@ -12,12 +12,16 @@ export const STEP_UP_ACTIONS: Record<StepUpPurpose, string> = {
     payee_add: "add a payee",
     payee_rename: "rename a payee",
     payee_remove: "remove a payee",
+    transfer: "send this transfer",
+    account_reveal: "show this account number",
 };
 
 export const STEP_UP_COPY = {
     title: "Confirm it's you",
     lead: (action: string) =>
         `Enter your password to ${action}. This covers that one kind of change for ${minutes(STEP_UP_GRANT_SECONDS)} minutes and never authorises a payment.`,
+    transferLead:
+        "Enter your password to send this transfer. It authorises this one transfer only.",
     password: "Password",
     submit: "Confirm",
     pending: "Checking",

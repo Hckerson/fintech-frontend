@@ -1,12 +1,13 @@
 "use client";
 import { useId, useRef, useState, type FormEvent } from "react";
+import AuthAssurance from "@/components/auth/auth-assurance";
 import AuthField from "@/components/auth/auth-field";
 import AuthFormError from "@/components/auth/auth-form-error";
 import AuthFormFooter from "@/components/auth/auth-form-footer";
 import AuthFormHeader from "@/components/auth/auth-form-header";
 import AuthNotice from "@/components/auth/auth-notice";
 import AuthSubmit from "@/components/auth/auth-submit";
-import { ledgerButtonClass } from "@/components/ledgerline/ledger-button";
+import { buttonClass } from "@/components/ui/button";
 import { useOnline } from "@/lib/hooks/use-online";
 import { useRequestPasswordReset } from "@/lib/hooks/use-request-password-reset";
 import { retryAfterOf, statusOf } from "@/lib/utils/http-status";
@@ -28,7 +29,7 @@ export default function ForgotPasswordForm() {
     const [sent, setSent] = useState(false);
     const pending = request.isPending;
     const message =
-        rejected ??
+        (rejected === FORGOT_COPY.invalid ? null : rejected) ??
         (request.isError
             ? forgotMessage(
                   statusOf(request.error),
@@ -64,11 +65,7 @@ export default function ForgotPasswordForm() {
                 <button
                     type="button"
                     onClick={() => setSent(false)}
-                    className={ledgerButtonClass(
-                        "ghost",
-                        "lg",
-                        "w-full cursor-pointer",
-                    )}
+                    className={buttonClass("quiet", "xl", "w-full")}
                 >
                     {FORGOT_COPY.again}
                 </button>
@@ -96,6 +93,7 @@ export default function ForgotPasswordForm() {
                 onChange={(event) => setEmail(event.target.value)}
                 readOnly={pending}
                 invalid={rejected === FORGOT_COPY.invalid}
+                error={rejected === FORGOT_COPY.invalid ? rejected : undefined}
                 autoFocus
             />
             <AuthSubmit
@@ -103,6 +101,7 @@ export default function ForgotPasswordForm() {
                 label={FORGOT_COPY.submit}
                 pendingLabel={FORGOT_COPY.pending}
             />
+            <AuthAssurance text={FORGOT_COPY.assurance} />
             <AuthFormFooter {...FORGOT_COPY.back} />
         </form>
     );
