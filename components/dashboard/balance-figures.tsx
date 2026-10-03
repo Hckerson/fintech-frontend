@@ -1,6 +1,7 @@
 import Amount from "@/components/common/amount";
+import FigureCell from "@/components/common/figure-cell";
 import LineChart from "@/components/ui/line-chart";
-import { NOT_AVAILABLE } from "@/lib/constants";
+import { DEFAULT_LOCALE, NOT_AVAILABLE } from "@/lib/constants";
 import { DASHBOARD_COPY } from "@/lib/data/dashboard/copy";
 import type { CashFlowSeries, CashPosition } from "@/lib/types";
 import { balanceView } from "@/lib/utils/balance-view";
@@ -27,45 +28,45 @@ export default function BalanceFigures({
     const change = view.trend
         ? CASH.trend(view.trend, trendPercent(view.trend, CASH.ceiling))
         : NOT_AVAILABLE;
+    const compact = new Intl.NumberFormat(DEFAULT_LOCALE, {
+        style: "currency",
+        currency: view.currency,
+        notation: "compact",
+    });
+
     return (
-        <div className="flex flex-col gap-3">
-            {view.plottable ? (
-                <LineChart
-                    title={COPY.balanceTitle(view.currency)}
-                    summary={COPY.balanceSummary(rangeLabel, change)}
-                    hint={COPY.chartHint}
-                    points={view.points}
-                    table={{
-                        x: FLOW.period,
-                        y: COPY.closing,
-                        toggle: FLOW.toggle,
-                    }}
-                />
-            ) : (
-                <p className="text-text-secondary text-sm">
-                    {FLOW.unplottable}
-                </p>
-            )}
-            <dl className="text-text-muted flex flex-wrap gap-x-4 gap-y-1 text-xs">
-                <div className="flex gap-2">
-                    <dt>
-                        {COPY.change} · {rangeLabel}
-                    </dt>
-                    <dd className="text-text tabular-nums">{change}</dd>
-                </div>
-                <div className="flex gap-2">
-                    <dt>{COPY.low}</dt>
-                    <dd className="text-text tabular-nums">
-                        <Amount {...view.low} />
-                    </dd>
-                </div>
-                <div className="flex gap-2">
-                    <dt>{COPY.high}</dt>
-                    <dd className="text-text tabular-nums">
-                        <Amount {...view.high} />
-                    </dd>
-                </div>
+        <>
+            <div className="px-4 py-4">
+                {view.plottable ? (
+                    <LineChart
+                        title={COPY.balanceTitle(view.currency)}
+                        summary={COPY.balanceSummary(rangeLabel, change)}
+                        hint={COPY.chartHint}
+                        points={view.points}
+                        formatTick={(value) => compact.format(value)}
+                        table={{
+                            x: FLOW.period,
+                            y: COPY.closing,
+                            toggle: FLOW.toggle,
+                        }}
+                    />
+                ) : (
+                    <p className="text-text-secondary text-sm">
+                        {FLOW.unplottable}
+                    </p>
+                )}
+            </div>
+            <dl className="border-border divide-border grid divide-y border-t sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+                <FigureCell label={`${COPY.change} · ${rangeLabel}`}>
+                    {change}
+                </FigureCell>
+                <FigureCell label={COPY.low}>
+                    <Amount {...view.low} />
+                </FigureCell>
+                <FigureCell label={COPY.high}>
+                    <Amount {...view.high} />
+                </FigureCell>
             </dl>
-        </div>
+        </>
     );
 }

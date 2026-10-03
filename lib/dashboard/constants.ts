@@ -30,3 +30,9 @@ export const HERO_CHART = {
     pad: 20,
     padX: 0,
 } as const;
+
+export const CHART_TICK_STEPS = 4;
+
+export const FLOW_WEEK_DAYS = 7;
+
+export const FLOW_DAILY_LIMIT = 31;
