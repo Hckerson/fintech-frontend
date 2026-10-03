@@ -16,7 +16,7 @@ const DOT: Record<Severity, string> = {
     information: "bg-accent",
 };
 
-const ROW = "flex items-start gap-3 px-4 py-2.5";
+const ROW = "flex items-start gap-3 py-3";
 
 export default function PendingItemRow({ item }: Props) {
     const body = (
@@ -29,7 +29,7 @@ export default function PendingItemRow({ item }: Props) {
                 )}
             />
             <span className="flex min-w-0 flex-1 flex-col">
-                <span className="text-text text-sm font-medium">
+                <span className="text-text text-compact font-medium">
                     {item.title}
                 </span>
                 <span className="text-text-muted text-xs break-words">
@@ -40,7 +40,7 @@ export default function PendingItemRow({ item }: Props) {
                 <Amount
                     {...item.amount}
                     display="signed"
-                    className="text-text text-sm whitespace-nowrap tabular-nums"
+                    className="text-text text-compact whitespace-nowrap tabular-nums"
                 />
             ) : null}
         </>
@@ -51,7 +51,7 @@ export default function PendingItemRow({ item }: Props) {
             href={item.href}
             className={clsx(
                 ROW,
-                "group hover:bg-background-muted focus-visible:outline-accent focus-visible:outline-2 focus-visible:-outline-offset-2",
+                "group hover:bg-background-muted focus-visible:outline-accent -mx-2 rounded-md px-2 focus-visible:outline-2",
             )}
         >
             {body}

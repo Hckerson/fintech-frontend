@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { nanoid } from "nanoid";
-import SectionCard from "@/components/common/section-card";
+import OpenSection from "@/components/common/open-section";
 import SectionSkeleton from "@/components/common/section-skeleton";
 import PendingItemRow from "@/components/dashboard/pending-item-row";
 import Button from "@/components/ui/button";
@@ -63,17 +63,16 @@ export default function PendingItems() {
     const listed = items.slice(0, DASHBOARD_PENDING_LIMIT);
 
     return (
-        <SectionCard
-            flush
-            title={DASHBOARD_COPY.sections.pendingItems}
+        <OpenSection
+            title={DASHBOARD_COPY.overview.desk}
             count={loading ? undefined : items.length}
         >
             {loading ? (
-                <div aria-busy className="p-4">
+                <div aria-busy>
                     <SectionSkeleton bare rows={3} />
                 </div>
             ) : failed.length === sources.length ? (
-                <div className="p-4">
+                <div>
                     <ErrorState
                         kind="retryable"
                         message={ERROR_COPY.loadFailed}
@@ -88,10 +87,7 @@ export default function PendingItems() {
             ) : (
                 <>
                     {failed.length > 0 ? (
-                        <div
-                            role="status"
-                            className="border-border flex flex-col gap-2 border-b p-4"
-                        >
+                        <div role="status" className="flex flex-col gap-2">
                             <p className="text-warning text-xs">
                                 {COPY.partial}{" "}
                                 {failed
@@ -110,7 +106,7 @@ export default function PendingItems() {
                         </div>
                     ) : null}
                     {listed.length > 0 ? (
-                        <ul className="flex flex-col">
+                        <ul className="border-border flex flex-col border-t">
                             {listed.map((item) => (
                                 <li
                                     key={item.id}
@@ -121,12 +117,10 @@ export default function PendingItems() {
                             ))}
                         </ul>
                     ) : failed.length === 0 ? (
-                        <div className="p-4">
-                            <EmptyState {...EMPTY_STATES.pendingItems} />
-                        </div>
+                        <EmptyState {...EMPTY_STATES.pendingItems} />
                     ) : null}
                     {items.length > listed.length ? (
-                        <p className="border-border text-text-secondary border-t px-4 py-2 text-xs">
+                        <p className="text-text-secondary text-xs">
                             {COPY.more(items.length - listed.length)}
                         </p>
                     ) : null}
@@ -135,6 +129,6 @@ export default function PendingItems() {
                     </p>
                 </>
             )}
-        </SectionCard>
+        </OpenSection>
     );
 }

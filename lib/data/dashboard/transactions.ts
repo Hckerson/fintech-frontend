@@ -1,10 +1,5 @@
 import type { Transaction } from "@/lib/types";
 
-export const SEED_ACCOUNT_NAMES: Record<string, string> = {
-    seed_operating: "Operating ••4417",
-    seed_payroll: "Payroll ••2093",
-};
-
 const base = {
     category: null,
     flagged: false,
@@ -18,7 +13,7 @@ export const TRANSACTIONS_SEED: readonly Transaction[] = [
     {
         ...base,
         id: "txn_seed_01",
-        accountId: "seed_operating",
+        accountId: "acc_operating",
         postedAt: null,
         createdAt: "2026-10-01T08:42:00.000Z",
         amount: gbp("-128440"),
@@ -31,7 +26,7 @@ export const TRANSACTIONS_SEED: readonly Transaction[] = [
     {
         ...base,
         id: "txn_seed_02",
-        accountId: "seed_operating",
+        accountId: "acc_operating",
         postedAt: null,
         createdAt: "2026-10-01T07:15:00.000Z",
         amount: gbp("2156075"),
@@ -45,7 +40,7 @@ export const TRANSACTIONS_SEED: readonly Transaction[] = [
     {
         ...base,
         id: "txn_seed_03",
-        accountId: "seed_payroll",
+        accountId: "acc_reserve",
         postedAt: null,
         createdAt: "2026-09-30T16:30:00.000Z",
         amount: gbp("-4825000"),
@@ -57,7 +52,7 @@ export const TRANSACTIONS_SEED: readonly Transaction[] = [
     {
         ...base,
         id: "txn_seed_04",
-        accountId: "seed_operating",
+        accountId: "acc_operating",
         postedAt: "2026-09-30",
         createdAt: "2026-09-30T09:02:00.000Z",
         amount: gbp("-368400"),
@@ -69,7 +64,7 @@ export const TRANSACTIONS_SEED: readonly Transaction[] = [
     {
         ...base,
         id: "txn_seed_05",
-        accountId: "seed_operating",
+        accountId: "acc_operating",
         postedAt: "2026-09-29",
         createdAt: "2026-09-29T13:48:00.000Z",
         amount: gbp("-62500"),
@@ -83,7 +78,7 @@ export const TRANSACTIONS_SEED: readonly Transaction[] = [
     {
         ...base,
         id: "txn_seed_06",
-        accountId: "seed_operating",
+        accountId: "acc_operating",
         postedAt: "2026-09-29",
         createdAt: "2026-09-29T10:11:00.000Z",
         amount: gbp("940000"),
@@ -96,7 +91,7 @@ export const TRANSACTIONS_SEED: readonly Transaction[] = [
     {
         ...base,
         id: "txn_seed_07",
-        accountId: "seed_operating",
+        accountId: "acc_operating",
         postedAt: "2026-09-28",
         createdAt: "2026-09-28T15:20:00.000Z",
         amount: gbp("-1500"),
@@ -108,7 +103,7 @@ export const TRANSACTIONS_SEED: readonly Transaction[] = [
     {
         ...base,
         id: "txn_seed_08",
-        accountId: "seed_operating",
+        accountId: "acc_operating",
         postedAt: "2026-09-26",
         createdAt: "2026-09-26T11:05:00.000Z",
         amount: gbp("-214990"),
@@ -122,7 +117,7 @@ export const TRANSACTIONS_SEED: readonly Transaction[] = [
     {
         ...base,
         id: "txn_seed_09",
-        accountId: "seed_operating",
+        accountId: "acc_operating",
         postedAt: "2026-09-25",
         createdAt: "2026-09-25T09:40:00.000Z",
         amount: gbp("-89000"),

@@ -13,10 +13,5 @@ export const metadata: Metadata = { title: PAGE_TITLES.dashboard };
 export default async function DashboardPage({ searchParams }: Props) {
     const params = parseDashboardParams(await searchParams);
 
-    return (
-        <>
-            <DashboardHeader />
-            <DashboardVariant {...params} />
-        </>
-    );
+    return <DashboardVariant {...params} header={<DashboardHeader />} />;
 }

@@ -1,7 +1,7 @@
 "use client";
-import AccountRow from "@/components/common/account-row";
-import SectionCard from "@/components/common/section-card";
+import OpenSection from "@/components/common/open-section";
 import SectionSkeleton from "@/components/common/section-skeleton";
+import AccountLine from "@/components/dashboard/account-line";
 import EmptyState from "@/components/ui/empty-state";
 import QueryBoundary from "@/components/wrappers/query-boundary";
 import { DASHBOARD_ACCOUNT_LIMIT } from "@/lib/dashboard/constants";
@@ -18,17 +18,10 @@ const COPY = DASHBOARD_COPY.accounts;
 export default function AccountSummary() {
     const { workspace } = useWorkspace();
     const query = useAccounts();
-    const empty = (
-        <EmptyState
-            {...(seesPermittedOnly(workspace.role)
-                ? EMPTY_STATES.accountsNotShared
-                : EMPTY_STATES.accounts)}
-        />
-    );
+    const notShared = <EmptyState {...EMPTY_STATES.accountsNotShared} />;
 
     return (
-        <SectionCard
-            flush
+        <OpenSection
             title={DASHBOARD_COPY.sections.accountSummary}
             action={{ label: COPY.all, href: ACCOUNTS_ROUTE }}
             count={
@@ -36,12 +29,17 @@ export default function AccountSummary() {
             }
         >
             <QueryBoundary
-                flush
                 query={query}
                 isEmpty={({ items }) => heldAccounts(items).length === 0}
-                skeleton={<SectionSkeleton bare rows={4} />}
-                empty={empty}
-                denied={<EmptyState {...EMPTY_STATES.accountsNotShared} />}
+                skeleton={<SectionSkeleton bare rows={4} rowClassName="h-12" />}
+                empty={
+                    seesPermittedOnly(workspace.role) ? (
+                        notShared
+                    ) : (
+                        <EmptyState {...EMPTY_STATES.accounts} />
+                    )
+                }
+                denied={notShared}
             >
                 {({ items }) => {
                     const { listed, hidden } = listedAccounts(
@@ -50,37 +48,18 @@ export default function AccountSummary() {
                     );
                     return (
                         <>
-                            <table className="w-full">
-                                <caption className="sr-only">
-                                    {DASHBOARD_COPY.sections.accountSummary}
-                                </caption>
-                                <thead>
-                                    <tr>
-                                        <th scope="col" className="data-head">
-                                            {COPY.columns.account}
-                                        </th>
-                                        <th scope="col" className="data-head">
-                                            {COPY.columns.status}
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="data-head text-right"
-                                        >
-                                            {COPY.columns.available}
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {listed.map((account) => (
-                                        <AccountRow
-                                            key={account.id}
-                                            account={account}
-                                        />
-                                    ))}
-                                </tbody>
-                            </table>
+                            <ul className="border-border flex flex-col border-t">
+                                {listed.map((account) => (
+                                    <li
+                                        key={account.id}
+                                        className="border-border-light border-b last:border-b-0"
+                                    >
+                                        <AccountLine account={account} />
+                                    </li>
+                                ))}
+                            </ul>
                             {hidden > 0 ? (
-                                <p className="text-text-muted px-4 py-2 text-xs">
+                                <p className="text-text-muted text-xs">
                                     {COPY.more(hidden)}
                                 </p>
                             ) : null}
@@ -91,6 +70,6 @@ export default function AccountSummary() {
                     );
                 }}
             </QueryBoundary>
-        </SectionCard>
+        </OpenSection>
     );
 }

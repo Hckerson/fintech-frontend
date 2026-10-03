@@ -16,7 +16,6 @@ export default function DashboardHeader() {
 
     return (
         <PageHeader
-            eyebrow={workspace.name}
             title={PAGE_TITLES.dashboard}
             actions={
                 <div className="flex flex-wrap items-center gap-3">

@@ -6,7 +6,7 @@ import { DEFAULT_TIME_ZONE } from "@/lib/workspace/constants";
 
 const COPY = DASHBOARD_COPY.cashFlow;
 
-const PERIOD_LABEL: Record<
+export const PERIOD_LABEL: Record<
     CashFlowSeries["granularity"],
     Intl.DateTimeFormatOptions
 > = {

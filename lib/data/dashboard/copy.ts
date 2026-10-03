@@ -14,7 +14,7 @@ export const DASHBOARD_COPY = {
     sections: {
         verification: "Business verification",
         verificationNotice: "Business verification",
-        cashPosition: "Cash position",
+        cashPosition: "Cash",
         accountSummary: "Accounts",
         recentActivity: "Recent activity",
         pendingItems: "Needs attention",
@@ -29,7 +29,8 @@ export const DASHBOARD_COPY = {
         current: "Current balance",
         netToday: (zone: string) => `Net today (${zone})`,
         frozen: "Includes frozen accounts",
-        excluded: "Closed accounts are excluded.",
+        excluded:
+            "Totals cover open and frozen accounts. Closed accounts are excluded.",
         accounts: "View accounts",
         trendLabel: `${TREND_DAYS}-day change`,
         trend: ({ direction }: Trend, percent: string | null) =>
@@ -86,6 +87,8 @@ export const DASHBOARD_COPY = {
         exportReady: "Export ready to download",
         exportFailed: "Export failed",
         verification: "Verification needs information",
+        requests: (count: number) =>
+            `${plural(count, "open request", "open requests")} from the reviewer`,
         more: (count: number) =>
             `${plural(count, "more item", "more items")} not listed.`,
         loaded: (count: number) =>
@@ -96,6 +99,22 @@ export const DASHBOARD_COPY = {
             exports: "Exports couldn't load.",
             verification: "Verification status couldn't load.",
         } satisfies Record<PendingSource, string>,
+    },
+    overview: {
+        currencies: "Currency",
+        viewLabel: "Chart",
+        views: { balance: "Balance", flow: "Cash flow" },
+        today: "Today",
+        change: "Change",
+        low: "Lowest",
+        high: "Highest",
+        closing: "Closing balance",
+        balanceTitle: (currency: string) => `Balance in ${currency}`,
+        balanceSummary: (range: string, trend: string) =>
+            `Closing balance at the end of each period over the last ${range}. ${trend}.`,
+        select: (currency: string) => `Show ${currency}`,
+        chartHint: "Use the arrow keys to read each point.",
+        desk: "On your desk",
     },
     cashFlow: {
         rangeLabel: "Range",

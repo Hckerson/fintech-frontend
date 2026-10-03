@@ -20,4 +20,13 @@ export const CLOSED_ACCOUNT_STATE = "CLOSED";
 
 export const FROZEN_ACCOUNT_STATE = "FROZEN";
 
-export const DASHBOARD_PARAMS = ["range", "currency"] as const;
+export const DASHBOARD_VIEWS = ["balance", "flow"] as const;
+
+export const DASHBOARD_PARAMS = ["range", "currency", "view"] as const;
+
+export const HERO_CHART = {
+    width: 1000,
+    height: 260,
+    pad: 20,
+    padX: 0,
+} as const;

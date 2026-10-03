@@ -3,8 +3,7 @@ import type { ReactNode } from "react";
 import NotPermitted from "@/components/common/not-permitted";
 import SectionSkeleton from "@/components/common/section-skeleton";
 import AccountSummary from "@/components/dashboard/account-summary";
-import CashFlow from "@/components/dashboard/cash-flow";
-import CashPosition from "@/components/dashboard/cash-position";
+import CashHero from "@/components/dashboard/cash-hero";
 import PendingItems from "@/components/dashboard/pending-items";
 import RecentActivity from "@/components/dashboard/recent-activity";
 import VerificationNotice from "@/components/onboarding/verification-notice";
@@ -18,16 +17,27 @@ import {
 import { useWorkspace } from "@/lib/hooks/use-workspace";
 import type { DashboardParams, DashboardSectionKey } from "@/lib/types";
 
+const COLUMN =
+    "flex flex-col px-4 py-4 lg:px-6 [&>section+section]:border-border [&>section+section]:mt-2 [&>section+section]:border-t [&>section+section]:pt-6 gap-4";
+
 export default function DashboardVariant({
     range,
     currency,
+    view,
     dropped,
-}: DashboardParams) {
+    header,
+}: DashboardParams & { header: ReactNode }) {
     const { workspace, can } = useWorkspace();
 
     if (!can("viewDashboard")) {
         return (
-            <NotPermitted page={PAGE_TITLES.dashboard} offerDashboard={false} />
+            <>
+                {header}
+                <NotPermitted
+                    page={PAGE_TITLES.dashboard}
+                    offerDashboard={false}
+                />
+            </>
         );
     }
 
@@ -35,8 +45,15 @@ export default function DashboardVariant({
     const sections: Record<DashboardSectionKey, ReactNode> = {
         verification: <VerificationNotice />,
         verificationNotice: <VerificationNotice informational />,
-        cashPosition: <CashPosition />,
-        cashFlow: <CashFlow range={range} currency={currency} />,
+        cashPosition: (
+            <CashHero
+                range={range}
+                currency={currency}
+                view={view}
+                withFlow={granted.includes("cashFlow")}
+            />
+        ),
+        cashFlow: null,
         recentActivity: <RecentActivity />,
         pendingItems: <PendingItems />,
         accountSummary: <AccountSummary />,
@@ -57,35 +74,27 @@ export default function DashboardVariant({
                 </SectionErrorBoundary>
             ));
 
-    return (
-        <>
-            {dropped.length > 0 ? (
-                <p role="status" className="text-warning text-xs">
-                    {DASHBOARD_COPY.dropped(dropped.join(", "))}
-                </p>
-            ) : null}
-            {slot(DASHBOARD_LAYOUT.notice)}
-            {slot(DASHBOARD_LAYOUT.band)}
-            {DASHBOARD_LAYOUT.rows.map(({ main, side }) => {
-                const left = slot(main);
-                const right = slot(side);
+    const rail = slot(DASHBOARD_LAYOUT.rail);
 
-                return left.length > 0 && right.length > 0 ? (
-                    <div
-                        key={main.join()}
-                        className="grid items-start gap-4 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]"
-                    >
-                        <div className="flex min-w-0 flex-col gap-4">
-                            {left}
-                        </div>
-                        <div className="flex min-w-0 flex-col gap-4">
-                            {right}
-                        </div>
-                    </div>
-                ) : (
-                    [...left, ...right]
-                );
-            })}
-        </>
+    return (
+        <div className="-mx-4 -my-4 flex flex-1 flex-col lg:-mx-6 xl:flex-row">
+            <div className={`${COLUMN} min-w-0 flex-1`}>
+                {header}
+                {dropped.length > 0 ? (
+                    <p role="status" className="text-warning text-xs">
+                        {DASHBOARD_COPY.dropped(dropped.join(", "))}
+                    </p>
+                ) : null}
+                {slot(DASHBOARD_LAYOUT.notice)}
+                {slot(DASHBOARD_LAYOUT.main)}
+            </div>
+            {rail.length > 0 ? (
+                <div
+                    className={`${COLUMN} shell-rail border-border bg-background-alt shrink-0 border-t xl:border-t-0 xl:border-l`}
+                >
+                    {rail}
+                </div>
+            ) : null}
+        </div>
     );
 }

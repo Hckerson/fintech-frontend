@@ -1,6 +1,6 @@
 "use client";
 import { useId, useState } from "react";
-import SectionCard from "@/components/common/section-card";
+import OpenSection from "@/components/common/open-section";
 import SectionSkeleton from "@/components/common/section-skeleton";
 import TransactionRow from "@/components/common/transaction-row";
 import EmptyState from "@/components/ui/empty-state";
@@ -11,7 +11,7 @@ import { DASHBOARD_COPY } from "@/lib/data/dashboard/copy";
 import { EMPTY_STATES } from "@/lib/data/empty-states";
 import { useTransactions } from "@/lib/hooks/use-transactions";
 import { useWorkspace } from "@/lib/hooks/use-workspace";
-import type { Transaction } from "@/lib/types";
+import { activityDays } from "@/lib/utils/activity-days";
 import { seesPermittedOnly } from "@/lib/utils/permissions";
 import { TRANSACTIONS_ROUTE } from "@/lib/workspace/constants";
 
@@ -29,15 +29,10 @@ export default function RecentActivity() {
     const panelId = useId();
     const [filter, setFilter] = useState<Filter>("all");
     const query = useTransactions({ limit: DASHBOARD_ACTIVITY_LIMIT });
-    const shown = (items: Transaction[]) =>
-        filter === "all"
-            ? items
-            : items.filter(({ status }) => status === filter);
     const notShared = <EmptyState {...EMPTY_STATES.accountsNotShared} />;
 
     return (
-        <SectionCard
-            flush
+        <OpenSection
             title={DASHBOARD_COPY.sections.recentActivity}
             action={{ label: COPY.all, href: TRANSACTIONS_ROUTE }}
             aside={
@@ -52,7 +47,6 @@ export default function RecentActivity() {
         >
             <div id={panelId} role="tabpanel" aria-label={COPY.filters[filter]}>
                 <QueryBoundary
-                    flush
                     query={query}
                     isEmpty={({ items }) => items.length === 0}
                     skeleton={<SectionSkeleton bare rows={6} />}
@@ -65,72 +59,62 @@ export default function RecentActivity() {
                     }
                     denied={notShared}
                 >
-                    {({ items }) => (
-                        <>
-                            <table className="w-full">
-                                <caption className="sr-only">
-                                    {DASHBOARD_COPY.sections.recentActivity}
-                                </caption>
-                                <thead>
-                                    <tr>
-                                        <th
-                                            scope="col"
-                                            className="data-head hidden md:table-cell"
-                                        >
-                                            {COPY.columns.date}
-                                        </th>
-                                        <th scope="col" className="data-head">
-                                            {COPY.columns.description}
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="data-head hidden lg:table-cell"
-                                        >
-                                            {COPY.columns.category}
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="data-head hidden sm:table-cell"
-                                        >
-                                            {COPY.columns.status}
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="data-head text-right"
-                                        >
-                                            {COPY.columns.amount}
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {shown(items).map((transaction) => (
-                                        <TransactionRow
-                                            key={transaction.id}
-                                            transaction={transaction}
-                                            timeZone={workspace.timeZone}
-                                        />
-                                    ))}
-                                </tbody>
-                            </table>
-                            {shown(items).length === 0 ? (
-                                <p className="text-text-secondary p-4 text-sm">
-                                    {COPY.nonePending}
-                                </p>
-                            ) : null}
-                            {shown(items).some(
-                                ({ status }) => status === "pending",
-                            ) ? (
-                                <p className="text-text-muted px-4 py-2 text-xs">
-                                    {COPY.provisional}
-                                </p>
-                            ) : null}
-                            <p role="status" className="sr-only">
-                                {COPY.loaded(shown(items).length)}
+                    {({ items }) => {
+                        const shown = items.filter(
+                            ({ status }) =>
+                                filter === "all" || status === filter,
+                        );
+
+                        return shown.length === 0 ? (
+                            <p className="text-text-secondary text-sm">
+                                {COPY.nonePending}
                             </p>
-                        </>
-                    )}
+                        ) : (
+                            <>
+                                <table className="w-full">
+                                    <caption className="sr-only">
+                                        {DASHBOARD_COPY.sections.recentActivity}
+                                    </caption>
+                                    {activityDays(
+                                        shown,
+                                        workspace.timeZone,
+                                    ).map((day) => (
+                                        <tbody key={day.label}>
+                                            <tr>
+                                                <th
+                                                    scope="rowgroup"
+                                                    colSpan={4}
+                                                    className="figure-label border-border border-b pt-3 pb-2 text-left"
+                                                >
+                                                    <time dateTime={day.date}>
+                                                        {day.label}
+                                                    </time>
+                                                </th>
+                                            </tr>
+                                            {day.items.map((transaction) => (
+                                                <TransactionRow
+                                                    key={transaction.id}
+                                                    transaction={transaction}
+                                                />
+                                            ))}
+                                        </tbody>
+                                    ))}
+                                </table>
+                                {shown.some(
+                                    ({ status }) => status === "pending",
+                                ) ? (
+                                    <p className="text-text-muted text-xs">
+                                        {COPY.provisional}
+                                    </p>
+                                ) : null}
+                                <p role="status" className="sr-only">
+                                    {COPY.loaded(shown.length)}
+                                </p>
+                            </>
+                        );
+                    }}
                 </QueryBoundary>
             </div>
-        </SectionCard>
+        </OpenSection>
     );
 }

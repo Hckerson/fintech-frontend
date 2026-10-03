@@ -3,40 +3,30 @@ import Link from "next/link";
 import { Attachment, FlagFilled } from "@carbon/icons-react";
 import Amount from "@/components/common/amount";
 import StatusLabel from "@/components/ui/status-label";
-import { NOT_AVAILABLE } from "@/lib/constants";
 import { DASHBOARD_COPY } from "@/lib/data/dashboard/copy";
 import {
     TRANSACTION_STATUS_LABELS,
     UNKNOWN_STATUS,
 } from "@/lib/data/status-labels";
 import type { Transaction } from "@/lib/types";
-import { CALENDAR_DAY, zonedLabel } from "@/lib/utils/zoned-time";
-import { DEFAULT_TIME_ZONE, transactionRoute } from "@/lib/workspace/constants";
+import { transactionRoute } from "@/lib/workspace/constants";
 
 interface Props {
     transaction: Transaction;
-    timeZone: string;
 }
 
 const COPY = DASHBOARD_COPY.activity;
 
-export default function TransactionRow({ transaction, timeZone }: Props) {
-    const { postedAt, createdAt, counterparty, description, amount } =
-        transaction;
+export default function TransactionRow({ transaction }: Props) {
+    const { counterparty, description, amount } = transaction;
     const status =
         TRANSACTION_STATUS_LABELS[transaction.status] ?? UNKNOWN_STATUS;
-    const date =
-        (postedAt
-            ? zonedLabel(postedAt, DEFAULT_TIME_ZONE, CALENDAR_DAY)
-            : zonedLabel(createdAt, timeZone, CALENDAR_DAY)) ?? NOT_AVAILABLE;
     const credit = !amount.amountMinor.startsWith("-");
+    const settled = transaction.status === "posted";
 
     return (
         <tr className="hover:bg-background-muted relative">
-            <td className="data-cell text-text-muted hidden w-px whitespace-nowrap md:table-cell">
-                <time dateTime={postedAt ?? createdAt}>{date}</time>
-            </td>
-            <td className="data-cell">
+            <td className="data-cell pl-0">
                 <span className="flex items-center gap-2">
                     <Link
                         href={transactionRoute(transaction.id)}
@@ -59,16 +49,19 @@ export default function TransactionRow({ transaction, timeZone }: Props) {
                 </span>
                 <p className="text-text-muted text-xs">
                     {counterparty ? description : transaction.reference}
-                    <span className="md:hidden"> · {date}</span>
                 </p>
             </td>
             <td className="data-cell text-text-secondary hidden lg:table-cell">
                 {transaction.category ?? COPY.uncategorised}
             </td>
-            <td className="data-cell hidden w-px sm:table-cell">
-                <StatusLabel {...status} />
+            <td className="data-cell hidden w-px whitespace-nowrap sm:table-cell">
+                {settled ? (
+                    <span className="text-text-muted">{status.label}</span>
+                ) : (
+                    <StatusLabel {...status} />
+                )}
             </td>
-            <td className="data-cell text-right whitespace-nowrap">
+            <td className="data-cell pr-0 text-right whitespace-nowrap">
                 <Amount
                     {...amount}
                     display="signed"
@@ -81,9 +74,11 @@ export default function TransactionRow({ transaction, timeZone }: Props) {
                               : "text-text",
                     )}
                 />
-                <p className="pt-1 sm:hidden">
-                    <StatusLabel {...status} />
-                </p>
+                {settled ? null : (
+                    <p className="pt-1 sm:hidden">
+                        <StatusLabel {...status} />
+                    </p>
+                )}
             </td>
         </tr>
     );

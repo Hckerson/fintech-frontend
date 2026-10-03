@@ -25,7 +25,7 @@ export default function CashFlowFigures({ series }: Props) {
 
     return (
         <>
-            <dl className="border-border grid grid-cols-3 border-b">
+            <dl className="border-border grid grid-cols-3 rounded-lg border">
                 <FigureCell label={COPY.net}>
                     <Amount {...totals.net} display="signed" />
                 </FigureCell>
@@ -36,7 +36,7 @@ export default function CashFlowFigures({ series }: Props) {
                     <Amount {...totals.outflow} />
                 </FigureCell>
             </dl>
-            <div className="flex flex-col gap-3 p-4">
+            <div className="flex flex-col gap-3 pt-4">
                 {plottable ? (
                     <FlowChart
                         title={COPY.chartTitle(currency)}
