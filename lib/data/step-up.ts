@@ -13,6 +13,7 @@ export const STEP_UP_ACTIONS: Record<StepUpPurpose, string> = {
     payee_rename: "rename a payee",
     payee_remove: "remove a payee",
     transfer: "send this transfer",
+    account_reveal: "show this account number",
 };
 
 export const STEP_UP_COPY = {
