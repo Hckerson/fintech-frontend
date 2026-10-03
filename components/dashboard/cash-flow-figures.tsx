@@ -11,7 +11,6 @@ interface Props {
 }
 
 const COPY = DASHBOARD_COPY.cashFlow;
-const DIVIDED = "border-border border-l";
 
 export default function CashFlowFigures({ series }: Props) {
     const { points, plottable, net } = cashFlowView(series);
@@ -25,18 +24,7 @@ export default function CashFlowFigures({ series }: Props) {
 
     return (
         <>
-            <dl className="border-border grid grid-cols-3 rounded-lg border">
-                <FigureCell label={COPY.net}>
-                    <Amount {...totals.net} display="signed" />
-                </FigureCell>
-                <FigureCell label={COPY.moneyIn} className={DIVIDED}>
-                    <Amount {...totals.inflow} />
-                </FigureCell>
-                <FigureCell label={COPY.moneyOut} className={DIVIDED}>
-                    <Amount {...totals.outflow} />
-                </FigureCell>
-            </dl>
-            <div className="flex flex-col gap-3 pt-4">
+            <div className="flex flex-col gap-3 px-4 py-4">
                 {plottable ? (
                     <FlowChart
                         title={COPY.chartTitle(currency)}
@@ -71,6 +59,17 @@ export default function CashFlowFigures({ series }: Props) {
                 )}
                 <p className="text-text-muted text-xs">{COPY.basis}</p>
             </div>
+            <dl className="border-border divide-border grid divide-y border-t sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+                <FigureCell label={COPY.net}>
+                    <Amount {...totals.net} display="signed" />
+                </FigureCell>
+                <FigureCell label={COPY.moneyIn}>
+                    <Amount {...totals.inflow} />
+                </FigureCell>
+                <FigureCell label={COPY.moneyOut}>
+                    <Amount {...totals.outflow} />
+                </FigureCell>
+            </dl>
             <p role="status" className="sr-only">
                 {summary}
             </p>

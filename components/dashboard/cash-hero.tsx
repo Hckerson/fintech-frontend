@@ -48,11 +48,15 @@ export default function CashHero({ range, currency, view, withFlow }: Props) {
         );
 
     return (
-        <section aria-labelledby={titleId}>
+        <section
+            aria-labelledby={titleId}
+            className="panel min-w-0 overflow-hidden"
+        >
             <h2 id={titleId} className="sr-only">
                 {DASHBOARD_COPY.sections.cashPosition}
             </h2>
             <QueryBoundary
+                flush
                 query={query}
                 isEmpty={(positions) => positions.length === 0}
                 skeleton={<SectionSkeleton bare rows={1} rowClassName="h-96" />}
@@ -76,27 +80,35 @@ export default function CashHero({ range, currency, view, withFlow }: Props) {
                         positions[0];
 
                     return (
-                        <div className="flex flex-col gap-4">
-                            <CurrencyChips
-                                positions={positions}
-                                shown={position.currency}
-                                disabled={navigating}
-                                onSelect={(code) => show({ currency: code })}
-                            />
-                            <CashHeadline
-                                position={position}
-                                timeZone={workspace.timeZone}
-                            />
-                            {withFlow ? (
-                                <CashControls
-                                    range={range}
-                                    view={view}
-                                    panelId={panelId}
+                        <>
+                            <div className="border-border flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3">
+                                <CurrencyChips
+                                    positions={positions}
+                                    shown={position.currency}
                                     disabled={navigating}
-                                    onRange={(next) => show({ range: next })}
-                                    onView={(next) => show({ view: next })}
+                                    onSelect={(code) =>
+                                        show({ currency: code })
+                                    }
                                 />
-                            ) : null}
+                                {withFlow ? (
+                                    <CashControls
+                                        range={range}
+                                        view={view}
+                                        panelId={panelId}
+                                        disabled={navigating}
+                                        onRange={(next) =>
+                                            show({ range: next })
+                                        }
+                                        onView={(next) => show({ view: next })}
+                                    />
+                                ) : null}
+                            </div>
+                            <div className="px-4 pt-6 pb-2">
+                                <CashHeadline
+                                    position={position}
+                                    timeZone={workspace.timeZone}
+                                />
+                            </div>
                             <div
                                 id={panelId}
                                 role="tabpanel"
@@ -120,7 +132,7 @@ export default function CashHero({ range, currency, view, withFlow }: Props) {
                                     />
                                 )}
                             </div>
-                            <p className="text-text-muted text-xs">
+                            <p className="border-border text-text-muted border-t px-4 py-3 text-xs">
                                 {position.includesFrozen
                                     ? `${COPY.frozen}. `
                                     : ""}
@@ -129,7 +141,7 @@ export default function CashHero({ range, currency, view, withFlow }: Props) {
                             <p role="status" className="sr-only">
                                 {COPY.loaded(positions.length)}
                             </p>
-                        </div>
+                        </>
                     );
                 }}
             </QueryBoundary>

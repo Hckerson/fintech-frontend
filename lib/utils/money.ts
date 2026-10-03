@@ -43,3 +43,27 @@ export const formatMoney = (
         maximumFractionDigits,
     }).format(toMajor(BigInt(amountMinor), fractionDigits(currency, locale)));
 };
+
+export const moneyParts = (
+    amountMinor: string,
+    currency: string,
+    locale = DEFAULT_LOCALE,
+) => {
+    if (!/^-?\d+$/.test(amountMinor)) return null;
+    const parts = new Intl.NumberFormat(locale, {
+        style: "currency",
+        currency,
+    }).formatToParts(
+        toMajor(BigInt(amountMinor), fractionDigits(currency, locale)),
+    );
+    const decimal = parts.findIndex(({ type }) => type === "decimal");
+    const text = (slice: Intl.NumberFormatPart[]) =>
+        slice.map(({ value }) => value).join("");
+
+    return decimal < 0
+        ? { major: text(parts), minor: "" }
+        : {
+              major: text(parts.slice(0, decimal)),
+              minor: text(parts.slice(decimal)),
+          };
+};

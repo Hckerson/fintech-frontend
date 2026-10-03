@@ -27,7 +27,7 @@ export default function CashControls({
     onView,
 }: Props) {
     return (
-        <div className="flex flex-wrap items-center justify-between gap-2 pt-2">
+        <div className="flex flex-wrap items-center gap-2">
             <Tabs
                 label={COPY.viewLabel}
                 tabs={DASHBOARD_VIEWS.map((id) => ({

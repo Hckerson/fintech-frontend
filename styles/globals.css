@@ -140,16 +140,6 @@
     margin-inline: auto;
 }
 
-@utility shell-rail {
-    @media (width >= 80rem) {
-        position: sticky;
-        top: var(--shell-bar);
-        width: var(--shell-rail);
-        height: calc(100svh - var(--shell-bar));
-        overflow-y: auto;
-    }
-}
-
 @utility ledger-section {
     padding-block: var(--ledger-section);
 }
@@ -181,6 +171,14 @@
     font-weight: 500;
     line-height: 1;
     letter-spacing: -0.035em;
+    font-variant-numeric: tabular-nums;
+}
+
+@utility figure-hero {
+    font-size: var(--ledger-figure);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
     font-variant-numeric: tabular-nums;
 }
 

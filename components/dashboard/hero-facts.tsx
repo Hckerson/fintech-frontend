@@ -17,7 +17,7 @@ interface Props {
 
 const COPY = DASHBOARD_COPY.cash;
 const FACT = "flex flex-col gap-1";
-const VALUE = "text-text text-base font-medium tabular-nums";
+const VALUE = "text-text text-sm font-medium tabular-nums";
 const MISSING = <span className="text-text-muted">{NOT_AVAILABLE}</span>;
 
 const DIRECTION: Record<Trend["direction"], CarbonIconType> = {
@@ -31,7 +31,7 @@ export default function HeroFacts({ position, timeZone }: Props) {
     const Direction = trend ? DIRECTION[trend.direction] : null;
 
     return (
-        <dl className="flex flex-wrap gap-x-4 gap-y-3 [&>div]:pr-4">
+        <dl className="[&>div]:border-border flex flex-wrap gap-y-3 [&>div]:border-l [&>div]:px-4">
             <div className={FACT}>
                 <dt className="figure-label">{COPY.current}</dt>
                 <dd className={VALUE}>
