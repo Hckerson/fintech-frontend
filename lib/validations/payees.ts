@@ -5,7 +5,9 @@ import {
     MINOR_UNITS_PATTERN,
     PAYEE_FILTERS,
     PAYEE_NAME_MAX,
+    PAYEE_PAYMENT_STATUSES,
     PAYEE_SEARCH_MAX,
+    PAYEE_SORTS,
     PAYEE_STATUSES,
     SORT_CODE_LENGTH,
     STEP_UP_PURPOSES,
@@ -57,7 +59,24 @@ export const payeePageSchema = z.object({
 export const payeeQuerySchema = z.object({
     search: z.string().trim().max(PAYEE_SEARCH_MAX),
     status: z.enum(PAYEE_FILTERS),
+    sort: z.enum(PAYEE_SORTS),
     cursor: z.string().nullable(),
+});
+
+export const payeeIdSchema = id;
+
+export const payeeActivitySchema = z.object({
+    items: z.array(
+        z.object({
+            id,
+            paidAt: z.iso.datetime(),
+            amountMinor: z.string().regex(MINOR_UNITS_PATTERN),
+            currency: z.string().length(3),
+            reference: z.string(),
+            status: z.enum(PAYEE_PAYMENT_STATUSES),
+        }),
+    ),
+    asOf: z.iso.datetime(),
 });
 
 export const payeeInputSchema = z.object({

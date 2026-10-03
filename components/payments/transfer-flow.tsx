@@ -31,7 +31,7 @@ export default function TransferFlow({ payeeId }: { payeeId?: string }) {
     const { can } = useWorkspace();
     const allowed = can("transferMoney");
     const options = useTransferOptions(allowed);
-    const payees = usePayees("", "active", allowed);
+    const payees = usePayees("", "active", "name_asc", allowed);
     const [draft, setDraft] = useState(() => blank(payeeId));
     const [step, setStep] = useState<TransferStep>("edit");
     const [idempotencyKey, setIdempotencyKey] = useState(() => nanoid());

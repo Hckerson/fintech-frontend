@@ -9,7 +9,7 @@ interface Props {
     target: PayeeTarget | null;
     current: Payee | undefined;
     onClose: () => void;
-    onDone: (message: string, refocus?: boolean) => void;
+    onDone: (message: string) => void;
 }
 
 export default function PayeeDialogs({
@@ -43,9 +43,7 @@ export default function PayeeDialogs({
             <PayeeRemoveDialog
                 payee={target.payee}
                 onClose={onClose}
-                onRemoved={(payee) =>
-                    onDone(PAYEE_COPY.removed(payee.name), true)
-                }
+                onRemoved={(payee) => onDone(PAYEE_COPY.removed(payee.name))}
             />
         );
     }

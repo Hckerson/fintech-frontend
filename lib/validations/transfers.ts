@@ -44,7 +44,11 @@ export const transferAccountSchema = z.object({
 
 export const transferOptionsSchema = z.object({
     accounts: z.array(transferAccountSchema),
-    limits: z.object({ perTransferMinor: minor, dailyRemainingMinor: minor }),
+    limits: z.object({
+        perTransferMinor: minor,
+        dailyLimitMinor: minor,
+        dailyRemainingMinor: minor,
+    }),
     settlesOn: z.iso.date(),
     cutOffHour: z.number().int().min(0).max(23),
     timeZone: z.string().min(1),

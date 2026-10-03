@@ -1,8 +1,11 @@
 "use client";
 import { useId } from "react";
+import TransferAccountPicker from "@/components/payments/transfer-account-picker";
+import Avatar from "@/components/ui/avatar";
+import Combobox from "@/components/ui/combobox";
 import Field from "@/components/ui/field";
-import Select from "@/components/ui/select";
 import Tabs from "@/components/ui/tabs";
+import { PAYEE_COPY } from "@/lib/data/payments/copy";
 import { TRANSFER_COPY } from "@/lib/data/payments/transfer-copy";
 import type { Payee, TransferAccount, TransferDraft } from "@/lib/types";
 
@@ -24,62 +27,62 @@ export default function TransferDestinationField({
     onChange,
 }: Props) {
     const panelId = useId();
-    const toPayee = draft.kind === "payee";
-    const choices = toPayee
-        ? payees.map(({ id, name, destinationLast4 }) => ({
-              id,
-              label: TRANSFER_COPY.option.payee(name, destinationLast4),
-          }))
-        : accounts
-              .filter(
-                  ({ id, state }) =>
-                      id !== draft.fromAccountId && state !== "CLOSED",
-              )
-              .map(({ id, name, last4, currency }) => ({
-                  id,
-                  label: `${TRANSFER_COPY.option.payee(name, last4)} · ${currency}`,
-              }));
 
     return (
-        <div id={panelId} className="flex flex-col gap-2">
-            <Field label={COPY.to} error={error}>
-                {(control) => (
-                    <div className="flex flex-col gap-2">
-                        <div className="flex">
-                            <Tabs
-                                label={COPY.destinationLabel}
-                                tabs={COPY.destinations}
-                                value={draft.kind}
-                                onChange={(kind) => onChange({ kind })}
-                                panelId={panelId}
+        <div className="flex flex-col gap-2">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+                <span aria-hidden className="text-text text-sm font-medium">
+                    {COPY.to}
+                </span>
+                <Tabs
+                    label={COPY.destinationLabel}
+                    tabs={COPY.destinations}
+                    value={draft.kind}
+                    onChange={(kind) => onChange({ kind })}
+                    panelId={panelId}
+                />
+            </div>
+            <div id={panelId} role="tabpanel">
+                {draft.kind === "payee" ? (
+                    <Field label={COPY.payeeLabel} error={error}>
+                        {(control) => (
+                            <Combobox
+                                {...control}
+                                value={draft.payeeId}
+                                placeholder={COPY.payeePlaceholder}
+                                searchPlaceholder={COPY.searchPayees}
+                                emptyText={COPY.noPayee}
+                                onChange={(payeeId) => onChange({ payeeId })}
+                                options={payees.map((payee) => ({
+                                    id: payee.id,
+                                    label: payee.name,
+                                    detail: `${payee.bankName ?? PAYEE_COPY.bankUnknown} · ••${payee.destinationLast4}`,
+                                    leading: (
+                                        <Avatar
+                                            name={payee.name}
+                                            className="size-8"
+                                        />
+                                    ),
+                                }))}
                             />
-                        </div>
-                        <Select
-                            {...control}
-                            name="to"
-                            value={toPayee ? draft.payeeId : draft.accountId}
-                            onChange={(event) =>
-                                onChange(
-                                    toPayee
-                                        ? { payeeId: event.target.value }
-                                        : { accountId: event.target.value },
-                                )
-                            }
-                        >
-                            <option value="">
-                                {toPayee
-                                    ? COPY.payeePlaceholder
-                                    : COPY.accountPlaceholder}
-                            </option>
-                            {choices.map(({ id, label }) => (
-                                <option key={id} value={id}>
-                                    {label}
-                                </option>
-                            ))}
-                        </Select>
-                    </div>
+                        )}
+                    </Field>
+                ) : (
+                    <TransferAccountPicker
+                        legend={COPY.accountLabel}
+                        name="to"
+                        accounts={accounts.filter(
+                            ({ id, state }) =>
+                                id !== draft.fromAccountId &&
+                                state !== "CLOSED",
+                        )}
+                        value={draft.accountId}
+                        error={error}
+                        emptyText={COPY.noOtherAccount}
+                        onChange={(accountId) => onChange({ accountId })}
+                    />
                 )}
-            </Field>
+            </div>
         </div>
     );
 }

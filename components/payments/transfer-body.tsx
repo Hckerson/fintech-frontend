@@ -119,12 +119,7 @@ export default function TransferBody({
                     onReview={onReview}
                 />
             )}
-            <TransferAside
-                options={data}
-                source={data.accounts.find(
-                    ({ id }) => id === filled.fromAccountId,
-                )}
-            />
+            <TransferAside options={data} draft={filled} payees={payees} />
         </div>
     );
 }

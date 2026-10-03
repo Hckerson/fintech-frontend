@@ -23,7 +23,11 @@ const account = (patch: Partial<TransferAccount> = {}): TransferAccount => ({
 
 const OPTIONS: TransferOptions = {
     accounts: [account(), account({ id: "acc_reserve", name: "Reserve" })],
-    limits: { perTransferMinor: "50000", dailyRemainingMinor: "40000" },
+    limits: {
+        perTransferMinor: "50000",
+        dailyLimitMinor: "100000",
+        dailyRemainingMinor: "40000",
+    },
     settlesOn: "2026-10-02",
     cutOffHour: 17,
     timeZone: "UTC",

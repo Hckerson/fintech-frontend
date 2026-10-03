@@ -1,30 +1,26 @@
 "use client";
-import Link from "next/link";
-import { nanoid } from "nanoid";
-import { useState } from "react";
 import PayeeFooter from "@/components/payments/payee-footer";
 import PayeeEmpty from "@/components/payments/payee-empty";
+import PayeeLoadFailure from "@/components/payments/payee-load-failure";
 import PayeeListSkeleton from "@/components/payments/payee-list-skeleton";
 import PayeeTable from "@/components/payments/payee-table";
 import ErrorState from "@/components/ui/error-state";
-import { LOGIN_ROUTE, PAYMENTS_ROUTE, SLOW_REQUEST_MS } from "@/lib/constants";
-import {
-    ERROR_COPY,
-    ERROR_MESSAGE,
-    READ_ERROR_KIND,
-} from "@/lib/data/error-messages";
+import { SLOW_REQUEST_MS } from "@/lib/constants";
 import { PAYEE_COPY } from "@/lib/data/payments/copy";
 import type { usePayees } from "@/lib/hooks/use-payees";
 import { useOverdue } from "@/lib/hooks/use-overdue";
-import type { Payee } from "@/lib/types";
+import type { Payee, PayeeSort } from "@/lib/types";
 import { formatInstant } from "@/lib/utils/date-formatter";
-import { queryString } from "@/lib/utils/query-string";
 
 interface Props {
     payees: ReturnType<typeof usePayees>;
     term: string;
     filtered: boolean;
     online: boolean;
+    sort: PayeeSort;
+    selectedId: string | undefined;
+    onSort: (sort: PayeeSort) => void;
+    onOpen: (payee: Payee) => void;
     onAdd: () => void;
     onClear: () => void;
     onRename: (payee: Payee) => void;
@@ -36,12 +32,15 @@ export default function PayeeResults({
     term,
     filtered,
     online,
+    sort,
+    selectedId,
+    onSort,
+    onOpen,
     onAdd,
     onClear,
     onRename,
     onRemove,
 }: Props) {
-    const [deviceReference] = useState(() => nanoid());
     const slow = useOverdue(payees.isFetching, SLOW_REQUEST_MS);
     const pages = payees.data?.pages;
     const items = pages?.flatMap((page) => page.items) ?? [];
@@ -53,44 +52,13 @@ export default function PayeeResults({
         </p>
     ) : null;
 
-    if (!pages && failure) {
-        const kind = READ_ERROR_KIND[failure.kind] ?? "non-retryable";
+    if (!pages && (failure || !online)) {
         return (
-            <div className="px-4 py-4">
-                <ErrorState
-                    kind={kind}
-                    message={
-                        kind === "retryable"
-                            ? ERROR_COPY.loadFailed
-                            : failure.kind === "unauthenticated"
-                              ? ERROR_MESSAGE.unauthenticated
-                              : ERROR_COPY.cannotLoad
-                    }
-                    reference={failure.reference}
-                    onRetry={retry}
-                    retrying={payees.isFetching}
-                >
-                    {failure.kind === "unauthenticated" ? (
-                        <Link
-                            href={`${LOGIN_ROUTE}${queryString({ next: PAYMENTS_ROUTE })}`}
-                            className="text-accent text-sm underline underline-offset-4"
-                        >
-                            {ERROR_COPY.signIn}
-                        </Link>
-                    ) : null}
-                </ErrorState>
-            </div>
-        );
-    }
-    if (!pages && !online) {
-        return (
-            <div className="px-4 py-4">
-                <ErrorState
-                    kind="offline"
-                    message={ERROR_COPY.offline}
-                    reference={deviceReference}
-                />
-            </div>
+            <PayeeLoadFailure
+                failure={failure}
+                retrying={payees.isFetching}
+                onRetry={retry}
+            />
         );
     }
     if (!pages || (items.length === 0 && payees.isPlaceholderData)) {
@@ -134,6 +102,10 @@ export default function PayeeResults({
                 busy={payees.isFetching}
                 hasMore={payees.hasNextPage}
                 online={online}
+                sort={sort}
+                selectedId={selectedId}
+                onSort={onSort}
+                onOpen={onOpen}
                 onRename={onRename}
                 onRemove={onRemove}
             />

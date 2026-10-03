@@ -3,7 +3,7 @@ import { useRef, useState, type FormEvent } from "react";
 import { ArrowRight, WarningAlt } from "@carbon/icons-react";
 import TransferAmountField from "@/components/payments/transfer-amount-field";
 import TransferDestinationField from "@/components/payments/transfer-destination-field";
-import TransferSourceField from "@/components/payments/transfer-source-field";
+import TransferAccountPicker from "@/components/payments/transfer-account-picker";
 import Button from "@/components/ui/button";
 import Field from "@/components/ui/field";
 import TextInput from "@/components/ui/text-input";
@@ -77,7 +77,9 @@ export default function TransferForm({
                     {TRANSFER_COPY.review.changed}
                 </p>
             ) : null}
-            <TransferSourceField
+            <TransferAccountPicker
+                legend={COPY.from}
+                name="from"
                 accounts={options.accounts}
                 value={draft.fromAccountId}
                 error={errorOf("from")}

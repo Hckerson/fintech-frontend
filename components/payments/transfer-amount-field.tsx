@@ -2,8 +2,9 @@
 import Field from "@/components/ui/field";
 import TextInput from "@/components/ui/text-input";
 import { TRANSFER_COPY } from "@/lib/data/payments/transfer-copy";
+import { parseAmount } from "@/lib/payments/amount";
 import type { TransferAccount } from "@/lib/types";
-import { formatMoney } from "@/lib/utils/money";
+import { formatMoney, fractionDigits } from "@/lib/utils/money";
 
 interface Props {
     source: TransferAccount | undefined;
@@ -14,24 +15,27 @@ interface Props {
 
 const COPY = TRANSFER_COPY.form;
 
+const hintFor = (source: TransferAccount, value: string) => {
+    const available = BigInt(source.availableMinor);
+    const amount = parseAmount(value, fractionDigits(source.currency));
+    const money = (minor: bigint) =>
+        formatMoney(minor.toString(), source.currency) ?? "";
+
+    return amount && amount <= available
+        ? COPY.leaves(money(available - amount))
+        : COPY.available(money(available));
+};
+
 export default function TransferAmountField({
     source,
     value,
     error,
     onChange,
 }: Props) {
-    const available = source
-        ? formatMoney(source.availableMinor, source.currency)
-        : null;
-
     return (
         <Field
             label={COPY.amount}
-            hint={
-                error || !available
-                    ? undefined
-                    : `${available} ${COPY.available}`
-            }
+            hint={error || !source ? undefined : hintFor(source, value)}
             error={error}
         >
             {(control) => (

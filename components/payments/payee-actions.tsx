@@ -1,9 +1,15 @@
 "use client";
 import Link from "next/link";
 import { useId, type MouseEvent } from "react";
-import { Edit, OverflowMenuVertical, TrashCan } from "@carbon/icons-react";
+import {
+    Edit,
+    OverflowMenuVertical,
+    TrashCan,
+    View,
+} from "@carbon/icons-react";
 import Button, { buttonClass } from "@/components/ui/button";
 import Menu from "@/components/ui/menu";
+import Tooltip from "@/components/ui/tooltip";
 import { transferRoute } from "@/lib/constants";
 import { PAYEE_COPY } from "@/lib/data/payments/copy";
 import type { Payee } from "@/lib/types";
@@ -11,6 +17,7 @@ import type { Payee } from "@/lib/types";
 interface Props {
     payee: Payee;
     online: boolean;
+    onOpen: (payee: Payee) => void;
     onRename: (payee: Payee) => void;
     onRemove: (payee: Payee) => void;
 }
@@ -26,6 +33,7 @@ const refocusTrigger = (event: MouseEvent<HTMLElement>) =>
 export default function PayeeActions({
     payee,
     online,
+    onOpen,
     onRename,
     onRemove,
 }: Props) {
@@ -36,6 +44,21 @@ export default function PayeeActions({
             ? PAYEE_COPY.reasons.paymentInProgress
             : null
         : PAYEE_COPY.reasons.offline;
+    const items = [
+        { label: PAYEE_COPY.details, icon: View, enabled: true, run: onOpen },
+        {
+            label: PAYEE_COPY.rename,
+            icon: Edit,
+            enabled: online,
+            run: onRename,
+        },
+        {
+            label: PAYEE_COPY.remove,
+            icon: TrashCan,
+            enabled: removable,
+            run: onRemove,
+        },
+    ];
 
     return (
         <div className="flex items-center justify-end gap-1">
@@ -48,7 +71,7 @@ export default function PayeeActions({
                     {PAYEE_COPY.pay}
                 </Link>
             ) : (
-                <span className="group relative inline-flex">
+                <Tooltip content={PAYEE_COPY.reasons.pendingVerification}>
                     <Button
                         tone="quiet"
                         size="sm"
@@ -57,15 +80,11 @@ export default function PayeeActions({
                         aria-label={PAYEE_COPY.payNamed(payee.name)}
                     >
                         {PAYEE_COPY.pay}
+                        <span id={reasonId} className="sr-only">
+                            {PAYEE_COPY.reasons.pendingVerification}
+                        </span>
                     </Button>
-                    <span
-                        id={reasonId}
-                        role="tooltip"
-                        className="border-border-dark bg-background-alt text-text-secondary invisible absolute top-full right-0 z-(--z-indices-dropdown) mt-2 w-56 rounded-lg border px-3 py-2 text-left text-xs shadow-(--shadows-xl) group-focus-within:visible group-hover:visible"
-                    >
-                        {PAYEE_COPY.reasons.pendingVerification}
-                    </span>
-                </span>
+                </Tooltip>
             )}
             <Menu
                 label={PAYEE_COPY.moreNamed(payee.name)}
@@ -80,36 +99,24 @@ export default function PayeeActions({
             >
                 {(close) => (
                     <>
-                        <button
-                            type="button"
-                            role="menuitem"
-                            aria-disabled={!online}
-                            className={ITEM}
-                            onClick={(event) => {
-                                if (!online) return;
-                                refocusTrigger(event);
-                                close();
-                                onRename(payee);
-                            }}
-                        >
-                            <Edit aria-hidden className="size-4 shrink-0" />
-                            {PAYEE_COPY.rename}
-                        </button>
-                        <button
-                            type="button"
-                            role="menuitem"
-                            aria-disabled={!removable}
-                            className={ITEM}
-                            onClick={(event) => {
-                                if (!removable) return;
-                                refocusTrigger(event);
-                                close();
-                                onRemove(payee);
-                            }}
-                        >
-                            <TrashCan aria-hidden className="size-4 shrink-0" />
-                            {PAYEE_COPY.remove}
-                        </button>
+                        {items.map(({ label, icon: Icon, enabled, run }) => (
+                            <button
+                                key={label}
+                                type="button"
+                                role="menuitem"
+                                aria-disabled={!enabled}
+                                className={ITEM}
+                                onClick={(event) => {
+                                    if (!enabled) return;
+                                    refocusTrigger(event);
+                                    close();
+                                    run(payee);
+                                }}
+                            >
+                                <Icon aria-hidden className="size-4 shrink-0" />
+                                {label}
+                            </button>
+                        ))}
                         {reason ? (
                             <p className="border-border text-text-muted border-t px-2.5 py-2 text-xs">
                                 {reason}

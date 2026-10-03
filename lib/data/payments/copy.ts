@@ -55,6 +55,9 @@ export const PAYEE_COPY = {
             .filter(Boolean)
             .join(" · "),
     inProgress: "Payment in progress",
+    sortBy: (label: string) => `Sort by ${label.toLowerCase()}`,
+    details: "View details",
+    detailsNamed: (name: string) => `View details for ${name}`,
     moreCurrencies: (count: number, name: string) =>
         `${count} more ${count === 1 ? "currency" : "currencies"} paid to ${name}`,
     moreNamed: (name: string) => `More actions for ${name}`,
