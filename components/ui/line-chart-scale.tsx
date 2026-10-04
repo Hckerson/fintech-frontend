@@ -6,7 +6,7 @@ export default function LineChartScale({ ticks }: Props) {
     return (
         <ol
             aria-hidden
-            className="text-text-muted text-caption relative h-56 w-10 shrink-0 text-right tabular-nums sm:h-64"
+            className="text-text-muted text-caption relative w-10 shrink-0 text-right tabular-nums sm:h-64"
         >
             {ticks.map(({ label, top }) => (
                 <li

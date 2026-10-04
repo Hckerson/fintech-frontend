@@ -37,7 +37,10 @@ export default function FlowChart({
     ];
 
     return (
-        <figure aria-labelledby={id} className="flex flex-col gap-3">
+        <figure
+            aria-labelledby={id}
+            className="flex min-h-0 flex-1 flex-col gap-3"
+        >
             <figcaption id={id} className="sr-only">
                 {title}. {summary}
             </figcaption>
@@ -52,29 +55,24 @@ export default function FlowChart({
                     </li>
                 ))}
             </ul>
-            <div className="h-56 sm:h-64">
-                <FlowChartPlot
-                    points={points}
-                    labels={labels}
-                    formatTick={formatTick}
-                />
+            <div className="relative h-56 sm:h-64 xl:h-auto xl:min-h-40 xl:flex-1">
+                <div className="absolute inset-0">
+                    <FlowChartPlot
+                        points={points}
+                        labels={labels}
+                        formatTick={formatTick}
+                    />
+                </div>
             </div>
-            <details className="text-sm">
-                <summary className="text-text-secondary hover:text-text w-fit cursor-pointer text-xs">
-                    {labels.toggle}
-                </summary>
-                <div className="mt-3 max-h-72 overflow-auto">
-                    <table className="w-full text-left text-xs">
-                        <thead className="text-text-muted">
-                            <tr>
-                                <th scope="col" className="py-2 font-medium">
-                                    {labels.period}
-                                </th>
-                                {[
-                                    labels.inflow,
-                                    labels.outflow,
-                                    labels.net,
-                                ].map((heading) => (
+            <div className="sr-only">
+                <table className="w-full text-left text-xs">
+                    <thead className="text-text-muted">
+                        <tr>
+                            <th scope="col" className="py-2 font-medium">
+                                {labels.period}
+                            </th>
+                            {[labels.inflow, labels.outflow, labels.net].map(
+                                (heading) => (
                                     <th
                                         key={heading}
                                         scope="col"
@@ -82,40 +80,33 @@ export default function FlowChart({
                                     >
                                         {heading}
                                     </th>
-                                ))}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {points.map(({ label, display }) => (
-                                <tr
-                                    key={label}
-                                    className="border-border border-t"
+                                ),
+                            )}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {points.map(({ label, display }) => (
+                            <tr key={label} className="border-border border-t">
+                                <th
+                                    scope="row"
+                                    className="text-text-secondary py-2 font-normal"
                                 >
-                                    <th
-                                        scope="row"
-                                        className="text-text-secondary py-2 font-normal"
-                                    >
-                                        {label}
-                                    </th>
-                                    <td
-                                        className={`text-text-secondary ${CELL}`}
-                                    >
-                                        {display.inflow}
-                                    </td>
-                                    <td
-                                        className={`text-text-secondary ${CELL}`}
-                                    >
-                                        {display.outflow}
-                                    </td>
-                                    <td className={`text-text ${CELL}`}>
-                                        {display.net}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </details>
+                                    {label}
+                                </th>
+                                <td className={`text-text-secondary ${CELL}`}>
+                                    {display.inflow}
+                                </td>
+                                <td className={`text-text-secondary ${CELL}`}>
+                                    {display.outflow}
+                                </td>
+                                <td className={`text-text ${CELL}`}>
+                                    {display.net}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </figure>
     );
 }

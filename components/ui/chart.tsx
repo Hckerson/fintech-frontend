@@ -58,49 +58,41 @@ export default function Chart({
                 />
             </div>
             {table ? (
-                <details className="group text-sm">
-                    <summary className="text-text-secondary hover:text-text w-fit cursor-pointer">
-                        {table.toggle}
-                    </summary>
-                    <div className="mt-3 max-h-72 overflow-auto">
-                        <table className="w-full text-left">
-                            <thead className="text-text-muted text-xs">
-                                <tr>
+                <div className="sr-only">
+                    <table className="w-full text-left">
+                        <thead className="text-text-muted text-xs">
+                            <tr>
+                                <th scope="col" className="py-2 font-medium">
+                                    {table.x}
+                                </th>
+                                <th
+                                    scope="col"
+                                    className="py-2 text-right font-medium"
+                                >
+                                    {table.y}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {points.map((point) => (
+                                <tr
+                                    key={point.label}
+                                    className="border-border border-t"
+                                >
                                     <th
-                                        scope="col"
-                                        className="py-2 font-medium"
+                                        scope="row"
+                                        className="text-text-secondary py-2 font-normal"
                                     >
-                                        {table.x}
+                                        {point.label}
                                     </th>
-                                    <th
-                                        scope="col"
-                                        className="py-2 text-right font-medium"
-                                    >
-                                        {table.y}
-                                    </th>
+                                    <td className="text-text py-2 text-right font-mono tabular-nums">
+                                        {point.display}
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {points.map((point) => (
-                                    <tr
-                                        key={point.label}
-                                        className="border-border border-t"
-                                    >
-                                        <th
-                                            scope="row"
-                                            className="text-text-secondary py-2 font-normal"
-                                        >
-                                            {point.label}
-                                        </th>
-                                        <td className="text-text py-2 text-right font-mono tabular-nums">
-                                            {point.display}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </details>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             ) : null}
         </figure>
     );
