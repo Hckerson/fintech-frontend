@@ -1,14 +1,14 @@
 "use client";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import NotPermitted from "@/components/common/not-permitted";
 import SectionSkeleton from "@/components/common/section-skeleton";
 import AccountSummary from "@/components/dashboard/account-summary";
 import CashHero from "@/components/dashboard/cash-hero";
 import PendingItems from "@/components/dashboard/pending-items";
 import RecentActivity from "@/components/dashboard/recent-activity";
-import VerificationNotice from "@/components/onboarding/verification-notice";
 import SectionErrorBoundary from "@/components/wrappers/section-error-boundary";
 import { PAGE_TITLES } from "@/lib/constants";
+import { DASHBOARD_RAIL_ROWS } from "@/lib/dashboard/constants";
 import { DASHBOARD_COPY } from "@/lib/data/dashboard/copy";
 import {
     DASHBOARD_LAYOUT,
@@ -18,6 +18,8 @@ import { useWorkspace } from "@/lib/hooks/use-workspace";
 import type { DashboardParams, DashboardSectionKey } from "@/lib/types";
 
 const STACK = "flex min-w-0 flex-col gap-4";
+
+const RAIL = { "--dash-rows": DASHBOARD_RAIL_ROWS } as CSSProperties;
 
 export default function DashboardVariant({
     range,
@@ -35,8 +37,8 @@ export default function DashboardVariant({
 
     const granted = DASHBOARD_VARIANTS[workspace.role];
     const sections: Record<DashboardSectionKey, ReactNode> = {
-        verification: <VerificationNotice />,
-        verificationNotice: <VerificationNotice informational />,
+        verification: null,
+        verificationNotice: null,
         cashPosition: (
             <CashHero
                 range={range}
@@ -54,14 +56,7 @@ export default function DashboardVariant({
         keys
             .filter((key) => granted.includes(key))
             .map((key) => (
-                <SectionErrorBoundary
-                    key={key}
-                    skeleton={
-                        keys === DASHBOARD_LAYOUT.notice ? null : (
-                            <SectionSkeleton />
-                        )
-                    }
-                >
+                <SectionErrorBoundary key={key} skeleton={<SectionSkeleton />}>
                     {sections[key]}
                 </SectionErrorBoundary>
             ));
@@ -76,11 +71,15 @@ export default function DashboardVariant({
                     {DASHBOARD_COPY.dropped(dropped.join(", "))}
                 </p>
             ) : null}
-            {slot(DASHBOARD_LAYOUT.notice)}
             {main.length > 0 && side.length > 0 ? (
-                <div className="grid gap-4 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-                    <div className={STACK}>{main}</div>
-                    <div className={`${STACK} [&>*:last-child]:flex-1`}>
+                <div
+                    style={RAIL}
+                    className="dash-grid grid gap-4 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]"
+                >
+                    <div className={`${STACK} xl:[&>*]:h-(--dash-rail)`}>
+                        {main}
+                    </div>
+                    <div className={`${STACK} xl:[&>*]:h-(--dash-card)`}>
                         {side}
                     </div>
                 </div>

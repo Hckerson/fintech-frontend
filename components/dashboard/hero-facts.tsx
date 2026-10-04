@@ -17,7 +17,8 @@ interface Props {
 
 const COPY = DASHBOARD_COPY.cash;
 const FACT = "flex flex-col gap-1";
-const VALUE = "text-text text-sm font-medium tabular-nums";
+const VALUE =
+    "text-text text-compact font-medium whitespace-nowrap tabular-nums";
 const MISSING = <span className="text-text-muted">{NOT_AVAILABLE}</span>;
 
 const DIRECTION: Record<Trend["direction"], CarbonIconType> = {
@@ -31,15 +32,19 @@ export default function HeroFacts({ position, timeZone }: Props) {
     const Direction = trend ? DIRECTION[trend.direction] : null;
 
     return (
-        <dl className="[&>div]:border-border flex flex-wrap gap-y-3 [&>div]:border-l [&>div]:px-4">
+        <dl className="[&>div]:border-border flex shrink-0 [&>div]:border-l [&>div]:px-3">
             <div className={FACT}>
-                <dt className="figure-label">{COPY.current}</dt>
+                <dt className="figure-label whitespace-nowrap">
+                    {COPY.current}
+                </dt>
                 <dd className={VALUE}>
                     <Amount {...position.current} />
                 </dd>
             </div>
             <div className={FACT}>
-                <dt className="figure-label">{COPY.netToday(timeZone)}</dt>
+                <dt className="figure-label whitespace-nowrap">
+                    {COPY.netToday(timeZone)}
+                </dt>
                 <dd className={VALUE}>
                     {position.netToday ? (
                         <Amount {...position.netToday} display="signed" />
@@ -49,13 +54,15 @@ export default function HeroFacts({ position, timeZone }: Props) {
                 </dd>
             </div>
             <div className={FACT}>
-                <dt className="figure-label">{COPY.trendLabel}</dt>
+                <dt className="figure-label whitespace-nowrap">
+                    {COPY.trendLabel}
+                </dt>
                 <dd className={VALUE}>
                     {trend && Direction ? (
                         <span className="flex items-center gap-1">
                             <Direction
                                 aria-hidden
-                                className="text-accent size-4"
+                                className="text-accent size-3.5"
                             />
                             {COPY.trend(
                                 trend,

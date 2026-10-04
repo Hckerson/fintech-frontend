@@ -14,11 +14,11 @@ export default function CashHeadline({ position, timeZone }: Props) {
     const parts = moneyParts(amountMinor, currency);
 
     return (
-        <div className="flex flex-wrap items-end justify-between gap-4">
-            <div className="flex min-w-0 flex-col gap-2">
-                <p className="figure-label">
-                    {DASHBOARD_COPY.cash.available} · {position.currency}
-                </p>
+        <div className="flex min-w-0 flex-col gap-2">
+            <p className="figure-label">
+                {DASHBOARD_COPY.cash.available} · {position.currency}
+            </p>
+            <div className="flex flex-wrap items-center justify-between gap-4 xl:flex-nowrap">
                 {parts ? (
                     <data
                         value={amountMinor}
@@ -33,8 +33,8 @@ export default function CashHeadline({ position, timeZone }: Props) {
                         className="figure-hero text-text"
                     />
                 )}
+                <HeroFacts position={position} timeZone={timeZone} />
             </div>
-            <HeroFacts position={position} timeZone={timeZone} />
         </div>
     );
 }

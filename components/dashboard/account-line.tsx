@@ -18,7 +18,7 @@ export default function AccountLine({ account }: Props) {
     return (
         <Link
             href={accountRoute(account.id)}
-            className="hover:bg-background-muted focus-visible:outline-accent flex items-center justify-between gap-3 px-4 py-3 focus-visible:outline-2 focus-visible:-outline-offset-2"
+            className="hover:bg-background-muted focus-visible:outline-accent flex h-full items-center justify-between gap-3 px-4 focus-visible:outline-2 focus-visible:-outline-offset-2"
         >
             <span className="flex min-w-0 flex-col">
                 <span className="text-text text-compact truncate font-medium">

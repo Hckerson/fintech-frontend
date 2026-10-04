@@ -1,10 +1,12 @@
 import type { CashFlowRange } from "@/lib/types/insights";
 
-export const DASHBOARD_ACCOUNT_LIMIT = 6;
+export const DASHBOARD_RAIL_ROWS = 3;
+
+export const DASHBOARD_ACCOUNT_LIMIT = DASHBOARD_RAIL_ROWS;
 
 export const DASHBOARD_ACTIVITY_LIMIT = 8;
 
-export const DASHBOARD_PENDING_LIMIT = 10;
+export const DASHBOARD_PENDING_LIMIT = DASHBOARD_RAIL_ROWS;
 
 export const DEFAULT_CASH_FLOW_RANGE: CashFlowRange = "30d";
 

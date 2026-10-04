@@ -140,6 +140,14 @@
     margin-inline: auto;
 }
 
+@utility dash-grid {
+    --dash-card: calc(
+        var(--dash-head) + var(--dash-rows) * var(--dash-row) +
+            var(--dash-foot) + 2px
+    );
+    --dash-rail: calc(2 * var(--dash-card) + 1rem);
+}
+
 @utility ledger-section {
     padding-block: var(--ledger-section);
 }

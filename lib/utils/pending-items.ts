@@ -84,8 +84,8 @@ export const pendingItems = ({
     const transactions: PendingItem[] = groups.map((group) => ({
         id: `${group.accountId}:${group.total.currency}`,
         kind: "pending_transactions",
-        title: COPY.transactions(group.count, group.accountName),
-        detail: COPY.provisional,
+        title: COPY.transactions(group.count),
+        detail: COPY.onAccount(group.accountName, COPY.provisional),
         amount: group.total,
         href: pendingTransactionsRoute(group.accountId),
         severity: "attention",

@@ -81,8 +81,9 @@ export const DASHBOARD_COPY = {
             `${plural(count, "recent transaction", "recent transactions")}.`,
     },
     pending: {
-        transactions: (count: number, account: string) =>
-            `${plural(count, "pending transaction", "pending transactions")} on ${account}`,
+        transactions: (count: number) =>
+            plural(count, "pending transaction", "pending transactions"),
+        onAccount: (account: string, note: string) => `${account} · ${note}`,
         provisional: "Provisional total",
         exportReady: "Export ready to download",
         exportFailed: "Export failed",
