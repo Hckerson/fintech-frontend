@@ -62,7 +62,7 @@ export default function CommandTrigger({
                     setOpen(true);
                     onOpenChange?.(true);
                 }}
-                className="border-border bg-background-alt text-text-muted hover:border-border-dark hover:text-text focus-visible:outline-accent flex h-8 max-w-sm min-w-0 flex-1 cursor-pointer items-center gap-2 rounded-md border px-3 text-xs focus-visible:outline-2"
+                className="group border-border bg-background text-text-muted hover:border-border-dark hover:text-text-secondary focus-visible:outline-accent text-compact flex h-9 max-w-md min-w-0 flex-1 cursor-pointer items-center gap-2.5 rounded-lg border pr-1.5 pl-3 transition-colors focus-visible:outline-2"
             >
                 <Search aria-hidden className="size-4 shrink-0" />
                 <span className="flex-1 truncate text-left">
@@ -70,7 +70,7 @@ export default function CommandTrigger({
                 </span>
                 <kbd
                     aria-label={COPY.shortcutSpoken}
-                    className="border-border text-caption hidden rounded border px-1.5 py-0.5 font-mono sm:inline"
+                    className="bg-background-muted text-text-secondary text-caption hidden rounded-md px-2 py-1 font-mono sm:inline"
                 >
                     {COPY.shortcut}
                 </kbd>

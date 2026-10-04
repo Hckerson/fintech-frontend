@@ -290,7 +290,11 @@
     --ledger-title: clamp(2rem, 3.8vw, 3.25rem);
     --ledger-figure: clamp(2rem, 3.6vw, 3rem);
     --ledger-nav: 3.5rem;
-    --shell-bar: 3rem;
+    --shell-bar: 3.5rem;
+    --shell-rail: 15rem;
+    --dash-head: 2.75rem;
+    --dash-row: 4rem;
+    --dash-foot: 2.5rem;
     --ledger-pill-offset: 1rem;
     --ledger-pill-width: 64rem;
     --ledger-header: calc(var(--ledger-nav) + 2 * var(--ledger-pill-offset));

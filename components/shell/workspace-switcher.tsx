@@ -42,8 +42,11 @@ export default function WorkspaceSwitcher() {
     };
 
     const identity = (
-        <span className="flex min-w-0 flex-1 items-center gap-2 text-left">
-            <Avatar name={workspace.name} className="rounded-md" />
+        <span className="flex min-w-0 flex-1 items-center gap-2.5 text-left">
+            <Avatar
+                name={workspace.name}
+                className="ring-accent/25 size-8 rounded-lg ring-1"
+            />
             <span className="flex min-w-0 flex-1 flex-col">
                 <span className="text-text truncate text-sm leading-tight font-medium">
                     {workspace.name}
@@ -61,7 +64,7 @@ export default function WorkspaceSwitcher() {
                 <Menu
                     fill
                     label={COPY.trigger(workspace.name)}
-                    triggerClassName="hover:bg-background-muted flex w-full items-center gap-2 rounded-md p-1"
+                    triggerClassName="hover:bg-sidebar-hover flex w-full items-center gap-2 rounded-lg p-1.5 transition-colors"
                     trigger={
                         <>
                             {identity}
@@ -81,7 +84,7 @@ export default function WorkspaceSwitcher() {
                     )}
                 </Menu>
             ) : (
-                <div className="flex items-center p-1">
+                <div className="flex items-center p-1.5">
                     <span className="sr-only">{COPY.label}: </span>
                     {identity}
                 </div>
