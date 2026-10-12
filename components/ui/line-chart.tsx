@@ -71,74 +71,75 @@ export default function LineChart({
     };
 
     return (
-        <figure aria-labelledby={id} className="flex flex-col gap-2">
+        <figure
+            aria-labelledby={id}
+            className="flex min-h-0 flex-1 flex-col gap-2"
+        >
             <figcaption id={id} className="sr-only">
                 {title}. {summary} {hint}
             </figcaption>
-            <div className="flex gap-3">
+            <div className="flex h-56 gap-3 sm:h-64 xl:h-auto xl:min-h-40 xl:flex-1">
                 <LineChartScale
                     ticks={ticks.map((tick) => ({
                         label: formatTick(tick),
                         top: top(tick),
                     }))}
                 />
-                <div className="flex min-w-0 flex-1 flex-col gap-2">
-                    <div
-                        role="group"
-                        tabIndex={0}
-                        aria-labelledby={id}
-                        onPointerMove={onPointerMove}
-                        onPointerLeave={() => setActive(null)}
-                        onKeyDown={onKeyDown}
-                        className="focus-visible:outline-accent relative h-56 touch-pan-y rounded-lg focus-visible:outline-2 sm:h-64"
-                    >
-                        <LineChartPlot
-                            values={values}
-                            frame={frame}
-                            lines={ticks.map(top)}
-                        />
-                        {active === null ? null : (
-                            <span
-                                aria-hidden
-                                className="bg-border-dark pointer-events-none absolute inset-y-0 w-px"
-                                style={{ left: `${x}%` }}
-                            />
-                        )}
+                <div
+                    role="group"
+                    tabIndex={0}
+                    aria-labelledby={id}
+                    onPointerMove={onPointerMove}
+                    onPointerLeave={() => setActive(null)}
+                    onKeyDown={onKeyDown}
+                    className="focus-visible:outline-accent relative min-w-0 flex-1 touch-pan-y rounded-lg focus-visible:outline-2"
+                >
+                    <LineChartPlot
+                        values={values}
+                        frame={frame}
+                        lines={ticks.map(top)}
+                    />
+                    {active === null ? null : (
                         <span
                             aria-hidden
-                            className="pointer-events-none absolute size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-(--colors-line) shadow-[0_0_0_5px_var(--ledger-glow)]"
-                            style={{ left: `${x}%`, top: `${y}%` }}
+                            className="bg-border-dark pointer-events-none absolute inset-y-0 w-px"
+                            style={{ left: `${x}%` }}
                         />
-                        {active === null ? null : (
-                            <div
-                                aria-hidden
-                                className="surface-card pointer-events-none absolute top-0 flex flex-col px-3 py-2 text-xs whitespace-nowrap"
-                                style={
-                                    x > 55
-                                        ? {
-                                              right: `calc(${100 - x}% + 0.75rem)`,
-                                          }
-                                        : { left: `calc(${x}% + 0.75rem)` }
-                                }
-                            >
-                                <span className="text-text-muted">
-                                    {point.label}
-                                </span>
-                                <span className="text-text text-compact font-medium tabular-nums">
-                                    {point.display}
-                                </span>
-                            </div>
-                        )}
-                    </div>
-                    <div
+                    )}
+                    <span
                         aria-hidden
-                        className="text-text-muted text-caption flex justify-between tabular-nums"
-                    >
-                        <span>{points[0].label}</span>
-                        <span>{points[Math.round(last / 2)].label}</span>
-                        <span>{points[last].label}</span>
-                    </div>
+                        className="pointer-events-none absolute size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-(--colors-line) shadow-[0_0_0_5px_var(--ledger-glow)]"
+                        style={{ left: `${x}%`, top: `${y}%` }}
+                    />
+                    {active === null ? null : (
+                        <div
+                            aria-hidden
+                            className="surface-card pointer-events-none absolute top-0 flex flex-col px-3 py-2 text-xs whitespace-nowrap"
+                            style={
+                                x > 55
+                                    ? {
+                                          right: `calc(${100 - x}% + 0.75rem)`,
+                                      }
+                                    : { left: `calc(${x}% + 0.75rem)` }
+                            }
+                        >
+                            <span className="text-text-muted">
+                                {point.label}
+                            </span>
+                            <span className="text-text text-compact font-medium tabular-nums">
+                                {point.display}
+                            </span>
+                        </div>
+                    )}
                 </div>
+            </div>
+            <div
+                aria-hidden
+                className="text-text-muted text-caption flex justify-between pl-13 tabular-nums"
+            >
+                <span>{points[0].label}</span>
+                <span>{points[Math.round(last / 2)].label}</span>
+                <span>{points[last].label}</span>
             </div>
             <p role="status" className="sr-only">
                 {active === null ? "" : `${point.label}: ${point.display}`}

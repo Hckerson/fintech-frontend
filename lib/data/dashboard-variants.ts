@@ -34,7 +34,6 @@ export const DASHBOARD_VARIANTS: Record<
 };
 
 export const DASHBOARD_LAYOUT = {
-    notice: ["verification", "verificationNotice"],
     main: ["cashPosition"],
     side: ["pendingItems", "accountSummary"],
     below: ["recentActivity"],

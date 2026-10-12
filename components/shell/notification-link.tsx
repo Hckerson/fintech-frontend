@@ -13,13 +13,13 @@ export default function NotificationLink({ unread }: { unread?: number }) {
         <Link
             href={NOTIFICATIONS_ROUTE}
             aria-label={badge && unread ? COPY.unread(unread) : COPY.label}
-            className="text-text-secondary hover:text-text focus-visible:outline-accent relative inline-flex size-9 shrink-0 items-center justify-center rounded-md focus-visible:outline-2"
+            className="border-border text-text-secondary hover:border-border-dark hover:text-text focus-visible:outline-accent relative inline-flex size-9 shrink-0 items-center justify-center rounded-lg border transition-colors focus-visible:outline-2"
         >
-            <Notification aria-hidden className="size-5" />
+            <Notification aria-hidden className="size-4.5" />
             {badge ? (
                 <span
                     aria-hidden
-                    className="bg-accent text-text-inverse text-caption absolute -top-0.5 -right-1 rounded-full px-1.5 font-semibold"
+                    className="bg-accent text-text-inverse text-caption ring-background-alt absolute -top-1.5 -right-1.5 flex h-4.5 min-w-4.5 items-center justify-center rounded-full px-1 font-semibold tabular-nums ring-2"
                 >
                     {badge}
                 </span>

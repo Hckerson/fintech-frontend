@@ -87,7 +87,6 @@ export interface Trend {
 }
 
 export interface DashboardLayout {
-    notice: readonly DashboardSectionKey[];
     main: readonly DashboardSectionKey[];
     side: readonly DashboardSectionKey[];
     below: readonly DashboardSectionKey[];

@@ -28,6 +28,7 @@ export default function CashChart({ position, range, view }: Props) {
     return (
         <QueryBoundary
             flush
+            grow
             query={query}
             isEmpty={(series) => view === "flow" && !hasActivity(series)}
             skeleton={<SectionSkeleton bare rows={1} rowClassName="h-80" />}

@@ -1,9 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { getCashPosition } from "@/lib/actions/get-cash-position";
-import { queryKeys } from "@/lib/hooks/query-keys";
 import { readOptions } from "@/lib/hooks/read-options";
+import { reads } from "@/lib/hooks/reads";
 import { useWorkspace } from "@/lib/hooks/use-workspace";
-import { unwrapResult } from "@/lib/utils/query-error";
 
 export const useCashPosition = ({
     enabled = true,
@@ -11,8 +9,7 @@ export const useCashPosition = ({
     const { workspace } = useWorkspace();
 
     return useQuery({
-        queryKey: queryKeys.accounts.cashPosition(workspace.id),
-        queryFn: async () => unwrapResult(await getCashPosition()),
+        ...reads.cashPosition(workspace.id),
         enabled,
         ...readOptions("live"),
     });

@@ -114,7 +114,7 @@ export default function PendingItems() {
                             {listed.map((item) => (
                                 <li
                                     key={item.id}
-                                    className="border-border-light border-b last:border-b-0"
+                                    className="border-border-light h-(--dash-row) border-b last:border-b-0"
                                 >
                                     <PendingItemRow item={item} />
                                 </li>
@@ -126,7 +126,7 @@ export default function PendingItems() {
                         </div>
                     ) : null}
                     {items.length > listed.length ? (
-                        <p className="text-text-secondary px-4 py-3 text-xs">
+                        <p className="border-border text-text-muted mt-auto flex h-(--dash-foot) items-center border-t px-4 text-xs">
                             {COPY.more(items.length - listed.length)}
                         </p>
                     ) : null}

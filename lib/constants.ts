@@ -66,14 +66,12 @@ export const MAIN_CONTENT_ID = "main-content";
 
 export const NOT_AVAILABLE = "Not available";
 
-export const AUTH_GATE_DISABLED =
-    process.env.NODE_ENV !== "production" &&
-    process.env.DISABLE_AUTH_GATE === "true";
+export const AUTH_GATE_DISABLED = process.env.DISABLE_AUTH_GATE === "true";
 
 export const ADMIN_ROLE = createUserDtoSchema.shape.role.unwrap().enum.ADMIN;
 
 export const API_BASE_URL =
-    process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000";
+    process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4101";
 
 export const SESSION_MAX_AGE = 60 * 60 * 24 * 7;
 
@@ -114,6 +112,12 @@ export const MOTION_SPRING = {
     type: "spring",
     stiffness: 100,
     damping: 30,
+} as const;
+
+export const MOTION_SPRING_SNAPPY = {
+    type: "spring",
+    stiffness: 420,
+    damping: 38,
 } as const;
 
 export const DEFAULT_LOCALE = "en-GB";

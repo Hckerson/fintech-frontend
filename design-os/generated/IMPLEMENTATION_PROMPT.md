@@ -74,7 +74,7 @@ This design OS defines what each page must do, not how it looks. The look of eac
 How to apply it in this repository:
 
 1. **Inputs to the concept.** The page's primary tasks, states and device needs ([Phase 4](phase-4-page-blueprints.md)), its sections' purpose and behaviour ([Phase 5](phase-5-section-blueprints.md)) and the contracts it uses ([Phase 6](phase-6-interaction-contracts.md)). These fix what users must get done and how the product behaves; they do not fix what the page contains, its arrangement or its appearance.
-2. **UI skills.** Use the skills the repo provides for UI work (for example `elegant-ui` for app screens; a register skill such as `cinematic-web` where the owner wants it for public pages). The skills govern how UI is written; the concept decides how this page looks.
+2. **UI skills.** Use the skills the repo provides for UI work (for example a register skill such as `cinematic-web` where the owner wants it for public pages). The skills govern how UI is written; the concept decides how this page looks.
 3. **Present, then wait.** Show the concept to the owner. Do not write page code until it is approved. Record the approval (date, page ID) in the PR.
 4. **Build to the approved concept** and to the requirements. If the two conflict, stop and ask; do not drop a requirement to fit a concept.
 5. **Review the rendered page** (running app, phone and desktop widths, keyboard pass) with the owner before setting the page to Built in Phase 8.

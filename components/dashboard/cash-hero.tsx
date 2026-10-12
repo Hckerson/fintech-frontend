@@ -9,6 +9,7 @@ import CashHeadline from "@/components/dashboard/cash-headline";
 import CurrencyChips from "@/components/dashboard/currency-chips";
 import EmptyState from "@/components/ui/empty-state";
 import QueryBoundary from "@/components/wrappers/query-boundary";
+import { TREND_RANGE } from "@/lib/dashboard/constants";
 import { DASHBOARD_COPY } from "@/lib/data/dashboard/copy";
 import { EMPTY_STATES } from "@/lib/data/empty-states";
 import { VERIFICATION_COPY } from "@/lib/data/verification";
@@ -26,6 +27,7 @@ interface Props {
 }
 
 const COPY = DASHBOARD_COPY.cash;
+const RANGES = DASHBOARD_COPY.cashFlow.ranges;
 
 export default function CashHero({ range, currency, view, withFlow }: Props) {
     const router = useRouter();
@@ -50,13 +52,14 @@ export default function CashHero({ range, currency, view, withFlow }: Props) {
     return (
         <section
             aria-labelledby={titleId}
-            className="panel min-w-0 overflow-hidden"
+            className="panel flex min-w-0 flex-col overflow-hidden"
         >
             <h2 id={titleId} className="sr-only">
                 {DASHBOARD_COPY.sections.cashPosition}
             </h2>
             <QueryBoundary
                 flush
+                grow
                 query={query}
                 isEmpty={(positions) => positions.length === 0}
                 skeleton={<SectionSkeleton bare rows={1} rowClassName="h-96" />}
@@ -103,7 +106,7 @@ export default function CashHero({ range, currency, view, withFlow }: Props) {
                                     />
                                 ) : null}
                             </div>
-                            <div className="px-4 pt-6 pb-2">
+                            <div className="px-4 pt-5 pb-1">
                                 <CashHeadline
                                     position={position}
                                     timeZone={workspace.timeZone}
@@ -112,6 +115,7 @@ export default function CashHero({ range, currency, view, withFlow }: Props) {
                             <div
                                 id={panelId}
                                 role="tabpanel"
+                                className="flex min-h-0 flex-1 flex-col"
                                 aria-label={DASHBOARD_COPY.overview.views[view]}
                             >
                                 {withFlow ? (
@@ -124,11 +128,7 @@ export default function CashHero({ range, currency, view, withFlow }: Props) {
                                     <BalanceFigures
                                         trend={position.trend}
                                         granularity="day"
-                                        rangeLabel={
-                                            DASHBOARD_COPY.cashFlow.ranges[
-                                                "30d"
-                                            ]
-                                        }
+                                        rangeLabel={RANGES[TREND_RANGE]}
                                     />
                                 )}
                             </div>

@@ -23,7 +23,7 @@ const ICONS: Record<PendingItemKind, CarbonIconType> = {
     verification_request: Identification,
 };
 
-const ROW = "flex items-center gap-3 px-4 py-3";
+const ROW = "flex h-full items-center gap-3 px-4";
 
 export default function PendingItemRow({ item }: Props) {
     const Icon = ICONS[item.kind];
@@ -31,10 +31,10 @@ export default function PendingItemRow({ item }: Props) {
         <>
             <IconTile icon={<Icon />} tone={item.severity} />
             <span className="flex min-w-0 flex-1 flex-col">
-                <span className="text-text text-compact font-medium">
+                <span className="text-text text-compact truncate font-medium">
                     {item.title}
                 </span>
-                <span className="text-text-muted text-xs break-words">
+                <span className="text-text-muted truncate text-xs">
                     {item.detail}
                     {item.amount ? (
                         <>

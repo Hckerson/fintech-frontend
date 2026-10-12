@@ -20,6 +20,7 @@ interface Props<TData> {
     empty: ReactNode;
     denied?: ReactNode;
     flush?: boolean;
+    grow?: boolean;
     children: (data: TData) => ReactNode;
 }
 
@@ -30,6 +31,7 @@ export default function QueryBoundary<TData>({
     empty,
     denied,
     flush = false,
+    grow = false,
     children,
 }: Props<TData>) {
     const inset = flush ? "p-4" : undefined;
@@ -90,7 +92,11 @@ export default function QueryBoundary<TData>({
         return (
             <div
                 aria-busy={query.isFetching}
-                className={flush ? "flex flex-col" : "flex flex-col gap-3"}
+                className={clsx(
+                    "flex flex-col",
+                    !flush && "gap-3",
+                    grow && "min-h-0 flex-1",
+                )}
             >
                 {query.isError || !online ? (
                     <p

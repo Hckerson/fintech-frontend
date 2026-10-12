@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { ChevronDown } from "@carbon/icons-react";
 import Avatar from "@/components/ui/avatar";
 import Menu from "@/components/ui/menu";
 import { HELP_ROUTE, PROFILE_ROUTE } from "@/lib/constants";
@@ -30,8 +31,19 @@ export default function UserMenu({ email }: Props) {
         <Menu
             label={COPY.menu(name)}
             align="end"
-            triggerClassName="rounded-full"
-            trigger={<Avatar name={name} className="size-8" />}
+            triggerClassName="border-border hover:border-border-dark flex h-9 items-center gap-2 rounded-lg border pr-2 pl-1 transition-colors"
+            trigger={
+                <>
+                    <Avatar name={name} className="rounded-md" />
+                    <span className="text-text text-compact hidden max-w-36 truncate font-medium sm:block">
+                        {name}
+                    </span>
+                    <ChevronDown
+                        aria-hidden
+                        className="text-text-muted size-4 shrink-0"
+                    />
+                </>
+            }
         >
             {(close) => (
                 <>

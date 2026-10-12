@@ -31,6 +31,7 @@ export default function AccountSummary() {
         >
             <QueryBoundary
                 flush
+                grow
                 query={query}
                 isEmpty={({ items }) => heldAccounts(items).length === 0}
                 skeleton={<SectionSkeleton bare rows={4} rowClassName="h-12" />}
@@ -54,14 +55,14 @@ export default function AccountSummary() {
                                 {listed.map((account) => (
                                     <li
                                         key={account.id}
-                                        className="border-border-light border-b last:border-b-0"
+                                        className="border-border-light h-(--dash-row) border-b last:border-b-0"
                                     >
                                         <AccountLine account={account} />
                                     </li>
                                 ))}
                             </ul>
                             {hidden > 0 ? (
-                                <p className="text-text-muted px-4 py-3 text-xs">
+                                <p className="border-border text-text-muted mt-auto flex h-(--dash-foot) items-center border-t px-4 text-xs">
                                     {COPY.more(hidden)}
                                 </p>
                             ) : null}

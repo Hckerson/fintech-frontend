@@ -24,7 +24,7 @@ export default function CashFlowFigures({ series }: Props) {
 
     return (
         <>
-            <div className="flex flex-col gap-3 px-4 py-4">
+            <div className="flex min-h-0 flex-1 flex-col gap-3 px-4 py-4">
                 {plottable ? (
                     <FlowChart
                         title={COPY.chartTitle(currency)}

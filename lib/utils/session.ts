@@ -4,7 +4,12 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { readJson } from "@/lib/api-server";
 import { authResponseDtoSchema } from "@/lib/contract/schemas";
-import { SESSION_COOKIE, SESSION_MAX_AGE } from "@/lib/constants";
+import {
+    AUTH_GATE_DISABLED,
+    SESSION_COOKIE,
+    SESSION_MAX_AGE,
+} from "@/lib/constants";
+import { PREVIEW_SESSION } from "@/lib/data/auth/preview-session";
 import {
     verifySessionToken,
     type SessionPayload,
@@ -16,7 +21,8 @@ const authEnvelopeSchema = z.object({
 
 export const getSession = async (): Promise<SessionPayload | null> => {
     const token = (await cookies()).get(SESSION_COOKIE)?.value;
-    return token ? await verifySessionToken(token) : null;
+    const session = token ? await verifySessionToken(token) : null;
+    return session ?? (AUTH_GATE_DISABLED ? PREVIEW_SESSION : null);
 };
 
 export const startSession = async (

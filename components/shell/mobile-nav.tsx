@@ -9,7 +9,7 @@ interface Props {
 }
 
 const CONTROL =
-    "border-border text-text focus-visible:outline-accent inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md border focus-visible:outline-2";
+    "border-border text-text focus-visible:outline-accent inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border focus-visible:outline-2";
 
 export default function MobileNav({ children }: Props) {
     const pathname = usePathname();

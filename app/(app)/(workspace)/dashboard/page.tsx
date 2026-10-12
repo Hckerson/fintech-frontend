@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import DashboardData from "@/components/dashboard/dashboard-data";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 import DashboardVariant from "@/components/dashboard/dashboard-variant";
 import { PAGE_TITLES } from "@/lib/constants";
@@ -14,9 +15,9 @@ export default async function DashboardPage({ searchParams }: Props) {
     const params = parseDashboardParams(await searchParams);
 
     return (
-        <>
+        <DashboardData>
             <DashboardHeader />
             <DashboardVariant {...params} />
-        </>
+        </DashboardData>
     );
 }

@@ -54,7 +54,7 @@ export default function SectionCard({
                 </div>
             </div>
             <div
-                className={flush ? "flex flex-col" : "flex flex-col gap-3 p-4"}
+                className={clsx("flex flex-1 flex-col", !flush && "gap-3 p-4")}
             >
                 {children}
             </div>
